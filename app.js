@@ -81,8 +81,45 @@ function doseTool(){
     caution="For suspected anaphylaxis only. Do not delay adrenaline for antihistamines or IV access.";
   } else if(tool==="amoxicillin-high"){
     const mg=Math.min(weight*45,1000); answer=`BID high-dose reference: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
-    note="This represents 90 mg/kg/day divided twice daily, capped at 1 g/dose. Use only when the diagnosis-specific NAG regimen calls for high-dose amoxicillin (e.g. selected paediatric AOM/CAP).";
-    caution="Check penicillin allergy, renal function, diagnosis, duration and local formulation. This is not a generic antibiotic calculator.";
+    note="Malaysia NAG: high-dose amoxicillin 80–90 mg/kg/day in 2–3 divided doses for selected paediatric AOM/CAP; this calculator uses 90 mg/kg/day divided twice daily, max 1 g/dose.";
+    caution="Check penicillin allergy, renal function, diagnosis and duration. This is not a generic antibiotic calculator.";
+  } else if(tool==="coamox14"){
+    const daily=Math.min(weight*90,3000), mg=daily/2;
+    answer=`14:1 formulation: <strong>${round(mg,1)} mg amoxicillin component per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
+    note="Malaysia NAG: 80–90 mg/kg/day of the amoxicillin component in 2 divided doses for selected paediatric pathways such as AOM failure/recent amoxicillin; this calculator uses 90 mg/kg/day.";
+    caution="Enter the AMOXICILLIN COMPONENT in mg/5 mL, not the combined amoxicillin+clavulanate total. Confirm the exact formulation and indication-specific maximum.";
+  } else if(tool==="azithro5"){
+    const d1=Math.min(weight*10,500), d25=Math.min(weight*5,250);
+    answer=`Day 1: <strong>${round(d1,1)} mg once daily</strong>${liquidText(d1,conc)}. Days 2–5: <strong>${round(d25,1)} mg once daily</strong>${liquidText(d25,conc)}.`;
+    note="Malaysia NAG 5-day regimen: 10 mg/kg on Day 1 (max 500 mg), then 5 mg/kg once daily on Days 2–5 (max 250 mg/day) for specific indications.";
+    caution="Do not use azithromycin as a default antibiotic for uncomplicated URTI. Confirm indication and allergy context.";
+  } else if(tool==="cefuroxime"){
+    const daily=Math.min(weight*30,1000), mg=daily/2;
+    answer=`Reference dose: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
+    note="Malaysia NAG: cefuroxime 30 mg/kg/day PO in 2 divided doses, max 1 g/day, for selected paediatric AOM/rhinosinusitis pathways.";
+    caution="Use only for the relevant diagnosis and allergy pathway; severe immediate beta-lactam allergy requires separate review.";
+  } else if(tool==="cephalexin"){
+    const low=Math.min(weight*25,2000)/2, high=Math.min(weight*50,2000)/2;
+    answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 12 hours.`;
+    note="Malaysia NAG: cephalexin 25–50 mg/kg/day PO in 2 divided doses, max 2 g/day, for selected paediatric UTI/SSTI pathways.";
+    caution="Select the exact dose and duration from the diagnosis-specific pathway; febrile/complicated UTI or severe SSTI needs separate assessment.";
+  } else if(tool==="prednisolone-asthma"){
+    let cap=null;
+    if(age!==null){ if(age<2) cap=10; else if(age<6) cap=20; else if(age<12) cap=40; else cap=50; }
+    const low=cap===null?weight:Math.min(weight,cap), high=cap===null?weight*2:Math.min(weight*2,cap);
+    answer=`Acute asthma reference: <strong>${round(low,1)}–${round(high,1)} mg/day</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL/day at ${conc} mg/5 mL`:""}.`;
+    note="MOH Paediatric Protocols 5th ed.: prednisolone 1–2 mg/kg/day for 3–7 days, with age-specific maximum daily doses.";
+    caution=age===null?"Enter age to apply the protocol age-specific maximum.":"Use within the acute asthma severity pathway; systemic steroid dosing is indication-specific.";
+  } else if(tool==="salbutamol-neb"){
+    const mg=Math.min(weight*0.15,5), band=age===null?"Enter age for the protocol age-band reference.":(age<=5?"Age-band reference: 2.5 mg/dose for age ≤5 years.":"Age-band reference: 5 mg/dose for age >5 years.");
+    answer=`Weight-based reference: <strong>${round(mg,2)} mg/dose</strong>. If using 5 mg/mL solution: <strong>${round(mg/5,2)} mL</strong>. ${band}`;
+    note="MOH Paediatric Protocols 5th ed.: nebulised salbutamol 0.15 mg/kg; ≤5 years 2.5 mg/dose and >5 years 5 mg/dose.";
+    caution="Acute asthma requires severity assessment and escalation when indicated. The generic mg/5 mL field is not used for this calculator.";
+  } else if(tool==="ors-plan-b"){
+    const total=weight*75, hourly=total/4;
+    answer=`Plan B ORS: <strong>${round(total,0)} mL over 4 hours</strong> (about <strong>${round(hourly,0)} mL/hour</strong> if evenly distributed).`;
+    note="MOH Paediatric Protocols 5th ed.: for some dehydration, approximate ORS volume over the first 4 hours = weight (kg) × 75 mL, followed by reassessment.";
+    caution="Shock/severe dehydration requires a different resuscitation pathway.";
   }
   els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">${answer}</p><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
