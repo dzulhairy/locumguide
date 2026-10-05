@@ -1,4 +1,4 @@
-const CACHE="locum-guide-v2-1-20261005";
+const CACHE="locum-guide-v2-2-20261005";
 const ASSETS=["./","./index.html","./styles.css","./app.js","./cases-respiratory.js","./cases-ent.js","./cases-acute.js","./cases-derm1.js","./cases-derm2.js","./cases-msk.js","./manifest.webmanifest"];
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener("activate",e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));
