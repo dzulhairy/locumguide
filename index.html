@@ -63,6 +63,13 @@
             <option value="oseltamivir">Oseltamivir treatment</option>
             <option value="adrenaline">IM adrenaline — anaphylaxis</option>
             <option value="amoxicillin-high">High-dose amoxicillin — AOM/CAP</option>
+            <option value="coamox14">Co-amoxiclav 14:1 — child</option>
+            <option value="azithro5">Azithromycin — 5-day paediatric regimen</option>
+            <option value="cefuroxime">Cefuroxime — child</option>
+            <option value="cephalexin">Cephalexin — child</option>
+            <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
+            <option value="salbutamol-neb">Salbutamol nebuliser — acute paediatric asthma</option>
+            <option value="ors-plan-b">ORS Plan B — some dehydration</option>
           </select>
         </label>
         <label>
@@ -74,12 +81,12 @@
           <input id="weightInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 15" />
         </label>
         <label>
-          Liquid strength (mg / 5 mL)
+          Liquid strength — active drug (mg / 5 mL)
           <input id="concentrationInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="optional" />
         </label>
       </div>
       <div id="dosePanel" class="dose-panel hidden" aria-live="polite"></div>
-      <p class="small tool-note">Liquid conversion is shown only when you enter the exact product strength. Always re-check the bottle label.</p>
+      <p class="small tool-note">Liquid conversion is shown only when you enter the exact active-drug strength. For co-amoxiclav, enter the amoxicillin component. Always re-check the bottle label.</p>
     </section>
 
     <section id="results" class="results" aria-live="polite"></section>
