@@ -1,8 +1,8 @@
-# Locum Quick Guide MY — v2.1
+# Locum Quick Guide MY — v2.2
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
-## Version 2 features
+## Version 2.2 features
 - Search by diagnosis, symptom, Malay/English synonym or medicine.
 - Category filters: Respiratory, ENT, Dermatology, Paediatrics, GI, GU, MSK and Emergency.
 - 20+ quick-reference topics with **red flags first**, then assessment, treatment, medication, prevention and referral triggers.
@@ -19,6 +19,14 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
   - Prednisolone for acute paediatric asthma
   - Nebulised salbutamol for acute paediatric asthma
   - ORS Plan B volume for some dehydration
+  - Nitrofurantoin for paediatric lower UTI
+  - Cloxacillin for selected mild paediatric SSTI
+  - Amoxicillin for GAS pharyngitis
+  - Co-amoxiclav 7:1 for selected paediatric pathways
+  - Augmentin 228 mg/5 mL preset (200 mg amoxicillin + 28.5 mg clavulanate per 5 mL)
+  - Acyclovir for paediatric varicella
+  - Holliday-Segar maintenance fluid
+  - Maintenance + dehydration-deficit calculator
 - Optional mg/5 mL conversion using the exact bottle strength entered by the clinician.
 - Offline-capable static web app; no backend, no login and no patient data transmission.
 
@@ -36,7 +44,7 @@ This app is clinician decision support, not autonomous prescribing software. Bef
 
 Do **not** enter patient-identifiable information.
 
-Antibiotic dose tools are intentionally diagnosis-linked. The app does not provide a free-form antibiotic calculator. For co-amoxiclav, enter the **amoxicillin component** in mg/5 mL rather than the combined product total.
+Antibiotic dose tools are intentionally diagnosis-linked. The app does not provide a free-form antibiotic calculator. For generic co-amoxiclav, enter the **amoxicillin component** in mg/5 mL rather than the combined product total. The Augmentin 228 mg/5 mL calculator is preset internally to **200 mg amoxicillin + 28.5 mg clavulanate per 5 mL**.
 
 ## GitHub Pages
 Published from the `main` branch root. Expected URL:
