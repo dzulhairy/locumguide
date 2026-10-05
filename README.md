@@ -1,4 +1,4 @@
-# Locum Quick Guide MY — v2
+# Locum Quick Guide MY — v2.1
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
@@ -12,6 +12,13 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
   - Oseltamivir
   - IM adrenaline for anaphylaxis
   - High-dose amoxicillin for selected paediatric AOM/CAP regimens
+  - Co-amoxiclav 14:1 for selected paediatric pathways
+  - Azithromycin 5-day regimen
+  - Cefuroxime for selected paediatric AOM/rhinosinusitis
+  - Cephalexin for selected paediatric UTI/SSTI
+  - Prednisolone for acute paediatric asthma
+  - Nebulised salbutamol for acute paediatric asthma
+  - ORS Plan B volume for some dehydration
 - Optional mg/5 mL conversion using the exact bottle strength entered by the clinician.
 - Offline-capable static web app; no backend, no login and no patient data transmission.
 
@@ -29,7 +36,7 @@ This app is clinician decision support, not autonomous prescribing software. Bef
 
 Do **not** enter patient-identifiable information.
 
-Antibiotic dose tools are intentionally diagnosis-linked. The app does not provide a free-form antibiotic calculator.
+Antibiotic dose tools are intentionally diagnosis-linked. The app does not provide a free-form antibiotic calculator. For co-amoxiclav, enter the **amoxicillin component** in mg/5 mL rather than the combined product total.
 
 ## GitHub Pages
 Published from the `main` branch root. Expected URL:
