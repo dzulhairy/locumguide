@@ -1,0 +1,58 @@
+:root{
+  --bg:#f4f7f9;--card:#fff;--ink:#12212b;--muted:#5a6b76;--brand:#0b4f6c;
+  --brand2:#087e8b;--danger:#a61b1b;--dangerbg:#fff1f1;--amber:#8a5a00;
+  --amberbg:#fff8e6;--line:#dce5ea;--ok:#0c6b45;--shadow:0 8px 30px rgba(20,45,60,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.topbar{padding:24px max(18px,calc((100vw - 980px)/2));background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;display:flex;gap:24px;justify-content:space-between;align-items:flex-start}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700;opacity:.8;margin:0 0 4px}
+h1{font-size:clamp(1.75rem,4vw,2.6rem);line-height:1.05;margin:0}
+.subtitle{margin:8px 0 0;max-width:680px;opacity:.92}
+.review-badge{white-space:nowrap;font-size:.78rem;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.1)}
+.shell{max-width:980px;margin:0 auto;padding:18px}
+.warning{background:var(--amberbg);border-left:5px solid #d69e00;padding:13px 15px;border-radius:10px;margin-bottom:14px}
+.search-card,.case-card,.dose-panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.search-card{padding:16px;margin-bottom:14px}
+.search-card>label{font-weight:700}
+.search-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:7px}
+input{width:100%;border:1px solid #bfcbd2;border-radius:10px;padding:12px 13px;font-size:1rem;background:white}
+input:focus{outline:3px solid rgba(8,126,139,.16);border-color:var(--brand2)}
+button{border:0;border-radius:10px;padding:0 16px;font-weight:700;background:#e7eef2;color:var(--ink);cursor:pointer}
+.patient-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.patient-row label{font-size:.83rem;font-weight:700;color:var(--muted)}
+.patient-row input{margin-top:5px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.chip{border:1px solid var(--line);background:#f8fbfc;padding:7px 10px;border-radius:999px;font-size:.82rem;cursor:pointer}
+.chip:hover{border-color:var(--brand2)}
+.privacy-note{font-size:.78rem;color:var(--muted);margin:10px 0 0}
+.dose-panel{padding:14px 16px;margin-bottom:14px;border-left:5px solid var(--brand2)}
+.dose-panel h3{margin:0 0 8px}
+.hidden{display:none}
+.results{display:grid;gap:14px}
+.case-card{overflow:hidden}
+.case-head{padding:16px 17px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.case-head h2{margin:0;font-size:1.3rem}
+.case-head .category{font-size:.78rem;color:var(--muted);margin-top:2px}
+.evidence{font-size:.72rem;border-radius:999px;padding:5px 8px;background:#eef7f8;color:var(--brand);white-space:nowrap}
+.redflags{background:var(--dangerbg);border-left:5px solid var(--danger);padding:13px 16px}
+.redflags h3{color:var(--danger)}
+.case-body{padding:6px 16px 16px}
+.block{padding:10px 0;border-bottom:1px solid #edf2f4}
+.block:last-child{border-bottom:0}
+.block h3{font-size:.94rem;margin:0 0 5px;color:#263b48}
+ul{margin:5px 0 0;padding-left:20px}
+li{margin:3px 0}
+.med{background:#f4faf7;border:1px solid #d7ece0;border-radius:10px;padding:10px 12px;margin-top:7px}
+.med strong{color:var(--ok)}
+.source-list a{display:block;color:var(--brand);margin:4px 0;word-break:break-word}
+.small{font-size:.82rem;color:var(--muted)}
+.empty{background:white;border:1px dashed #b8c8d1;border-radius:14px;padding:22px;text-align:center;color:var(--muted)}
+footer{max-width:980px;margin:0 auto;padding:10px 18px 32px;color:var(--muted);font-size:.78rem}
+@media (max-width:640px){
+  .topbar{display:block;padding-top:20px}
+  .review-badge{display:inline-block;margin-top:12px}
+  .patient-row{grid-template-columns:1fr 1fr}
+  .case-head{display:block}
+  .evidence{display:inline-block;margin-top:8px}
+}
