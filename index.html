@@ -11,50 +11,91 @@
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Clinician quick reference</p>
+      <p class="eyebrow">Malaysia primary-care quick reference</p>
       <h1>Locum Quick Guide MY</h1>
-      <p class="subtitle">Search case → red flags → treatment → medication → prevention → referral.</p>
+      <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">Reviewed 5 Oct 2026</span>
+    <span class="review-badge">v2 · reviewed 5 Oct 2026</span>
   </header>
 
   <main class="shell">
     <section class="warning">
-      <strong>For healthcare professionals.</strong>
-      Use as a rapid reference only. Verify allergies, pregnancy, renal/hepatic function, interactions, contraindications, local formulary and current facility/MOH policy. Do not enter patient identifiers.
+      <strong>Clinician decision-support only.</strong>
+      Verify diagnosis, allergy, pregnancy, renal/hepatic function, interactions, contraindications, product strength, local formulary and current MOH/facility policy before prescribing. Do not enter patient-identifiable data.
     </section>
 
     <section class="search-card">
-      <label for="searchInput">Type diagnosis / symptom / medication</label>
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Case finder</p>
+          <h2>What are you treating?</h2>
+        </div>
+        <span id="topicCount" class="count-badge"></span>
+      </div>
+
       <div class="search-row">
         <input id="searchInput" type="search" autocomplete="off"
-          placeholder="e.g. influenza, sengatan lebah, kayap, denggi..." />
+          placeholder="e.g. tonsillitis, AOM, asthma, denggi, UTI, kayap..." />
         <button id="clearBtn" type="button">Clear</button>
       </div>
 
-      <div class="patient-row">
+      <div id="categoryFilters" class="chips category-chips" aria-label="Clinical categories"></div>
+      <div id="quickChips" class="chips" aria-label="Common cases"></div>
+      <p class="privacy-note">Everything runs in the browser. No patient data is sent to a server.</p>
+    </section>
+
+    <section class="tool-card">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Dose tools</p>
+          <h2>Selected paediatric / emergency calculators</h2>
+        </div>
+        <span class="safe-badge">diagnosis-linked</span>
+      </div>
+
+      <div class="tool-grid">
+        <label>
+          Calculator
+          <select id="doseToolSelect">
+            <option value="">Choose a calculator</option>
+            <option value="paracetamol">Paracetamol — child</option>
+            <option value="ibuprofen">Ibuprofen — child</option>
+            <option value="oseltamivir">Oseltamivir treatment</option>
+            <option value="adrenaline">IM adrenaline — anaphylaxis</option>
+            <option value="amoxicillin-high">High-dose amoxicillin — AOM/CAP</option>
+          </select>
+        </label>
         <label>
           Age (years)
-          <input id="ageInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="optional" />
+          <input id="ageInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 6 or 0.5" />
         </label>
         <label>
           Weight (kg)
-          <input id="weightInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="optional" />
+          <input id="weightInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 15" />
+        </label>
+        <label>
+          Liquid strength (mg / 5 mL)
+          <input id="concentrationInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="optional" />
         </label>
       </div>
-
-      <div id="quickChips" class="chips" aria-label="Common cases"></div>
-      <p class="privacy-note">No data is transmitted anywhere; the app runs locally in your browser.</p>
+      <div id="dosePanel" class="dose-panel hidden" aria-live="polite"></div>
+      <p class="small tool-note">Liquid conversion is shown only when you enter the exact product strength. Always re-check the bottle label.</p>
     </section>
 
-    <section id="dosePanel" class="dose-panel hidden" aria-live="polite"></section>
     <section id="results" class="results" aria-live="polite"></section>
   </main>
 
   <footer>
-    <p>Locum Quick Guide MY · clinician decision support · source links inside each topic.</p>
+    <p>Locum Quick Guide MY · static clinician reference · Malaysia-first sources · no patient-identifiable information.</p>
   </footer>
 
+  <script>window.LOCUM_CASES = [];</script>
+  <script src="cases-respiratory.js"></script>
+  <script src="cases-ent.js"></script>
+  <script src="cases-acute.js"></script>
+  <script src="cases-derm1.js"></script>
+  <script src="cases-derm2.js"></script>
+  <script src="cases-msk.js"></script>
   <script src="app.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
