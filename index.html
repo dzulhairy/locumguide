@@ -15,7 +15,7 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.1 · reviewed 5 Oct 2026</span>
+    <span class="review-badge">v2.2 · reviewed 5 Oct 2026</span>
   </header>
 
   <main class="shell">
@@ -64,12 +64,20 @@
             <option value="adrenaline">IM adrenaline — anaphylaxis</option>
             <option value="amoxicillin-high">High-dose amoxicillin — AOM/CAP</option>
             <option value="coamox14">Co-amoxiclav 14:1 — AOM/selected paediatric pathways</option>
+            <option value="augmentin228">Augmentin 228 mg/5 mL (200/28.5) — 7:1</option>
+            <option value="coamox7">Co-amoxiclav 7:1 — selected paediatric pathways</option>
+            <option value="amox-gas">Amoxicillin — GAS pharyngitis</option>
             <option value="azithro5">Azithromycin — 5-day paediatric regimen</option>
             <option value="cefuroxime">Cefuroxime — AOM/rhinosinusitis child</option>
             <option value="cephalexin">Cephalexin — paediatric UTI/SSTI</option>
+            <option value="nitrofurantoin-uti">Nitrofurantoin — paediatric lower UTI</option>
+            <option value="cloxacillin-ssti">Cloxacillin — mild paediatric SSTI</option>
+            <option value="acyclovir-varicella">Acyclovir — paediatric varicella</option>
             <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
             <option value="salbutamol-neb">Salbutamol nebuliser — acute paediatric asthma</option>
             <option value="ors-plan-b">ORS Plan B — some dehydration</option>
+            <option value="maintenance-fluid">Maintenance fluid — Holliday-Segar</option>
+            <option value="maintenance-deficit">Maintenance + dehydration deficit</option>
           </select>
         </label>
         <label>
@@ -84,9 +92,13 @@
           Liquid strength — active drug (mg / 5 mL)
           <input id="concentrationInput" type="number" min="0" step="0.1" inputmode="decimal" placeholder="optional" />
         </label>
+        <label>
+          Dehydration (%)
+          <input id="dehydrationInput" type="number" min="0" max="15" step="0.5" inputmode="decimal" placeholder="fluid deficit only" />
+        </label>
       </div>
       <div id="dosePanel" class="dose-panel hidden" aria-live="polite"></div>
-      <p class="small tool-note">Liquid conversion is shown only when you enter the exact active-drug strength. For co-amoxiclav, enter the amoxicillin component. Always re-check the bottle label.</p>
+      <p class="small tool-note">Liquid conversion is shown only when you enter the exact active-drug strength. For generic co-amoxiclav, enter the amoxicillin component. The Augmentin 228 calculator has its strength preset internally as 200 mg amoxicillin + 28.5 mg clavulanate per 5 mL. Always re-check the bottle label.</p>
     </section>
 
     <section id="results" class="results" aria-live="polite"></section>
