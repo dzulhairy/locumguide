@@ -7,7 +7,7 @@ const els = {
   search: document.getElementById("searchInput"), clear: document.getElementById("clearBtn"), results: document.getElementById("results"),
   chips: document.getElementById("quickChips"), categories: document.getElementById("categoryFilters"), count: document.getElementById("topicCount"),
   age: document.getElementById("ageInput"), weight: document.getElementById("weightInput"), concentration: document.getElementById("concentrationInput"),
-  doseSelect: document.getElementById("doseToolSelect"), dose: document.getElementById("dosePanel")
+  dehydration: document.getElementById("dehydrationInput"), doseSelect: document.getElementById("doseToolSelect"), dose: document.getElementById("dosePanel")
 };
 function norm(s){return (s||"").toLowerCase().trim();}
 function round(n,d=2){const p=10**d; return Math.round(n*p)/p;}
@@ -56,8 +56,8 @@ function renderQuick(){
 }
 function liquidText(mg,conc){if(!conc||conc<=0)return ""; return ` ≈ <strong>${round(mg*5/conc,2)} mL</strong> at ${conc} mg/5 mL`;}
 function doseTool(){
-  const tool=els.doseSelect.value, ageVal=parseFloat(els.age.value), weight=parseFloat(els.weight.value), conc=parseFloat(els.concentration.value);
-  const age=Number.isFinite(ageVal)?ageVal:null;
+  const tool=els.doseSelect.value, ageVal=parseFloat(els.age.value), weight=parseFloat(els.weight.value), conc=parseFloat(els.concentration.value), dehydrationVal=parseFloat(els.dehydration.value);
+  const age=Number.isFinite(ageVal)?ageVal:null, dehydration=Number.isFinite(dehydrationVal)?dehydrationVal:null;
   if(!tool){els.dose.classList.add("hidden");return;}
   if(!Number.isFinite(weight)||weight<=0){els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">Enter a valid weight in kg.</p>`;els.dose.classList.remove("hidden");return;}
   let answer="",note="",caution="";
@@ -103,6 +103,52 @@ function doseTool(){
     answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 12 hours.`;
     note="Malaysia NAG: cephalexin 25–50 mg/kg/day PO in 2 divided doses, max 2 g/day, for selected paediatric UTI/SSTI pathways.";
     caution="Select the exact dose and duration from the diagnosis-specific pathway; febrile/complicated UTI or severe SSTI needs separate assessment.";
+  } else if(tool==="augmentin228"){
+    if(age!==null && age<2/12){
+      answer="<strong>Do not calculate from this tool for age under 2 months.</strong>";
+      note="The Malaysian Augmentin 228/457 mg per 5 mL product information does not provide dosage recommendations for children under 2 months.";
+      caution="Use an age-appropriate neonatal/young-infant regimen and guideline.";
+    } else if(weight>40){
+      answer="<strong>Weight exceeds the paediatric product-information table range.</strong>";
+      note="Augmentin 228 mg/5 mL contains 200 mg amoxicillin + 28.5 mg clavulanate per 5 mL (7:1).";
+      caution="Review the adult/adolescent regimen rather than extrapolating this paediatric calculator.";
+    } else {
+      const nagLow=weight*40/2, nagHigh=weight*50/2;
+      const mlLow=nagLow*5/200, mlHigh=nagHigh*5/200;
+      const piMild=weight*25/2, piSerious=weight*45/2;
+      answer=`<strong>NAG 7:1 selected-pathway range:</strong> ${round(nagLow,1)}–${round(nagHigh,1)} mg amoxicillin component per dose = <strong>${round(mlLow,2)}–${round(mlHigh,2)} mL BD</strong> of Augmentin 228 mg/5 mL.`;
+      note=`This product is 200 mg amoxicillin + 28.5 mg clavulanate per 5 mL. Product PI usual total daily doses are 25/3.6 mg/kg/day for mild–moderate infection and 45/6.4 mg/kg/day for more serious infection, both divided BD (weight-based amoxicillin volumes here would be about ${round(piMild*5/200,2)} mL BD and ${round(piSerious*5/200,2)} mL BD respectively).`;
+      caution="Use the diagnosis-specific NAG pathway. Maximum amoxicillin/day differs by indication (for example AOM vs UTI/SSTI). Give at the start of a meal; avoid in significant beta-lactam allergy and review renal function.";
+    }
+  } else if(tool==="coamox7"){
+    const lowDaily=Math.min(weight*40,2000), highDaily=Math.min(weight*50,2000), low=lowDaily/2, high=highDaily/2;
+    answer=`7:1 formulation: <strong>${round(low,1)}–${round(high,1)} mg amoxicillin component per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg amoxicillin/5 mL`:""} every 12 hours.`;
+    note="Malaysia NAG: 40–50 mg/kg/day of the amoxicillin component in 2 divided doses for selected 7:1 paediatric pathways; this calculator applies a 2 g/day amoxicillin cap.";
+    caution="Some indications such as AOM use a different maximum and may favor 14:1 high-dose formulation. Confirm the formulation ratio, diagnosis and duration.";
+  } else if(tool==="amox-gas"){
+    const total=Math.min(weight*50,1000), bid=total/2;
+    answer=`GAS pharyngitis: <strong>${round(total,1)} mg once daily</strong>${liquidText(total,conc)} OR <strong>${round(bid,1)} mg twice daily</strong>${liquidText(bid,conc)} for 10 days.`;
+    note="Malaysia NAG: amoxicillin 50 mg/kg/day in 1 or 2 divided doses, max 1 g/day, total duration 10 days for GAS tonsillitis/pharyngitis.";
+    caution="Use only when bacterial/GAS pharyngitis is sufficiently likely or confirmed; most sore throats are viral.";
+  } else if(tool==="nitrofurantoin-uti"){
+    const sr=Math.min(weight*2,100), ir=Math.min(weight*1,100);
+    answer=`Paediatric lower UTI: sustained-release <strong>${round(sr,1)} mg q12h</strong>; immediate-release <strong>${round(ir,1)} mg q6h</strong>.`;
+    note="Malaysia NAG: SR 2 mg/kg/dose q12h or immediate-release 1 mg/kg/dose q6h, max 100 mg/dose; typical lower-UTI duration 3–5 days.";
+    caution="Not for febrile UTI/pyelonephritis. Verify formulation, age, renal function and swallowing suitability.";
+  } else if(tool==="cloxacillin-ssti"){
+    if(weight>=25){
+      answer="For a child ≥25 kg, the NAG mild-SSTI pathway uses the adult oral reference: <strong>500 mg every 6 hours</strong>.";
+    } else {
+      const low=weight*50/4, high=weight*100/4;
+      answer=`Child <25 kg: <strong>${round(low,1)}–${round(high,1)} mg per dose q6h</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""}.`;
+    }
+    note="Malaysia NAG: cloxacillin 50–100 mg/kg/day PO in 4 divided doses for selected mild paediatric cellulitis/abscess; doses are specified for children <25 kg, then adult dosing is used.";
+    caution="Abscess source control is central when indicated. Severe/systemic infection needs escalation and a different regimen.";
+  } else if(tool==="acyclovir-varicella"){
+    const mg=Math.min(weight*20,800);
+    answer=`Varicella treatment reference: <strong>${round(mg,1)} mg per dose four times daily for 5 days</strong>${liquidText(mg,conc)}.`;
+    note="Malaysian registered acyclovir product information: 20 mg/kg/dose QID for 5 days, maximum 800 mg per dose for paediatric varicella.";
+    caution="Routine acyclovir is not required for every uncomplicated healthy child with chickenpox. Use when clinically indicated and adjust for renal impairment; maintain hydration.";
   } else if(tool==="prednisolone-asthma"){
     let cap=null;
     if(age!==null){ if(age<2) cap=10; else if(age<6) cap=20; else if(age<12) cap=40; else cap=50; }
@@ -120,11 +166,35 @@ function doseTool(){
     answer=`Plan B ORS: <strong>${round(total,0)} mL over 4 hours</strong> (about <strong>${round(hourly,0)} mL/hour</strong> if evenly distributed).`;
     note="MOH Paediatric Protocols 5th ed.: for some dehydration, approximate ORS volume over the first 4 hours = weight (kg) × 75 mL, followed by reassessment.";
     caution="Shock/severe dehydration requires a different resuscitation pathway.";
+  } else if(tool==="maintenance-fluid"){
+    let daily;
+    if(weight<=10) daily=weight*100;
+    else if(weight<=20) daily=1000+(weight-10)*50;
+    else daily=1500+(weight-20)*20;
+    answer=`Holliday–Segar maintenance: <strong>${round(daily,0)} mL/24 h</strong> ≈ <strong>${round(daily/24,1)} mL/h</strong>.`;
+    note="MOH Paediatric Protocols: 100 mL/kg for the first 10 kg, 50 mL/kg for the next 10 kg, then 20 mL/kg for each kg above 20.";
+    caution="This estimates maintenance for a generally well child. Clinical states such as cardiac/renal disease, CNS disease, sepsis, bronchiolitis, DKA or electrolyte disorders may require restriction or a different fluid plan.";
+  } else if(tool==="maintenance-deficit"){
+    let daily;
+    if(weight<=10) daily=weight*100;
+    else if(weight<=20) daily=1000+(weight-10)*50;
+    else daily=1500+(weight-20)*20;
+    if(dehydration===null || dehydration<=0){
+      answer=`Maintenance: <strong>${round(daily,0)} mL/24 h</strong> ≈ <strong>${round(daily/24,1)} mL/h</strong>. Enter dehydration % to calculate deficit.`;
+      note="Deficit (mL) = dehydration fraction × weight (kg) × 1000.";
+      caution="Do not use a calculated deficit alone to manage shock or severe dehydration.";
+    } else {
+      const deficit=dehydration/100*weight*1000;
+      const combined=daily+deficit;
+      answer=`Maintenance <strong>${round(daily,0)} mL/24 h</strong> + estimated ${round(dehydration,1)}% deficit <strong>${round(deficit,0)} mL</strong> = <strong>${round(combined,0)} mL</strong> before ongoing losses, if the deficit were replaced over 24 h.`;
+      note=`Illustrative 24-h average: ${round(combined/24,1)} mL/h. MOH Paediatric Protocols notes that the actual deficit replacement period depends on the condition and ongoing reassessment.`;
+      caution="Shock requires immediate resuscitation first. Hypernatraemia, DKA, meningitis and other special states need slower/specific correction; replace ongoing losses separately.";
+    }
   }
   els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">${answer}</p><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
 els.search.addEventListener("input",render);
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});
-[els.age,els.weight,els.concentration].forEach(el=>el.addEventListener("input",doseTool));
+[els.age,els.weight,els.concentration,els.dehydration].forEach(el=>el.addEventListener("input",doseTool));
 els.doseSelect.addEventListener("change",doseTool);
 renderCategories();renderQuick();render();doseTool();
