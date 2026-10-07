@@ -2,7 +2,7 @@ const reviewed = "5 October 2026";
 const categories = ["All","Respiratory","ENT","Dermatology","Paediatrics","GI","GU","MSK","Emergency"];
 let activeCategory = "All";
 const cases = window.LOCUM_CASES || [];
-const quickIds = ["influenza","aom","asthma-exacerbation","gastroenteritis","uti","dengue","anaphylaxis","rash-triage"];
+const quickIds = ["aeba-paediatric","influenza","aom","asthma-exacerbation","gastroenteritis","uti","dengue","anaphylaxis","rash-triage"];
 const els = {
   search: document.getElementById("searchInput"), clear: document.getElementById("clearBtn"), results: document.getElementById("results"),
   chips: document.getElementById("quickChips"), categories: document.getElementById("categoryFilters"), count: document.getElementById("topicCount"),
@@ -149,13 +149,64 @@ function doseTool(){
     answer=`Varicella treatment reference: <strong>${round(mg,1)} mg per dose four times daily for 5 days</strong>${liquidText(mg,conc)}.`;
     note="Malaysian registered acyclovir product information: 20 mg/kg/dose QID for 5 days, maximum 800 mg per dose for paediatric varicella.";
     caution="Routine acyclovir is not required for every uncomplicated healthy child with chickenpox. Use when clinically indicated and adjust for renal impairment; maintain hydration.";
+  } else if(tool==="aeba-bundle"){
+    const salbWeight=Math.min(weight*0.15,5);
+    const salbBand=age===null?null:(age<=5?2.5:5);
+    const mdi=age===null?"Enter age for MDI age-band dose.":(age<=6?"4–6 puffs via spacer":"8–10 puffs via spacer");
+    const iprat=age===null?"Enter age for ipratropium age-band dose.":(age<6?"125–250 mcg nebulised":"250–500 mcg nebulised");
+    let predCap=null, predCapText="Enter age for age-specific prednisolone maximum.";
+    if(age!==null){
+      if(age<2){predCap=10;predCapText="max 10 mg/day (<2 y)";}
+      else if(age<6){predCap=20;predCapText="max 20 mg/day (2–5 y)";}
+      else if(age<12){predCap=40;predCapText="age-specific max 30–40 mg/day (6–11 y)";}
+      else {predCap=50;predCapText="age-specific max 40–50 mg/day (≥12 y)";}
+    }
+    const predLow=predCap===null?weight:Math.min(weight,predCap), predHigh=predCap===null?weight*2:Math.min(weight*2,predCap);
+    const hydLow=Math.min(weight*4,100), hydHigh=Math.min(weight*5,100);
+    const mgso4=weight*50, mgso4ml=weight*0.1;
+    answer=`<strong>AEBA quick-dose bundle</strong>
+      <ul>
+        <li><strong>Salbutamol MDI + spacer:</strong> ${mdi}; may repeat q20 min ×3 in the first hour.</li>
+        <li><strong>Salbutamol neb:</strong> 0.15 mg/kg = ${round(salbWeight,2)} mg (max 5 mg)${salbBand!==null?`; protocol age-band ${salbBand} mg`:""}. If 5 mg/mL solution, ${round(salbWeight/5,2)} mL by weight.</li>
+        <li><strong>Ipratropium neb (severe):</strong> ${iprat}; q20 min ×3 in first hour.</li>
+        <li><strong>Prednisolone PO:</strong> ${round(predLow,1)}–${round(predHigh,1)} mg/day (1–2 mg/kg/day; ${predCapText}).</li>
+        <li><strong>Hydrocortisone IV:</strong> ${round(hydLow,1)}–${round(hydHigh,1)} mg/dose q6h (4–5 mg/kg/dose; max 100 mg).</li>
+        <li><strong>MgSO₄ 50% IV:</strong> ${round(mgso4,0)} mg = ${round(mgso4ml,2)} mL over 20 min (50 mg/kg).</li>
+        <li><strong>Budesonide neb adjunct:</strong> 0.5 mg/dose ×3 within first hour in severe/life-threatening AEBA; max 2 mg/day.</li>
+      </ul>`;
+    note="MOH/MPA Paediatric Protocols 5th ed. Use pMDI + spacer preferentially in mild–moderate AEBA; oxygen-driven nebulisation + ipratropium is used in severe/life-threatening AEBA. Give systemic corticosteroid early.";
+    caution="This bundle does not replace severity assessment. Oxygen if SpO₂ <94%, target 94–98%. Life-threatening signs or failure to improve require immediate ED/PICU-level escalation.";
+  } else if(tool==="hydrocortisone-iv-asthma"){
+    const low=Math.min(weight*4,100), high=Math.min(weight*5,100);
+    answer=`Hydrocortisone IV: <strong>${round(low,1)}–${round(high,1)} mg per dose every 6 hours</strong> (4–5 mg/kg/dose; max 100 mg/dose).`;
+    note="MOH/MPA Paediatric Protocols 5th ed.: IV corticosteroid is indicated when the child is vomiting/unable to tolerate oral therapy or has severe/life-threatening AEBA.";
+    caution="Oral and IV systemic corticosteroids have similar efficacy when oral medication can be tolerated; oral route is preferred when appropriate.";
+  } else if(tool==="ipratropium-neb-asthma"){
+    const dose=age===null?"Enter age to select dose.":(age<6?"125–250 mcg":"250–500 mcg");
+    answer=`Ipratropium nebuliser: <strong>${dose}</strong>. In severe AEBA, may administer every 20 minutes ×3 in the first hour.`;
+    note="Frequent ipratropium with SABA may continue for up to the second hour in severe attacks, then should be spaced to q4–6h or discontinued according to response.";
+    caution="Ipratropium is an add-on to SABA in severe/life-threatening AEBA, not a substitute for salbutamol.";
+  } else if(tool==="magnesium-iv-asthma"){
+    const mg=weight*50, ml=weight*0.1;
+    answer=`Magnesium sulphate 50%: <strong>${round(mg,0)} mg = ${round(ml,2)} mL IV over 20 minutes</strong> (50 mg/kg).`;
+    note="MOH/MPA Paediatric Protocols 5th ed.: IV MgSO₄ is an adjunct/second-line option for severe or life-threatening AEBA not responding adequately to first-line inhaled therapy.";
+    caution="Monitor blood pressure and cardiorespiratory status; verify local unit maximum/policy in larger adolescents.";
+  } else if(tool==="budesonide-neb-asthma"){
+    answer="<strong>Budesonide nebulised 0.5 mg/dose ×3 doses within the first hour</strong>; maximum total daily dose 2 mg.";
+    note="MOH/MPA Paediatric Protocols 5th ed.: may be mixed with SABA/SAMA and considered in severe/life-threatening AEBA.";
+    caution="Nebulised budesonide is an adjunct; it does not replace systemic corticosteroid in severe/life-threatening AEBA.";
   } else if(tool==="prednisolone-asthma"){
-    let cap=null;
-    if(age!==null){ if(age<2) cap=10; else if(age<6) cap=20; else if(age<12) cap=40; else cap=50; }
+    let cap=null, capText="Enter age to apply the age-specific maximum.";
+    if(age!==null){ 
+      if(age<2){cap=10;capText="max 10 mg/day (<2 years)";}
+      else if(age<6){cap=20;capText="max 20 mg/day (2–5 years)";}
+      else if(age<12){cap=40;capText="age-specific maximum 30–40 mg/day (6–11 years)";}
+      else {cap=50;capText="age-specific maximum 40–50 mg/day (≥12 years)";}
+    }
     const low=cap===null?weight:Math.min(weight,cap), high=cap===null?weight*2:Math.min(weight*2,cap);
-    answer=`Acute asthma reference: <strong>${round(low,1)}–${round(high,1)} mg/day</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL/day at ${conc} mg/5 mL`:""}.`;
-    note="MOH Paediatric Protocols 5th ed.: prednisolone 1–2 mg/kg/day for 3–7 days, with age-specific maximum daily doses.";
-    caution=age===null?"Enter age to apply the protocol age-specific maximum.":"Use within the acute asthma severity pathway; systemic steroid dosing is indication-specific.";
+    answer=`Acute asthma: <strong>${round(low,1)}–${round(high,1)} mg/day</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL/day at ${conc} mg/5 mL`:""} (${capText}).`;
+    note="MOH/MPA Paediatric Protocols 5th ed.: prednisolone 1–2 mg/kg/day; usually 3–5 days in children and 5–7 days in adolescents ≥12 years. Weaning is unnecessary unless systemic steroid exceeds 14 days.";
+    caution="Give systemic corticosteroid early in AEBA. Use IV hydrocortisone if vomiting/unable to tolerate PO or in severe/life-threatening exacerbation.";
   } else if(tool==="salbutamol-neb"){
     const mg=Math.min(weight*0.15,5), band=age===null?"Enter age for the protocol age-band reference.":(age<=5?"Age-band reference: 2.5 mg/dose for age ≤5 years.":"Age-band reference: 5 mg/dose for age >5 years.");
     answer=`Weight-based reference: <strong>${round(mg,2)} mg/dose</strong>. If using 5 mg/mL solution: <strong>${round(mg/5,2)} mL</strong>. ${band}`;
