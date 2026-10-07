@@ -15,7 +15,7 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.3 · Dermato guide added 7 Oct 2026</span>
+    <span class="review-badge">v2.4 · Paediatric AEBA added 7 Oct 2026</span>
   </header>
 
   <main class="shell">
@@ -73,8 +73,13 @@
             <option value="nitrofurantoin-uti">Nitrofurantoin — paediatric lower UTI</option>
             <option value="cloxacillin-ssti">Cloxacillin — mild paediatric SSTI</option>
             <option value="acyclovir-varicella">Acyclovir — paediatric varicella</option>
+            <option value="aeba-bundle">AEBA paediatric — full emergency dose bundle</option>
             <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
+            <option value="hydrocortisone-iv-asthma">Hydrocortisone IV — severe AEBA</option>
             <option value="salbutamol-neb">Salbutamol nebuliser — acute paediatric asthma</option>
+            <option value="ipratropium-neb-asthma">Ipratropium nebuliser — severe AEBA</option>
+            <option value="magnesium-iv-asthma">Magnesium sulphate IV — severe AEBA</option>
+            <option value="budesonide-neb-asthma">Budesonide nebuliser — severe AEBA adjunct</option>
             <option value="ors-plan-b">ORS Plan B — some dehydration</option>
             <option value="maintenance-fluid">Maintenance fluid — Holliday-Segar</option>
             <option value="maintenance-deficit">Maintenance + dehydration deficit</option>
@@ -154,6 +159,7 @@
 
   <script>window.LOCUM_CASES = [];</script>
   <script src="cases-respiratory.js"></script>
+  <script src="cases-paeds-asthma.js"></script>
   <script src="cases-ent.js"></script>
   <script src="cases-acute.js"></script>
   <script src="cases-derm1.js"></script>
