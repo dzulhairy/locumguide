@@ -1,8 +1,8 @@
-# Locum Quick Guide MY — v2.2
+# Locum Quick Guide MY — v2.3
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
-## Version 2.2 features
+## Version 2.3 features
 - Search by diagnosis, symptom, Malay/English synonym or medicine.
 - Category filters: Respiratory, ENT, Dermatology, Paediatrics, GI, GU, MSK and Emergency.
 - 20+ quick-reference topics with **red flags first**, then assessment, treatment, medication, prevention and referral triggers.
@@ -28,6 +28,12 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
   - Holliday-Segar maintenance fluid
   - Maintenance + dehydration-deficit calculator
 - Optional mg/5 mL conversion using the exact bottle strength entered by the clinician.
+- Dermatology quick guide for adult and paediatric patients:
+  - case → suggested topical treatment
+  - topical corticosteroid potency reference
+  - face/flexure/child-specific cautions
+  - explicit "avoid steroid" guidance for tinea, scabies primary treatment, infected skin, acne/rosacea/perioral dermatitis
+  - examples include hydrocortisone 1%, lower-strength betamethasone valerate, betamethasone valerate 0.1%, mometasone 0.1% and clobetasol 0.05%.
 - Offline-capable static web app; no backend, no login and no patient data transmission.
 
 ## Evidence approach
@@ -37,7 +43,7 @@ Priority is given to:
 3. Formulari Ubat KKM (FUKKM).
 4. Major current professional guidance where a Malaysian source is unavailable.
 
-Every case links to its source guideline. Clinical content last reviewed: **5 October 2026**.
+Every case links to its source guideline. Core clinical content last reviewed: **5 October 2026**. Dermatology module added/reviewed: **7 October 2026**.
 
 ## Safety
 This app is clinician decision support, not autonomous prescribing software. Before prescribing, verify diagnosis, allergy, pregnancy, renal/hepatic function, interactions, contraindications, product strength, local formulary and current MOH/facility policy.
@@ -49,7 +55,7 @@ Antibiotic dose tools are intentionally diagnosis-linked. The app does not provi
 ## GitHub Pages
 Published from the `main` branch root. Expected URL:
 
-`https://dzulhairy.github.io/research_progress1/`
+`https://dzulhairy.github.io/locumguide/`
 
 ## Development
 Pure HTML/CSS/JavaScript with no external dependencies.
