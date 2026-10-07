@@ -1,8 +1,8 @@
-# Locum Quick Guide MY — v2.3
+# Locum Quick Guide MY — v2.4
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
-## Version 2.3 features
+## Version 2.4 features
 - Search by diagnosis, symptom, Malay/English synonym or medicine.
 - Category filters: Respiratory, ENT, Dermatology, Paediatrics, GI, GU, MSK and Emergency.
 - 20+ quick-reference topics with **red flags first**, then assessment, treatment, medication, prevention and referral triggers.
@@ -28,6 +28,16 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
   - Holliday-Segar maintenance fluid
   - Maintenance + dehydration-deficit calculator
 - Optional mg/5 mL conversion using the exact bottle strength entered by the clinician.
+- Full paediatric AEBA (acute exacerbation of bronchial asthma) module based on MOH/MPA Paediatric Protocols 5th Edition:
+  - PAS severity (mild / moderate / severe) and life-threatening features
+  - pMDI + spacer versus nebulised salbutamol pathways
+  - oxygen target 94–98%
+  - ipratropium for severe attacks
+  - early oral prednisolone
+  - IV hydrocortisone when PO is not tolerated or in severe/life-threatening AEBA
+  - IV magnesium sulphate and nebulised budesonide adjuncts
+  - admission / escalation criteria
+  - AEBA emergency dose bundle plus individual calculators
 - Dermatology quick guide for adult and paediatric patients:
   - case → suggested topical treatment
   - topical corticosteroid potency reference
@@ -43,7 +53,7 @@ Priority is given to:
 3. Formulari Ubat KKM (FUKKM).
 4. Major current professional guidance where a Malaysian source is unavailable.
 
-Every case links to its source guideline. Core clinical content last reviewed: **5 October 2026**. Dermatology module added/reviewed: **7 October 2026**.
+Every case links to its source guideline. Core clinical content last reviewed: **5 October 2026**. Dermatology and paediatric AEBA modules added/reviewed: **7 October 2026**.
 
 ## Safety
 This app is clinician decision support, not autonomous prescribing software. Before prescribing, verify diagnosis, allergy, pregnancy, renal/hepatic function, interactions, contraindications, product strength, local formulary and current MOH/facility policy.
