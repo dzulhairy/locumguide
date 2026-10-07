@@ -15,7 +15,7 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.2 · reviewed 5 Oct 2026</span>
+    <span class="review-badge">v2.3 · Dermato guide added 7 Oct 2026</span>
   </header>
 
   <main class="shell">
@@ -101,6 +101,50 @@
       <p class="small tool-note">Liquid conversion is shown only when you enter the exact active-drug strength. For generic co-amoxiclav, enter the amoxicillin component. The Augmentin 228 calculator has its strength preset internally as 200 mg amoxicillin + 28.5 mg clavulanate per 5 mL. Always re-check the bottle label.</p>
     </section>
 
+    <section class="tool-card">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Dermatology quick guide</p>
+          <h2>Case → suggested cream / topical treatment</h2>
+        </div>
+        <span class="safe-badge">adult + paeds</span>
+      </div>
+
+      <div class="derm-grid">
+        <label>
+          Patient group
+          <select id="dermAgeGroup">
+            <option value="adult">Adult</option>
+            <option value="child">Paediatric</option>
+          </select>
+        </label>
+        <label>
+          Dermatology case
+          <select id="dermCaseSelect">
+            <option value="">Loading cases…</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="dermAdvice" class="dose-panel hidden" aria-live="polite"></div>
+
+      <div class="block">
+        <h3>Topical corticosteroid potency quick reference</h3>
+        <p class="small"><strong>Important:</strong> steroid potency is determined by the exact drug, strength and formulation. A larger percentage does not automatically mean a stronger steroid.</p>
+        <div id="steroidPotencyTable"></div>
+      </div>
+
+      <div class="source-list derm-sources">
+        <h3>Dermatology sources</h3>
+        <a href="https://pharmacy.moh.gov.my/en/apps/fukkm?generic=hydrocortisone+1%25+cream" target="_blank" rel="noopener noreferrer">FUKKM — Hydrocortisone 1% cream</a>
+        <a href="https://pharmacy.moh.gov.my/en/apps/fukkm?category=&generic=&indications=&page=6" target="_blank" rel="noopener noreferrer">FUKKM — Betamethasone valerate preparations</a>
+        <a href="https://pharmacy.moh.gov.my/en/apps/fukkm/1000?page=35" target="_blank" rel="noopener noreferrer">FUKKM — Mometasone furoate 0.1%</a>
+        <a href="https://pharmacy.moh.gov.my/en/apps/fukkm?page=12" target="_blank" rel="noopener noreferrer">FUKKM — Clobetasol propionate 0.05%</a>
+        <a href="https://www.nice.org.uk/guidance/cg57/chapter/Recommendations" target="_blank" rel="noopener noreferrer">NICE — Atopic eczema in under 12s</a>
+        <p class="small">Dermatology module reviewed 7 October 2026. Use local formulary/product availability and review diagnosis if treatment response is atypical.</p>
+      </div>
+    </section>
+
     <section id="results" class="results" aria-live="polite"></section>
   </main>
 
@@ -116,6 +160,7 @@
   <script src="cases-derm2.js"></script>
   <script src="cases-msk.js"></script>
   <script src="app.js"></script>
+  <script src="derm-guide.js"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
