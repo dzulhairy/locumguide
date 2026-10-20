@@ -69,3 +69,12 @@ Published from the `main` branch root. Expected URL:
 
 ## Development
 Pure HTML/CSS/JavaScript with no external dependencies.
+
+
+## Public health module: ACD Scabies
+
+The mobile-friendly field kit for Malaysia public-health teams is in [`scabies-acd/index.html`](scabies-acd/index.html).
+
+Expected GitHub Pages address: https://dzulhairy.github.io/locumguide/scabies-acd/
+
+It includes an interactive ACD checklist, IACS 2020 case definitions, close-contact management, aggregate-only coverage metrics and a copyable ACD situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
