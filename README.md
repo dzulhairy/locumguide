@@ -71,10 +71,26 @@ Published from the `main` branch root. Expected URL:
 Pure HTML/CSS/JavaScript with no external dependencies.
 
 
-## Public health module: ACD Scabies — CDC, PKD Besut
+## Public health module: ACD Scabies v2.0 — CDC, PKD Besut
 
 The mobile-friendly field kit for all CDC staff at Pejabat Kesihatan Daerah Besut is in [`scabies-acd/index.html`](scabies-acd/index.html).
 
 Expected GitHub Pages address: https://dzulhairy.github.io/locumguide/scabies-acd/
 
-It includes an interactive ACD checklist, IACS 2020 case definitions, close-contact management, aggregate-only coverage metrics and a copyable ACD situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
+V2.0 includes:
+- ACD workflow by CDC/PKD role and interactive field checklist.
+- IACS 2020 clinician decision aid (NOT an automatic diagnosis).
+- Aggregate-only unit summaries, contact assessment and treatment gaps; CSV import/export.
+- Daily aggregated symptom-onset epidemic curve and onset quality checks.
+- Week 2/week 4 follow-up, unresolved action flags, printable/downloadable draft situation report.
+- Client-side input validation; no database, network sync, user account or patient identifiers.
+
+**CSV data dictionary (unit summary):**
+`unit,population,screened,confirmed,clinical,suspected,cases_treated,contacts,contacts_assessed,contacts_treated,new_cases_week2,new_cases_week4`.
+Unit populations should be mutually exclusive, and contacts should be deduplicated across units. Cases and contacts for coverage calculations must be disjoint to prevent double-counting. IACS A/B/C are exclusive highest-certainty diagnoses. Only use anonymized aggregate input, never identifiable individual line listings.
+
+**Daily onset:** `date,cases` with ISO dates. Compare its case total against the unit summary for the same period, allowing documented missing onset where necessary.
+
+**Operational status:** This is a field-support and supervisory-review draft, NOT an MOH-endorsed app, a patient record system, or a substitute for PKD/JKN outbreak-control rules. The static GitHub Pages site stores operational inputs only in the currently open browser tab. Changes and reports are not synced, backed up, or saved automatically. Sample data are synthetic and must never be used as real reports.
+
+Original functionality: interactive ACD checklist, IACS 2020 criteria, and a copyable aggregate situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
