@@ -71,9 +71,9 @@ Published from the `main` branch root. Expected URL:
 Pure HTML/CSS/JavaScript with no external dependencies.
 
 
-## Public health module: ACD Scabies
+## Public health module: ACD Scabies — CDC, PKD Besut
 
-The mobile-friendly field kit for Malaysia public-health teams is in [`scabies-acd/index.html`](scabies-acd/index.html).
+The mobile-friendly field kit for all CDC staff at Pejabat Kesihatan Daerah Besut is in [`scabies-acd/index.html`](scabies-acd/index.html).
 
 Expected GitHub Pages address: https://dzulhairy.github.io/locumguide/scabies-acd/
 
