@@ -51,7 +51,7 @@
   by("ringkasan").insertAdjacentHTML("afterend",reportBlock);
   const unitFields=["name","pop","screen","a","b","c","ct","contact","ca","cr","w2","w4"];
   const csvCols=["unit","population","screened","confirmed","clinical","suspected","cases_treated","contacts","contacts_assessed","contacts_treated","new_cases_week2","new_cases_week4"];
-  const units=[];let daily=[];let isDemo=false;
+  const units=[];let daily=[];let unitDemo=false;let onsetDemo=false;
   const val=id=>by("v2-"+id).value.trim();
   const count=raw=>{if(!/^(0|[1-9][0-9]*)$/.test(String(raw)))return null;const x=Number(raw);return Number.isSafeInteger(x)&&x<=100000000?x:null;};
   const percent=(n,d)=>d>0?(100*n/d).toFixed(1)+"%":"—";
@@ -123,7 +123,7 @@
     if(e){error("v2-unit-error",e);return;}
     if(units.some(u=>u.name.toLowerCase()===x.name.toLowerCase())){error("v2-unit-error","Nama unit berganda. Hapus unit lama sebelum menggantikan.");return;}
     if(units.length>=150){error("v2-unit-error","Had maksimum 150 unit bagi penggunaan responsif.");return;}
-    units.push(x);isDemo=false;error("v2-unit-error","");
+    units.push(x);unitDemo=false;error("v2-unit-error","");
     unitFields.forEach(k=>by("v2-"+k).value="");renderUnits();
   });
   const synthetic=[
@@ -133,11 +133,11 @@
   ];
   by("v2-demo").addEventListener("click",()=>{
     if(units.length&&!confirm("Gantikan semua data unit semasa dengan contoh sintetik?"))return;
-    units.splice(0,units.length,...synthetic.map(x=>({...x})));isDemo=true;error("v2-unit-error","");renderUnits();
+    units.splice(0,units.length,...synthetic.map(x=>({...x})));unitDemo=true;error("v2-unit-error","");renderUnits();
   });
   by("v2-clear").addEventListener("click",()=>{
     if(units.length&&!confirm("Kosongkan semua data unit dalam tab ini?"))return;
-    units.length=0;isDemo=false;renderUnits();
+    units.length=0;unitDemo=false;renderUnits();
   });
   function asCsvCell(s){const t=String(s);return /[,"\r\n]/.test(t)?'"'+t.replace(/"/g,'""')+'"':t;}
   function download(text,filename,mime){
@@ -182,7 +182,7 @@
       if(file.size>100000)throw Error("Had fail 100 KB.");
       const data=importUnits(await file.text());
       if(!confirm("Import "+data.length+" unit agregat? Ini menggantikan semua baris unit semasa."))return;
-      units.splice(0,units.length,...data);isDemo=false;error("v2-unit-error","");renderUnits();
+      units.splice(0,units.length,...data);unitDemo=false;error("v2-unit-error","");renderUnits();
     }catch(err){error("v2-unit-error",err.message)}finally{e.target.value="";}
   });
   by("v2-sync").addEventListener("click",()=>{
@@ -251,24 +251,24 @@
     chartEpi();updateReport();
   }
   by("v2-epi-draw").addEventListener("click",()=>{
-    try{const rows=readDailyCsv(by("v2-onset-text").value);daily.splice(0,daily.length,...rows);error("v2-epi-error","");updateDaily();}catch(e){error("v2-epi-error",e.message);}
+    try{const rows=readDailyCsv(by("v2-onset-text").value);daily.splice(0,daily.length,...rows);onsetDemo=false;error("v2-epi-error","");updateDaily();}catch(e){error("v2-epi-error",e.message);}
   });
   by("v2-epi-demo").addEventListener("click",()=>{
     if(daily.length&&!confirm("Gantikan data onset dengan contoh sintetik?"))return;
     by("v2-onset-text").value="date,cases\n2026-10-01,1\n2026-10-02,2\n2026-10-03,4\n2026-10-04,2\n2026-10-05,3\n2026-10-06,1\n2026-10-07,0\n2026-10-08,1";
-    daily=readDailyCsv(by("v2-onset-text").value);isDemo=true;updateDaily();
+    daily=readDailyCsv(by("v2-onset-text").value);onsetDemo=true;updateDaily();
   });
   by("v2-epi-template").addEventListener("click",()=>download("\ufeffdate,cases\n","template_tarikh_onset_agregat.csv","text/csv;charset=utf-8"));
   by("v2-epi-clear").addEventListener("click",()=>{
     if(daily.length&&!confirm("Kosongkan data onset?"))return;
-    daily=[];by("v2-onset-text").value="";error("v2-epi-error","");updateDaily();
+    daily=[];onsetDemo=false;by("v2-onset-text").value="";error("v2-epi-error","");updateDaily();
   });
   by("v2-epi-file").addEventListener("change",async e=>{
     const f=e.target.files&&e.target.files[0];if(!f)return;
     try{if(f.size>40000)throw Error("Fail terlalu besar (maksimum 40 KB).");
       const input=await f.text();const rows=readDailyCsv(input);
       if(!confirm("Import "+rows.length+" tarikh agregat? Ini menggantikan data onset semasa."))return;
-      daily=rows;by("v2-onset-text").value=input;error("v2-epi-error","");updateDaily();
+      daily=rows;onsetDemo=false;by("v2-onset-text").value=input;error("v2-epi-error","");updateDaily();
     }catch(err){error("v2-epi-error",err.message)}finally{e.target.value="";}
   });
   function action(msg,urgent){
@@ -293,7 +293,7 @@
   function reportText(){
     const t=totals(),s=[],tCases=t?t.a+t.b+t.c:0;
     s.push("LAPORAN SITUASI ACD SCABIES — CDC, PKD BESUT | v2.0","STATUS: DRAF / SEMAKAN PENYELIA");
-    if(isDemo)s.push("*** DATA CONTOH SINTETIK — JANGAN GUNA SEBAGAI LAPORAN SEBENAR ***");
+    if(unitDemo||onsetDemo)s.push("*** DATA CONTOH SINTETIK — JANGAN GUNA SEBAGAI LAPORAN SEBENAR ***");
     s.push("Tarikh rawatan awal: "+(by("firstDate").value||"Belum diisi"));
     s.push("Jenis lokaliti: "+by("siteType").value,"");
     s.push("1. CHECKLIST & SKOP","Checklist: "+by("taskProgress").textContent);
