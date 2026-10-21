@@ -96,10 +96,6 @@ Unit populations should be mutually exclusive, and contacts should be deduplicat
 Original functionality: interactive ACD checklist, IACS 2020 criteria, and a copyable aggregate situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
 
 
-### Linked Google Form (external)
+### CDC-owned Google Form (pending)
 
-The CDC, PKD Besut field module links to the user-supplied Google Form:
-
-https://docs.google.com/forms/d/e/1FAIpQLSe0JP7TxQtJrMn7UJxJ3htBCS6snrx4UU6v9zW17gg2OrCv4A/viewform?pli=1
-
-The link opens in a new tab; this integration is navigation only. **There is no automatic submission, response import, or live synchronization** between Google Forms and the GitHub Pages dashboard. Access rights and handling of any patient or contact information in the Google Form must be reviewed by the PKD before operational use. No form data is stored in this public GitHub repository.
+The previous external Google Form link was disabled because the form is owned by another account. The CDC-owned replacement has not yet been created. The current Google Sheets template is not itself a Form. Do not direct CDC staff to submit identifiable data to an unverified form.
