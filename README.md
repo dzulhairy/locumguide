@@ -94,3 +94,12 @@ Unit populations should be mutually exclusive, and contacts should be deduplicat
 **Operational status:** This is a field-support and supervisory-review draft, NOT an MOH-endorsed app, a patient record system, or a substitute for PKD/JKN outbreak-control rules. The static GitHub Pages site stores operational inputs only in the currently open browser tab. Changes and reports are not synced, backed up, or saved automatically. Sample data are synthetic and must never be used as real reports.
 
 Original functionality: interactive ACD checklist, IACS 2020 criteria, and a copyable aggregate situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
+
+
+### Linked Google Form (external)
+
+The CDC, PKD Besut field module links to the user-supplied Google Form:
+
+https://docs.google.com/forms/d/e/1FAIpQLSe0JP7TxQtJrMn7UJxJ3htBCS6snrx4UU6v9zW17gg2OrCv4A/viewform?pli=1
+
+The link opens in a new tab; this integration is navigation only. **There is no automatic submission, response import, or live synchronization** between Google Forms and the GitHub Pages dashboard. Access rights and handling of any patient or contact information in the Google Form must be reviewed by the PKD before operational use. No form data is stored in this public GitHub repository.
