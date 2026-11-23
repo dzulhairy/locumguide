@@ -110,4 +110,8 @@ patch("otomycosis", c => {
     "If tympanic membrane perforation/grommet is present or cannot be excluded, verify product suitability first."];
   addSrc(c, A10);
 });
+// Extra system tags so child topics appear under their organ system (23 Nov 2026).
+[["febrile-seizure","Neurology"],["dengue-paeds","Infection"],["dengue","Infection"],["hfmd","Infection"],["varicella","Infection"],["influenza","Infection"],["otorrhoea-child","Paediatrics"]].forEach(([id,tag])=>{
+  const c=(window.LOCUM_CASES||[]).find(x=>x.id===id); if(c && c.category!==tag && !(c.tags||[]).includes(tag)) c.tags=[...(c.tags||[]),tag];
+});
 })();

@@ -65,7 +65,7 @@ let favs=loadList("lqg-fav"), recents=loadList("lqg-recent");
 function toggleFav(id){favs=favs.includes(id)?favs.filter(x=>x!==id):[id,...favs];saveList("lqg-fav",favs);renderPersonal();
   document.querySelectorAll(`.star[data-id="${id}"]`).forEach(b=>{const on=favs.includes(id);b.classList.toggle("on",on);b.textContent=on?"★":"☆";b.setAttribute("aria-label",t(on?"unstar":"star"));b.setAttribute("aria-pressed",String(on));});}
 function addRecent(id){recents=[id,...recents.filter(x=>x!==id)].slice(0,6);saveList("lqg-recent",recents);renderPersonal();}
-function showCase(c){activeCategory="All";renderCategories();els.search.value=c.title;render();addRecent(c.id);document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});}
+function showCase(c){openCase(c.id);}
 function chipFor(c){const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=c.title;b.onclick=()=>showCase(c);return b;}
 function renderPersonal(){
   [["favRow","favChips",favs],["recentRow","recentChips",recents]].forEach(([row,box,list])=>{
@@ -101,6 +101,28 @@ function card(c){
     </div>
   </article>`;
 }
+// Age group per topic: A = adult, C = child, B = both (shown in both lists).
+const AGE={
+  "asthma-exacerbation":"A","uti":"A","dengue":"A","hypertension":"A","zoster":"A","oa-knee":"A","low-back-pain":"A",
+  "uti-pregnancy":"A","vaginal-discharge":"A","urethral-discharge":"A","genital-ulcer":"A","pid":"A","mastitis":"A",
+  "h-pylori-dyspepsia":"A","gout":"A","hypoglycaemia":"A","acs":"A","migraine":"A","renal-colic":"A","dysmenorrhoea":"A",
+  "hyperglycaemic-crisis":"A","copd-exacerbation":"A","herpes-simplex-skin":"A","dental-abscess":"A",
+  "aeba-paediatric":"C","dengue-paeds":"C","hfmd":"C","croup":"C","bronchiolitis":"C","febrile-seizure":"C","uti-paeds":"C","otorrhoea-child":"C"
+};
+const ageOf=c=>AGE[c.id]||"B";
+let openId=null;
+function row(c){
+  const ag=ageOf(c), badge=ag==="A"?t("adultShort"):ag==="C"?t("childShort"):t("bothShort");
+  return `<button type="button" class="case-row" data-open="${c.id}"><span class="row-main"><span class="row-title">${favs.includes(c.id)?"★ ":""}${c.title}</span><span class="row-meta">${[c.category,...(c.tags||[])].filter(x=>x!=="Paediatrics").join(" · ")} · <span class="age-pill age-${ag}">${badge}</span></span></span><span class="chev" aria-hidden="true">›</span></button>`;
+}
+function listSection(title,items){
+  if(!items.length) return "";
+  return `<section class="case-list"><h3 class="list-head">${title} <span class="count-badge">${items.length}</span></h3>${items.map(row).join("")}</section>`;
+}
+function openCase(id,scroll=true){
+  openId=id; addRecent(id); render();
+  if(scroll) document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+}
 function render(){
   const q=norm(els.search.value);
   const rank=()=>cases.filter(inCategory).map(c=>[c,scoreCase(c,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
@@ -108,14 +130,31 @@ function render(){
   let partial=false;
   if(!ranked.length && q){looseSearch=true; ranked=rank(); looseSearch=false; partial=ranked.length>0;}
   els.count.textContent=`${ranked.length} ${ranked.length===1?t("topic1"):t("topics")}`;
+  // detail view
+  const open=openId && cases.find(c=>c.id===openId);
+  if(open){
+    els.results.innerHTML=`<button type="button" class="back-btn" id="backToList">← ${t("backToList")}</button>${card(open)}`;
+    return;
+  }
   if(!ranked.length){els.results.innerHTML=`<div class="empty"><strong>${t("noTopic")}</strong><br>${t("noTopicBody")}</div>`;return;}
-  const shown=(q || activeCategory!=="All") ? ranked : ranked.slice(0,8);
-  els.results.innerHTML=(partial?`<div class="empty"><strong>${t("partial")}</strong> ${t("partialBody")}</div>`:"")+shown.map(card).join("");
-  if(q && ranked.length===1 && !partial) addRecent(ranked[0].id);
+  // a precise search (single match) opens the card directly
+  if(q && ranked.length===1 && !partial){ openId=ranked[0].id; addRecent(openId); return render(); }
+  const pre=partial?`<div class="empty"><strong>${t("partial")}</strong> ${t("partialBody")}</div>`:"";
+  let body;
+  if(q){ body=listSection(t("results"),ranked); }
+  else {
+    const byTitle=[...ranked].sort((a,b)=>a.title.localeCompare(b.title));
+    const adult=byTitle.filter(c=>ageOf(c)!=="C"), child=byTitle.filter(c=>ageOf(c)!=="A");
+    body = activeCategory==="All" ? listSection(t("allTopics"),byTitle)
+         : activeCategory==="Paediatrics" ? listSection("👶 "+t("child"),child)
+         : listSection("🧑 "+t("adult"),adult)+listSection("👶 "+t("child"),child);
+  }
+  els.results.innerHTML=pre+body;
 }
 function renderCategories(){
   els.categories.innerHTML="";
-  categories.forEach(cat=>{const b=document.createElement("button"); b.type="button"; b.className=`chip ${activeCategory===cat?"active":""}`; b.textContent=cat==="All"?(getLang()==="ms"?"Semua":"All"):cat; b.onclick=()=>{activeCategory=cat;renderCategories();render();}; els.categories.appendChild(b);});
+  const qr=document.getElementById("quickChips"); if(qr&&qr.parentElement) qr.parentElement.classList.toggle("hidden",activeCategory!=="All");
+  categories.forEach(cat=>{const b=document.createElement("button"); b.type="button"; b.className=`chip ${activeCategory===cat?"active":""}`; b.textContent=cat==="All"?(getLang()==="ms"?"Semua":"All"):cat; b.onclick=()=>{activeCategory=cat;openId=null;renderCategories();render();if(cat!=="All") els.results.scrollIntoView({behavior:"smooth",block:"start"});}; els.categories.appendChild(b);});
 }
 function renderQuick(){
   els.chips.innerHTML="";
@@ -428,8 +467,8 @@ function doseTool(){
   const label=els.doseSelect.options[els.doseSelect.selectedIndex].text;
   els.dose.innerHTML=`<h3>${t("doseResult")} — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}${syr?syrupBlock(syr):""}</div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
-els.search.addEventListener("input",render);
-els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});
+els.search.addEventListener("input",()=>{openId=null; if(els.search.value.trim() && activeCategory!=="All"){activeCategory="All";renderCategories();} render();});
+els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";openId=null;renderCategories();render();els.search.focus();});
 [els.age,els.weight,els.concentration,els.dehydration].forEach(el=>el.addEventListener("input",doseTool));
 els.dose.addEventListener("click",async e=>{
   const b=e.target.closest(".rx-copy"); if(!b) return;
@@ -455,6 +494,8 @@ els.results.addEventListener("click",e=>{
 });
 // card interactions: favourite star + record as recently viewed
 els.results.addEventListener("click",e=>{
+  const rw=e.target.closest(".case-row"); if(rw){openCase(rw.dataset.open);return;}
+  if(e.target.closest("#backToList")){const id=openId; openId=null; render(); const el=els.results.querySelector(`[data-open="${id}"]`); if(el) el.scrollIntoView({block:"center"}); else document.getElementById("results").scrollIntoView({block:"start"}); return;}
   const st=e.target.closest(".star"); if(st){toggleFav(st.dataset.id);return;}
   const cc=e.target.closest(".counsel-copy"); if(cc){const c=cases.find(x=>x.id===cc.dataset.id); if(c){copyText(counselText(c)).then(ok=>{const old=cc.innerHTML;cc.innerHTML=ok?`✓ ${t("copied")}`:t("copyFail");cc.classList.add("done");setTimeout(()=>{cc.innerHTML=old;cc.classList.remove("done");},1600);});} return;}
   const cd=e.target.closest(".case-card"); if(cd && !e.target.closest("a")) addRecent(cd.dataset.id);
@@ -479,7 +520,7 @@ scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); i
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.10 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v2.11 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
   normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");

@@ -149,3 +149,16 @@ html.locked body>header,html.locked body>main,html.locked body>footer{display:no
 .login-remember input{width:18px;height:18px}
 .login-card button[type=submit]{background:var(--brand);color:#fff;padding:13px;font-size:1rem}
 .login-err{color:var(--danger);font-weight:700;margin:0;min-height:1em;font-size:.88rem}
+/* list view */
+.case-list{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.list-head{margin:0;padding:12px 16px;font-size:1rem;background:#f4f8fa;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.case-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid #edf2f4;border-radius:0;padding:12px 16px;font-weight:400;cursor:pointer}
+.case-row:last-child{border-bottom:0}
+.case-row:hover,.case-row:focus-visible{background:#f3f9fb}
+.row-main{display:grid;gap:3px;flex:1;min-width:0}
+.row-title{font-weight:750;font-size:.98rem;color:var(--ink)}
+.row-meta{font-size:.76rem;color:var(--muted)}
+.chev{font-size:1.6rem;color:var(--brand2);line-height:1}
+.age-pill{display:inline-block;border-radius:999px;padding:1px 7px;font-weight:700}
+.age-A{background:#eef2ff;color:#3346a3}.age-C{background:#fff1e6;color:#a1520b}.age-B{background:#eef7f2;color:#0c6b45}
+.back-btn{background:#fff;border:1px solid var(--line);padding:10px 14px;font-weight:800;color:var(--brand);justify-self:start}
