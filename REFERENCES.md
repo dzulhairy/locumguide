@@ -1,4 +1,4 @@
-# References — Locum Quick Guide MY v2.8
+# References — MyClinicalGuide.MY v2.8
 
 Checked **23 November 2026**. All antimicrobial regimens added in v2.6 were transcribed directly from the text of the MOH **National Antimicrobial Guideline (NAG) 4th edition 2024** web edition (site banner: "Latest updates Jan '26"). Primary-care pathway PDFs carry their own version dates, listed below.
 

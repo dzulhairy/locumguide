@@ -1,4 +1,4 @@
-# Locum Quick Guide MY — v2.7
+# MyClinicalGuide.MY — v2.8 (formerly Locum Quick Guide MY)
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 

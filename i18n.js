@@ -87,7 +87,7 @@ const D = {
   f_pred:{ms:"Sekali sehari, 3–5 hari (remaja ≥12 thn: 5–7 hari)",en:"Once daily, 3–5 days (adolescents ≥12 y: 5–7 days)"},
   dermKicker:{ms:"Panduan dermatologi",en:"Dermatology quick guide"},
   dermTitle:{ms:"Kes → krim / rawatan topikal dicadangkan",en:"Case → suggested cream / topical treatment"},
-  footer:{ms:"Locum Quick Guide MY · rujukan klinikal statik · sumber Malaysia diutamakan · tiada maklumat pengenalan pesakit.",en:"Locum Quick Guide MY · static clinician reference · Malaysia-first sources · no patient-identifiable information."},
+  footer:{ms:"MyClinicalGuide.MY · rujukan klinikal statik · sumber Malaysia diutamakan · tiada maklumat pengenalan pesakit.",en:"MyClinicalGuide.MY · static clinician reference · Malaysia-first sources · no patient-identifiable information."},
   langBtn:{ms:"EN",en:"BM"},
   langLabel:{ms:"Tukar bahasa ke English",en:"Switch language to Bahasa Melayu"}
 };
