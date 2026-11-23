@@ -1,6 +1,24 @@
-# Locum Quick Guide MY — v2.6
+# Locum Quick Guide MY — v2.7
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
+
+## Version 2.7 changes (23 Nov 2026)
+- **Re-check against NAG:** 15 older infection topics re-checked against the current NAG pathways (Aug 2024 – Jan 2026); see `cases-review2026.js`. Main changes:
+  - AOM: observe 48–72 h when the eardrum is intact and the illness is not severe.
+  - CAP: adult regimens, CRB-65, NAG paediatric amoxicillin weight bands and admission criteria.
+  - Rhinosinusitis: bacterial sinusitis criteria and paediatric regimens.
+  - Adult UTI: NAG C7 options; influenza: high-risk groups.
+  - Also updated: scabies, tinea, impetigo and otomycosis.
+- **Cloxacillin calculator** now caps at 2 g/day, and shows the 1 g/day maximum for impetigo.
+- **8 new topics (58 total):** headache/migraine, allergic rhinitis, urticaria, renal colic, dysmenorrhoea, DKA/HHS triage, COPD exacerbation, tetanus-prone wounds.
+- **Copy prescription:** a 📋 button on every syrup/tablet row copies text such as `Syr Paracetamol 120mg/5ml 7.5ml 4-6 hourly PRN (max 4x/day)`.
+- **Scores & CrCl panel** includes:
+  - Cockcroft–Gault CrCl and CKD-EPI 2021 eGFR (creatinine in µmol/L), with renal warnings for nitrofurantoin, colchicine and NSAIDs
+  - CURB-65/CRB-65
+  - WHO IMCI dehydration, linked to the ORS Plan B calculator
+- **Case cards:** red flags, treatment and medication stay open; assessment, prevention, referral and sources fold away.
+- **BM/EN toggle** for all interface text. Clinical content keeps the wording of its source guideline.
+- **⭐ Favourites and 🕘 recently viewed** topics are stored only in this browser.
 
 ## Version 2.6 changes (23 Nov 2026)
 - 27 new topics (50 total), NAG-checked: conjunctivitis, stye/blepharitis, preseptal cellulitis, otitis externa, dental abscess, bites, leptospirosis, paediatric dengue, HFMD, croup, bronchiolitis, febrile seizure, paediatric UTI, UTI in pregnancy, vaginal discharge, urethral discharge/STI, genital ulcer, PID, mastitis, H. pylori/dyspepsia, boils/abscess, tinea versicolor, cutaneous candidiasis, HSV skin, gout, hypoglycaemia, chest pain/ACS.
@@ -20,7 +38,7 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
   - acyclovir 200 mg/5 mL (FUKKM-confirmed)
   - oseltamivir 6 mg/mL
   - prednisolone 5 mg tablets
-  - Strengths marked † in the app are usual KKM strengths that have not yet been confirmed against FUKKM.
+  - Strengths confirmed against clinic stock on 23 Nov 2026.
 - Dose calculators are hidden behind a "Dose calculator" button at the top; tapping it (or a dose-tool link on a case card) opens them.
 - Full reference list: [REFERENCES.md](REFERENCES.md).
 - CDC PKD Besut ACD Scabies module and its Google Form link removed (the clinical Scabies topic remains).

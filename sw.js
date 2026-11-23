@@ -1,5 +1,5 @@
-const CACHE="locum-guide-v2-6-5-20261123";
-const ASSETS=["./","./index.html","./styles.css","./app.js","./cases-respiratory.js","./cases-paeds-asthma.js","./cases-ent.js","./cases-acute.js","./cases-derm1.js","./cases-derm2.js","./cases-msk.js","./cases-locum2.js","./derm-guide.js","./manifest.webmanifest","./icon.svg"];
+const CACHE="locum-guide-v2-7-20261123";
+const ASSETS=["./","./index.html","./styles.css","./i18n.js","./scores.js","./app.js","./cases-respiratory.js","./cases-paeds-asthma.js","./cases-ent.js","./cases-acute.js","./cases-derm1.js","./cases-derm2.js","./cases-msk.js","./cases-locum2.js","./cases-locum3.js","./cases-review2026.js","./derm-guide.js","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener("activate",e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));
 self.addEventListener("fetch",e=>{

@@ -1,4 +1,4 @@
-# References — Locum Quick Guide MY v2.6
+# References — Locum Quick Guide MY v2.7
 
 Checked **23 November 2026**. All antimicrobial regimens added in v2.6 were transcribed directly from the text of the MOH **National Antimicrobial Guideline (NAG) 4th edition 2024** web edition (site banner: "Latest updates Jan '26"). Primary-care pathway PDFs carry their own version dates, listed below.
 
@@ -45,8 +45,32 @@ Home: https://sites.google.com/moh.gov.my/nag
 | NICE NG9 — Bronchiolitis (2021 update) | Emergency referral criteria | https://www.nice.org.uk/guidance/ng9/chapter/Recommendations |
 | RCH Melbourne CPG — Febrile seizure | Simple vs complex, red flags, disposition | https://www.rch.org.au/clinicalguide/guideline_index/Febrile_seizure |
 
-## 4. Known limitations
+## 4. Added in v2.7
+
+| Source | Used for | Link |
+|---|---|---|
+| NAG C1 Pathway (v. 30 Jan 2026) | CAP adult regimens, CRB-65, child weight bands, influenza high-risk, pertussis | https://sites.google.com/moh.gov.my/nag/contents/section-c-clinical-pathways-in-primary-care/c1-acute-bronchitis-and-pneumonia |
+| NAG C4 Pathway (v. 10 Sep 2025) | Rhinosinusitis criteria and regimens | https://sites.google.com/moh.gov.my/nag/contents/section-c-clinical-pathways-in-primary-care/c4-acute-rhinosinusitis |
+| NAG C5 Pathway (v. 15 Aug 2024) | Gastroenteritis referral criteria | https://sites.google.com/moh.gov.my/nag/contents/section-c-clinical-pathways-in-primary-care/c5-acute-gastroenteritis |
+| NAG C7 Pathway (v. 30 Jan 2026) | Adult UTI, nitrofurantoin eGFR limit | https://sites.google.com/moh.gov.my/nag/contents/section-c-clinical-pathways-in-primary-care/c7-urinary-tract-infection-in-non-pregnancy |
+| NAG A11 | CURB-65 interpretation; COPD exacerbation antibiotics | https://sites.google.com/moh.gov.my/nag/contents/section-a-adult/a11-respiratory-infections |
+| NAG B11 | Paediatric impetigo, scabies, abscess | https://sites.google.com/moh.gov.my/nag/contents/section-b-paediatrics/b11-skin-soft-tissue-infections |
+| MOH CPG COPD 2nd ed. (2009), WHO copy | COPD exacerbation: bronchodilators, prednisolone, admission criteria | https://extranet.who.int/ncdccs/Data/MYS_D1_CPG%20Mx%20of%20COPD%202009,%202nd%20edition.pdf |
+| MOH/MEMS CPG T2DM 6th ed., Section 4 | DKA and HHS criteria, initial fluids | https://mems.my/wp-content/uploads/2021/03/CPG-T2DM_6th-Edition-2020_210226.pdf |
+| MSAI consensus 2022 (J Asthma Allergy) | Allergic rhinitis pharmacotherapy | https://doi.org/10.2147/JAA.S374346 |
+| International urticaria guideline (Allergy 2026) | Urticaria: 2nd-gen H1 antihistamine, up to 4× dose | https://europepmc.org/article/PMC/PMC13466004 |
+| NHS Scotland Right Decisions (SIGN 155) | Acute migraine treatment | https://www.rightdecisions.scot.nhs.uk/neurology-pathways/headache/acute-treatment-of-migraine-in-primary-care/ |
+| NICE NG118 | Renal colic analgesia ladder, imaging, alpha blockers | https://www.nice.org.uk/guidance/ng118/chapter/Recommendations |
+| SOGC Guideline No. 345 (2017); CMAJ 2021 review | Dysmenorrhoea | https://doi.org/10.1016/j.jogc.2016.12.023 · https://www.cmaj.ca/content/193/16/E560 |
+| RCH Melbourne — Tetanus-prone wounds | Wound classification, vaccine/TIG table, TIG dose | https://www.rch.org.au/clinicalguide/guideline_index/Management_of_tetanusprone_wounds/ |
+| Inker et al., NEJM 2021 | CKD-EPI 2021 creatinine equation | https://www.nejm.org/doi/full/10.1056/NEJMoa2102953 |
+| Lim et al., Thorax 2003 | CURB-65 | https://thorax.bmj.com/content/58/5/377 |
+| WHO IMCI Chart Booklet 2014 | Child dehydration classification, Plans A/B/C | https://www.who.int/publications/m/item/integrated-management-of-childhood-illness---chart-booklet-(march-2014) |
+
+## 5. Known limitations
 
 - **MOH Paediatric Protocols 5th ed.** (moh.gov.my) and the **2019 STEMI CPG** could not be downloaded for this check. The site blocks automated access. Croup and febrile-seizure doses therefore cite RCH and should be checked against the local protocol.
-- Topics **not yet covered**: headache/migraine, allergic rhinitis, urticaria, renal colic, dysmenorrhoea, hyperglycaemic crisis, adult dengue fluid regimen detail, tetanus-prone wound table.
+- Eight non-infection topics from v2.4 are outside NAG scope and were not re-checked against a guideline in v2.7: adult asthma, paediatric AEBA, anaphylaxis, severe hypertension, adult dengue, knee OA, low back pain and rash triage. The relevant MOH CPGs are on moh.gov.my, which blocks automated access.
+- The Malaysian COPD CPG is from 2009; check for a newer edition locally.
+- The tetanus table follows RCH (Australia); check against the Malaysian immunisation schedule.
 - All content is decision support only. Verify against the current guideline, local formulary and facility policy before prescribing.
