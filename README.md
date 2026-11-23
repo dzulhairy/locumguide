@@ -8,6 +8,19 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
 - New categories: Eye, Dental, O&G, Sexual health, Endocrine, Infection.
 - New dose tools: dexamethasone for croup; paracetamol 10 mg/kg for dengue in children.
 - Multi-word Malay/English searches now require all words to match.
+- Paracetamol calculators show mL per dose for 120 mg/5 mL and 250 mg/5 mL syrup automatically, with frequency, 24-h maximum and a 500 mg tablet option.
+- Every oral calculator now shows mL per dose for the syrups in stock, plus frequency and a tablet/capsule option where one fits within ±10%. The strengths are listed in `STOCK` at the top of the calculator code in `app.js`; edit that list if your clinic stocks different products:
+  - ibuprofen 100 mg/5 mL
+  - amoxicillin 125 and 250 mg/5 mL
+  - co-amoxiclav 228 and 457 mg/5 mL (7:1), 642.9 mg/5 mL ES (14:1)
+  - azithromycin 200 mg/5 mL
+  - cefuroxime 125 mg/5 mL (FUKKM-confirmed)
+  - cephalexin 125 and 250 mg/5 mL
+  - cloxacillin 125 mg/5 mL
+  - acyclovir 200 mg/5 mL (FUKKM-confirmed)
+  - oseltamivir 6 mg/mL
+  - prednisolone 5 mg tablets
+  - Strengths marked † in the app are usual KKM strengths that have not yet been confirmed against FUKKM.
 - Dose calculators are hidden behind a "Dose calculator" button at the top; tapping it (or a dose-tool link on a case card) opens them.
 - Full reference list: [REFERENCES.md](REFERENCES.md).
 - CDC PKD Besut ACD Scabies module and its Google Form link removed (the clinical Scabies topic remains).
