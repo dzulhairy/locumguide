@@ -65,6 +65,8 @@ const D = {
   roundNote:{ms:"Sukatan dibundarkan kepada 0.1 mL (<5 mL), 0.2 mL (5–10 mL) atau 0.5 mL (>10 mL)",en:"Measures rounded to 0.1 mL (<5 mL), 0.2 mL (5–10 mL) or 0.5 mL (>10 mL)"},
   roundMax:{ms:", tidak melebihi dos maksimum",en:", never above the maximum dose"},
   checkLabel:{ms:"Semak label botol sebelum beri. Butang 📋 salin teks preskripsi.",en:"Check the bottle label before giving. 📋 copies the prescription text."},
+  counsel:{ms:"💬 Kaunseling pesakit / cara guna ubat",en:"💬 Patient counselling / how to use"},
+  copyCounsel:{ms:"Salin untuk pesakit",en:"Copy for patient"},
   copy:{ms:"Salin",en:"Copy"},
   copyRx:{ms:"Salin preskripsi",en:"Copy prescription"},
   copied:{ms:"Disalin",en:"Copied"},

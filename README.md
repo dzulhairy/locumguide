@@ -2,6 +2,17 @@
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
+## Version 2.9 changes (23 Nov 2026) — patient counselling
+- New **💬 Patient counselling / how to use** section on 39 cards, in BM and EN, with a 📋 "Copy for patient" button. It covers:
+  - scabicides (permethrin step-by-step, benzyl benzoate, sulphur, crotamiton)
+  - inhaler + spacer, steroid nasal spray
+  - eye drops/ointment and lid hygiene, ear drops and dry mopping
+  - vaginal pessary, antifungal cream and shampoo, impetigo crust care, potassium permanganate soaks
+  - ORS preparation, rectal diazepam and seizure first aid
+  - doxycycline, metronidazole, nitrofurantoin, colchicine, itraconazole, triptan
+  - hypoglycaemia "rule of 15", H. pylori adherence, benzathine penicillin (Jarisch–Herxheimer reaction), antibiotic syrups
+- **Scabies card** adds crusted-scabies treatment (permethrin + ivermectin) and a lindane warning, per the MOH Guideline for Management of Scabies in Adults and Children (Feb 2015).
+
 ## Version 2.8 changes (23 Nov 2026) — Paediatric Protocols 5th ed.
 - **🩺 Normal values panel**, based on MOH *Paediatric Protocols for Malaysian Hospitals*, 5th ed. (KKM 2025):
   - Enter age (months/years), sex and height with any measured values: RR, HR, BP, Hb, PCV, TWBC, Na⁺, K⁺, glucose.

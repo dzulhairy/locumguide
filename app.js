@@ -74,6 +74,15 @@ function renderPersonal(){
     r.classList.toggle("hidden",!list.length);
   });
 }
+function counselBlock(c){
+  if(!c.counsel) return "";
+  const items=c.counsel[getLang()]||c.counsel.ms;
+  return `<details class="block fold counsel" open><summary>${t("counsel")}</summary><ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul><button type="button" class="rx-copy counsel-copy" data-id="${c.id}">📋 ${t("copyCounsel")}</button></details>`;
+}
+function counselText(c){
+  const items=c.counsel[getLang()]||c.counsel.ms; const tmp=document.createElement("div");
+  return `${c.title}\n`+items.map(x=>{tmp.innerHTML=x;return "• "+tmp.textContent;}).join("\n");
+}
 function card(c){
   const on=favs.includes(c.id);
   return `<article class="case-card" data-id="${c.id}">
@@ -84,6 +93,7 @@ function card(c){
     <div class="case-body">
       ${section(t("treatment"),c.treatment)}
       <section class="block"><h3>${t("medication")}</h3>${c.meds.map(x=>`<div class="med">${x}</div>`).join("")}</section>
+      ${counselBlock(c)}
       ${fold(t("assessment"),c.assessment)}
       ${fold(t("prevention"),c.prevention)}
       ${fold(t("referral"),c.referral)}
@@ -446,6 +456,7 @@ els.results.addEventListener("click",e=>{
 // card interactions: favourite star + record as recently viewed
 els.results.addEventListener("click",e=>{
   const st=e.target.closest(".star"); if(st){toggleFav(st.dataset.id);return;}
+  const cc=e.target.closest(".counsel-copy"); if(cc){const c=cases.find(x=>x.id===cc.dataset.id); if(c){copyText(counselText(c)).then(ok=>{const old=cc.innerHTML;cc.innerHTML=ok?`✓ ${t("copied")}`:t("copyFail");cc.classList.add("done");setTimeout(()=>{cc.innerHTML=old;cc.classList.remove("done");},1600);});} return;}
   const cd=e.target.closest(".case-card"); if(cd && !e.target.closest("a")) addRecent(cd.dataset.id);
 });
 // scores & CrCl panel
@@ -468,7 +479,7 @@ scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); i
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.8 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v2.9 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
   normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");
