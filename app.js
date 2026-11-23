@@ -90,13 +90,54 @@ function renderQuick(){
 const PCM_SYRUPS=[120,250]; // mg per 5 mL stocked at the clinic
 function pcmSyrupTable(mg,timesText,maxDoses){
   const rows=PCM_SYRUPS.map(st=>{
-    const ml=mg*5/st; let measure=Math.round(ml*2)/2; if(measure*st/5>1000) measure=Math.floor(ml*2)/2;
+    const ml=mg*5/st; let measure=roundStep(ml); if(measure*st/5>1000) measure=roundStep(ml,"down");
     return `<tr><td><strong>${st} mg/5 mL</strong></td><td><strong class="ml-big">${round(ml,1)} mL</strong></td><td>${measure>0&&measure!==round(ml,1)?`sukat <strong>${measure} mL</strong> (${round(measure*st/5,0)} mg)`:"—"}</td></tr>`;
   }).join("");
   return `<div class="table-scroll syrup-table"><table class="clinical-table" style="min-width:0"><thead><tr><th>Sirap</th><th>Setiap dos</th><th>Sukatan praktikal*</th></tr></thead><tbody>${rows}</tbody></table></div>
   <p class="freq-line">⏱ <strong>${timesText}</strong> · maksimum <strong>${maxDoses} dos dalam 24 jam</strong></p>
   ${(mg>=225&&Math.abs(Math.round(mg/250)*250-mg)/mg<=0.1)?`<p class="freq-line">💊 Atau tablet 500 mg: <strong>${Math.round(mg/250)/2} biji</strong> (${Math.round(mg/250)*250} mg) setiap dos</p>`:""}
-  <p class="small">*Dibundarkan kepada 0.5 mL terdekat (tidak melebihi 1 g sedos). Semak label botol sebelum beri.</p>`;
+  <p class="small">*Dibundarkan kepada 0.1 mL (<5 mL), 0.2 mL (5–10 mL) atau 0.5 mL (>10 mL) terdekat, tidak melebihi 1 g sedos. Semak label botol sebelum beri.</p>`;
+}
+// Syrup / tablet strengths stocked. Edit here if your clinic stocks different products.
+// s = mg of active drug (amoxicillin component for co-amoxiclav) per 5 mL; ok:true = confirmed in FUKKM 23 Nov 2026.
+const STOCK={
+  ibuprofen:{syr:[{s:100}]},
+  amoxicillin:{syr:[{s:125},{s:250}]},
+  coamox7:{syr:[{s:200,name:"228 mg/5 mL (amox 200)"},{s:400,name:"457 mg/5 mL (amox 400)"}]},
+  coamox14:{syr:[{s:600,name:"642.9 mg/5 mL ES (amox 600)"}]},
+  azithromycin:{syr:[{s:200}]},
+  cefuroxime:{syr:[{s:125,ok:true}]},
+  cephalexin:{syr:[{s:125},{s:250}]},
+  cloxacillin:{syr:[{s:125}]},
+  acyclovir:{syr:[{s:200,ok:true}],tab:[200,800]},
+  oseltamivir:{syr:[{s:30,name:"6 mg/mL (30 mg/5 mL)"}],tab:[30,45,75],cap:true},
+  prednisolone:{tab:[5]}
+};
+function mlFmt(x){return round(x,1);}
+function stepOf(ml){return ml<5?0.1:ml<10?0.2:0.5;}
+function roundStep(ml,dir="near"){if(Math.abs(ml*2-Math.round(ml*2))<0.02) return round(Math.round(ml*2)/2,1);const st=stepOf(ml),f=dir==="up"?Math.ceil:dir==="down"?Math.floor:Math.round;return round(f(ml/st-1e-9*(dir==="up"?1:dir==="down"?-1:0))*st,1);}
+function syrupBlock(o){
+  const st=STOCK[o.drug]; if(!st) return "";
+  let rows="";
+  (st.syr||[]).forEach(v=>{
+    o.rows.forEach(r=>{
+      const lo=r.low*5/v.s, hi=(r.high??r.low)*5/v.s, range=r.high!=null&&Math.abs(hi-lo)>0.05;
+      let prac;
+      if(range){const a=roundStep(lo,"up"),b=roundStep(hi,"down"); prac=a<=b?`${a===b?a:a+"–"+b} mL`:"—";}
+      else {let m=roundStep(lo); if(o.maxMg&&m*v.s/5>o.maxMg) m=roundStep(lo,"down"); prac=Math.abs(m-lo)>0.05?`${m} mL (${round(m*v.s/5,0)} mg)`:"—";}
+      rows+=`<tr><td>${o.rows.length>1?`<strong>${r.name}</strong><br>`:""}${v.name||v.s+" mg/5 mL"}${v.ok?"":" <span class=\"unv\">†</span>"}</td><td><strong class="ml-big">${range?mlFmt(lo)+"–"+mlFmt(hi):mlFmt(lo)} mL</strong></td><td>${prac}</td></tr>`;
+    });
+  });
+  let tabs="";
+  if(st.tab) o.rows.forEach(r=>{
+    const mg=r.high!=null?r.high:r.low;
+    const opts=st.tab.map(t=>{const n=st.cap?Math.round(mg/t):Math.round(mg/t*2)/2; return {t,n,d:n*t};}).filter(x=>x.n>0&&Math.abs(x.d-mg)/mg<=0.1&&(r.high==null||x.d>=r.low-0.01));
+    if(opts.length){const x=opts[0]; tabs+=`<p class="freq-line">💊 ${o.rows.length>1?r.name+": ":""}${st.cap?"Kapsul":"Tablet"} ${x.t} mg: <strong>${x.n} biji</strong> (${round(x.d,1)} mg)</p>`;}
+  });
+  const hasUnv=(st.syr||[]).some(v=>!v.ok);
+  return `${rows?`<div class="table-scroll syrup-table"><table class="clinical-table" style="min-width:0"><thead><tr><th>Sirap</th><th>Setiap dos</th><th>Sukatan praktikal*</th></tr></thead><tbody>${rows}</tbody></table></div>`:""}
+  ${tabs}${o.freq?`<p class="freq-line">⏱ <strong>${o.freq}</strong></p>`:""}
+  ${rows?`<p class="small">*Dibundarkan kepada 0.1 mL (<5 mL), 0.2 mL (5–10 mL) atau 0.5 mL (>10 mL) terdekat${o.maxMg?", tidak melebihi dos maksimum":""}. ${hasUnv?"† Kekuatan biasa KKM — sahkan dengan stok/label botol klinik anda. ":""}Semak label botol sebelum beri.</p>`:""}`;
 }
 function liquidText(mg,conc){if(!conc||conc<=0)return ""; return ` ≈ <strong>${round(mg*5/conc,2)} mL</strong> at ${conc} mg/5 mL`;}
 function doseTool(){
@@ -104,7 +145,7 @@ function doseTool(){
   const age=Number.isFinite(ageVal)?ageVal:null, dehydration=Number.isFinite(dehydrationVal)?dehydrationVal:null;
   if(!tool){els.dose.classList.add("hidden");return;}
   if(!Number.isFinite(weight)||weight<=0){els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">Enter a valid weight in kg.</p>`;els.dose.classList.remove("hidden");return;}
-  let answer="",note="",caution="";
+  let answer="",note="",caution="",syr=null;
   let weightWarn="";
   if(weight>150) weightWarn="Weight above 150 kg — check for a typing error.";
   else if(age!==null && age<1 && weight>15) weightWarn="Weight looks high for an infant — check age (years) and weight (kg).";
@@ -128,6 +169,7 @@ function doseTool(){
     if(weight<7){ answer="<strong>Not recommended below 7 kg</strong> (FUKKM). Use paracetamol instead."; note="FUKKM: ibuprofen 5–10 mg/kg/dose; not recommended for children <7 kg."; caution="Avoid in suspected dengue, dehydration or renal impairment."; }
     else {
     const low=Math.min(weight*5,400),high=Math.min(weight*10,400); answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 6–8 hours.`;
+    syr={drug:"ibuprofen",rows:[{low,high}],freq:"Setiap 6–8 jam jika perlu",maxMg:400};
     note="FUKKM: 5–10 mg/kg/dose; not recommended for children <7 kg. Use the lowest effective dose for the shortest duration.";
     caution="Avoid/seek advice in dehydration, renal impairment, GI bleeding risk, NSAID-sensitive asthma or suspected dengue. FUKKM does not indicate ibuprofen for fever due to infection. Calculator caps at 400 mg/dose.";
     }
@@ -136,6 +178,7 @@ function doseTool(){
     const months=age*12; let mg;
     if(months!==null && months<9) mg=weight*3; else if(months!==null && months<12) mg=weight*3.5; else if(weight<=15) mg=30; else if(weight<=23) mg=45; else if(weight<=40) mg=60; else mg=75;
     answer=`Treatment dose: <strong>${round(mg,1)} mg PO twice daily for 5 days</strong>${liquidText(mg,conc)}.`;
+    syr={drug:"oseltamivir",rows:[{low:mg}],freq:"2 kali sehari (BD) × 5 hari"};
     note="Malaysia NAG: <9 months 3 mg/kg BD; 9–11 months 3.5 mg/kg BD; age 1–12 years uses weight bands; >40 kg 75 mg BD.";
     caution="Renal dose adjustment may be required. Verify exact formulation/concentration.";
   } else if(tool==="adrenaline"){
@@ -144,26 +187,31 @@ function doseTool(){
     caution="For suspected anaphylaxis only. Do not delay adrenaline for antihistamines or IV access.";
   } else if(tool==="amoxicillin-high"){
     const mg=Math.min(weight*45,1000); answer=`BID high-dose reference: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
+    syr={drug:"amoxicillin",rows:[{low:mg}],freq:"2 kali sehari (setiap 12 jam)",maxMg:1000};
     note="Malaysia NAG: high-dose amoxicillin 80–90 mg/kg/day in 2–3 divided doses for selected paediatric AOM/CAP; this calculator uses 90 mg/kg/day divided twice daily, max 1 g/dose.";
     caution="Check penicillin allergy, renal function, diagnosis and duration. This is not a generic antibiotic calculator.";
   } else if(tool==="coamox14"){
     const daily=Math.min(weight*90,3000), mg=daily/2;
     answer=`14:1 formulation: <strong>${round(mg,1)} mg amoxicillin component per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
+    syr={drug:"coamox14",rows:[{low:mg}],freq:"2 kali sehari (setiap 12 jam)"};
     note="Malaysia NAG: 80–90 mg/kg/day of the amoxicillin component in 2 divided doses; this calculator uses 90 mg/kg/day with the AOM cap of 3 g/day (NAG C2). For paediatric UTI and preseptal cellulitis NAG caps at 2 g/day (1 g/dose BD).";
     caution="Enter the AMOXICILLIN COMPONENT in mg/5 mL, not the combined amoxicillin+clavulanate total. Confirm the exact formulation and indication-specific maximum.";
   } else if(tool==="azithro5"){
     const d1=Math.min(weight*10,500), d25=Math.min(weight*5,250);
     answer=`Day 1: <strong>${round(d1,1)} mg once daily</strong>${liquidText(d1,conc)}. Days 2–5: <strong>${round(d25,1)} mg once daily</strong>${liquidText(d25,conc)}.`;
+    syr={drug:"azithromycin",rows:[{name:"Hari 1",low:d1},{name:"Hari 2–5",low:d25}],freq:"Sekali sehari × 5 hari"};
     note="Malaysia NAG 5-day regimen: 10 mg/kg on Day 1 (max 500 mg), then 5 mg/kg once daily on Days 2–5 (max 250 mg/day) for specific indications.";
     caution="Do not use azithromycin as a default antibiotic for uncomplicated URTI. Confirm indication and allergy context.";
   } else if(tool==="cefuroxime"){
     const daily=Math.min(weight*30,1000), mg=daily/2;
     answer=`Reference dose: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
+    syr={drug:"cefuroxime",rows:[{low:mg}],freq:"2 kali sehari (setiap 12 jam)"};
     note="Malaysia NAG: cefuroxime 30 mg/kg/day PO in 2 divided doses, max 1 g/day, for selected paediatric AOM/rhinosinusitis pathways.";
     caution="Use only for the relevant diagnosis and allergy pathway; severe immediate beta-lactam allergy requires separate review.";
   } else if(tool==="cephalexin"){
     const low=Math.min(weight*25,2000)/2, high=Math.min(weight*50,2000)/2;
     answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 12 hours.`;
+    syr={drug:"cephalexin",rows:[{low,high}],freq:"2 kali sehari (setiap 12 jam)"};
     note="Malaysia NAG: cephalexin 25–50 mg/kg/day PO in 2 divided doses, max 2 g/day, for selected paediatric UTI/SSTI pathways.";
     caution="Select the exact dose and duration from the diagnosis-specific pathway; febrile/complicated UTI or severe SSTI needs separate assessment.";
   } else if(tool==="augmentin228"){
@@ -186,30 +234,34 @@ function doseTool(){
   } else if(tool==="coamox7"){
     const lowDaily=Math.min(weight*40,2000), highDaily=Math.min(weight*50,2000), low=lowDaily/2, high=highDaily/2;
     answer=`7:1 formulation: <strong>${round(low,1)}–${round(high,1)} mg amoxicillin component per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg amoxicillin/5 mL`:""} every 12 hours.`;
+    syr={drug:"coamox7",rows:[{low,high}],freq:"2 kali sehari (setiap 12 jam)"};
     note="Malaysia NAG: 40–50 mg/kg/day of the amoxicillin component in 2 divided doses for selected 7:1 paediatric pathways; this calculator applies a 2 g/day amoxicillin cap.";
     caution="Some indications such as AOM use a different maximum and may favor 14:1 high-dose formulation. Confirm the formulation ratio, diagnosis and duration.";
   } else if(tool==="amox-gas"){
     const total=Math.min(weight*50,1000), bid=total/2;
     answer=`GAS pharyngitis: <strong>${round(total,1)} mg once daily</strong>${liquidText(total,conc)} OR <strong>${round(bid,1)} mg twice daily</strong>${liquidText(bid,conc)} for 10 days.`;
+    syr={drug:"amoxicillin",rows:[{name:"Sekali sehari",low:total},{name:"ATAU 2 kali sehari",low:bid}],freq:"× 10 hari",maxMg:1000};
     note="Malaysia NAG: amoxicillin 50 mg/kg/day in 1 or 2 divided doses, max 1 g/day, total duration 10 days for GAS tonsillitis/pharyngitis.";
     caution="Use only when bacterial/GAS pharyngitis is sufficiently likely or confirmed; most sore throats are viral.";
   } else if(tool==="nitrofurantoin-uti"){
     const sr=Math.min(weight*2,100), ir=Math.min(weight*1,100);
     answer=`Paediatric lower UTI: sustained-release <strong>${round(sr,1)} mg q12h</strong>; immediate-release <strong>${round(ir,1)} mg q6h</strong>.`;
     note="Malaysia NAG: SR 2 mg/kg/dose q12h or immediate-release 1 mg/kg/dose q6h, max 100 mg/dose; typical lower-UTI duration 3–5 days.";
-    caution="Not for febrile UTI/pyelonephritis. Verify formulation, age, renal function and swallowing suitability.";
+    caution="Not for febrile UTI/pyelonephritis. Verify formulation, age, renal function and swallowing suitability. FUKKM lists nitrofurantoin 100 mg tablet only — no syrup.";
   } else if(tool==="cloxacillin-ssti"){
     if(weight>=25){
       answer="For a child ≥25 kg, the NAG mild-SSTI pathway uses the adult oral reference: <strong>500 mg every 6 hours</strong>.";
     } else {
       const low=weight*50/4, high=weight*100/4;
       answer=`Child <25 kg: <strong>${round(low,1)}–${round(high,1)} mg per dose q6h</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""}.`;
+      syr={drug:"cloxacillin",rows:[{low,high}],freq:"4 kali sehari (setiap 6 jam)"};
     }
     note="Malaysia NAG: cloxacillin 50–100 mg/kg/day PO in 4 divided doses for selected mild paediatric cellulitis/abscess; doses are specified for children <25 kg, then adult dosing is used.";
     caution="Abscess source control is central when indicated. Severe/systemic infection needs escalation and a different regimen.";
   } else if(tool==="acyclovir-varicella"){
     const mg=Math.min(weight*20,800);
     answer=`Varicella treatment reference: <strong>${round(mg,1)} mg per dose four times daily for 5 days</strong>${liquidText(mg,conc)}.`;
+    syr={drug:"acyclovir",rows:[{low:mg}],freq:"4 kali sehari (QID) × 5 hari",maxMg:800};
     note="Malaysian registered acyclovir product information: 20 mg/kg/dose QID for 5 days, maximum 800 mg per dose for paediatric varicella.";
     caution="Routine acyclovir is not required for every uncomplicated healthy child with chickenpox. Use when clinically indicated and adjust for renal impairment; maintain hydration.";
   } else if(tool==="aeba-bundle"){
@@ -268,6 +320,7 @@ function doseTool(){
     }
     const low=cap===null?weight:Math.min(weight,cap), high=cap===null?weight*2:Math.min(weight*2,cap);
     answer=`Acute asthma: <strong>${round(low,1)}–${round(high,1)} mg/day</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL/day at ${conc} mg/5 mL`:""} (${capText}).`;
+    syr={drug:"prednisolone",rows:[{name:"Dos rendah",low},{name:"Dos tinggi",low:high}],freq:"Sekali sehari, 3–5 hari (remaja ≥12 thn: 5–7 hari)"};
     note="MOH/MPA Paediatric Protocols 5th ed.: prednisolone 1–2 mg/kg/day; usually 3–5 days in children and 5–7 days in adolescents ≥12 years. Weaning is unnecessary unless systemic steroid exceeds 14 days.";
     caution="Give systemic corticosteroid early in AEBA. Use IV hydrocortisone if vomiting/unable to tolerate PO or in severe/life-threatening exacerbation.";
   } else if(tool==="salbutamol-neb"){
@@ -306,7 +359,7 @@ function doseTool(){
     }
   }
   const label=els.doseSelect.options[els.doseSelect.selectedIndex].text;
-  els.dose.innerHTML=`<h3>Dose result — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}</div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
+  els.dose.innerHTML=`<h3>Dose result — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}${syr?syrupBlock(syr):""}</div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
 els.search.addEventListener("input",render);
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});
