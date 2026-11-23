@@ -62,3 +62,8 @@ footer{max-width:1040px;margin:0 auto;padding:10px 18px 32px;color:var(--muted);
 .derm-sources{padding-top:10px}
 .derm-sources h3{font-size:.92rem;margin:0 0 5px;color:#263b48}
 @media (max-width:640px){.derm-grid{grid-template-columns:1fr}}
+
+.case-tools{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:10px 16px;border-bottom:1px solid var(--line);background:#f6fafb}
+.case-tools .chip{margin:0;color:var(--brand);font-weight:700}
+.dose-warn{background:var(--amberbg);color:var(--amber);border-radius:8px;padding:7px 10px;margin:0 0 8px;font-weight:700;font-size:.88rem}
+.results-top{margin-bottom:14px}

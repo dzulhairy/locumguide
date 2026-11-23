@@ -2,6 +2,20 @@ const reviewed = "5 October 2026";
 const categories = ["All","Respiratory","ENT","Dermatology","Paediatrics","GI","GU","MSK","Emergency"];
 let activeCategory = "All";
 const cases = window.LOCUM_CASES || [];
+const caseTools = {
+  "influenza":[["oseltamivir","Oseltamivir"],["paracetamol","Paracetamol"]],
+  "cap":[["amoxicillin-high","High-dose amoxicillin"]],
+  "aeba-paediatric":[["aeba-bundle","AEBA bundle"],["prednisolone-asthma","Prednisolone"],["salbutamol-neb","Salbutamol neb"]],
+  "aom":[["amoxicillin-high","High-dose amoxicillin"],["coamox14","Co-amoxiclav 14:1"],["cefuroxime","Cefuroxime"]],
+  "rhinosinusitis":[["cefuroxime","Cefuroxime (child)"]],
+  "pharyngitis":[["amox-gas","Amoxicillin GAS"],["azithro5","Azithromycin"]],
+  "gastroenteritis":[["ors-plan-b","ORS Plan B"],["maintenance-deficit","Maintenance + deficit"]],
+  "dengue":[["paracetamol","Paracetamol"]],
+  "anaphylaxis":[["adrenaline","IM adrenaline"]],
+  "varicella":[["acyclovir-varicella","Acyclovir"],["paracetamol","Paracetamol"]],
+  "impetigo":[["cloxacillin-ssti","Cloxacillin (child)"]],
+  "cellulitis":[["cloxacillin-ssti","Cloxacillin (child)"],["cephalexin","Cephalexin (child)"]]
+};
 const quickIds = ["aeba-paediatric","influenza","aom","asthma-exacerbation","gastroenteritis","uti","dengue","anaphylaxis","rash-triage"];
 const els = {
   search: document.getElementById("searchInput"), clear: document.getElementById("clearBtn"), results: document.getElementById("results"),
@@ -24,10 +38,15 @@ function section(title,items,cls="block"){
   if(!items?.length) return "";
   return `<section class="${cls}"><h3>${title}</h3><ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul></section>`;
 }
+function toolButtons(c){
+  const t=caseTools[c.id]; if(!t) return "";
+  return `<div class="case-tools"><span class="small">Dose tool:</span>${t.map(([v,l])=>`<button type="button" class="chip tool-link" data-tool="${v}">${l} →</button>`).join("")}</div>`;
+}
 function card(c){
   return `<article class="case-card">
     <div class="case-head"><div><h2>${c.title}</h2><div class="category">${[c.category,...(c.tags||[])].join(" · ")}</div></div><span class="evidence">${c.evidence}</span></div>
     ${section("🚩 Red flags / do not miss",c.redFlags,"redflags")}
+    ${toolButtons(c)}
     <div class="case-body">
       ${section("Assessment",c.assessment)}
       ${section("Treatment",c.treatment)}
@@ -61,16 +80,24 @@ function doseTool(){
   if(!tool){els.dose.classList.add("hidden");return;}
   if(!Number.isFinite(weight)||weight<=0){els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">Enter a valid weight in kg.</p>`;els.dose.classList.remove("hidden");return;}
   let answer="",note="",caution="";
+  let weightWarn="";
+  if(weight>150) weightWarn="Weight above 150 kg — check for a typing error.";
+  else if(age!==null && age<1 && weight>15) weightWarn="Weight looks high for an infant — check age (years) and weight (kg).";
+  else if(age!==null && age<12 && weight>90) weightWarn="Weight looks high for this age — check entry.";
   if(tool==="paracetamol"){
     const mg=Math.min(weight*15,1000); answer=`Reference single dose: <strong>${round(mg,1)} mg</strong>${liquidText(mg,conc)} every 4–6 hours when needed.`;
     note="Common paediatric reference: 15 mg/kg/dose; do not exceed 4 doses in 24 hours. Confirm age-specific/product instructions.";
     caution="Check duplicate paracetamol-containing products and liver disease/overdose risk.";
   } else if(tool==="ibuprofen"){
-    const low=weight*5,high=weight*10; answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 6–8 hours.`;
+    if(weight<7){ answer="<strong>Not recommended below 7 kg</strong> (FUKKM). Use paracetamol instead."; note="FUKKM: ibuprofen 5–10 mg/kg/dose; not recommended for children <7 kg."; caution="Avoid in suspected dengue, dehydration or renal impairment."; }
+    else {
+    const low=Math.min(weight*5,400),high=Math.min(weight*10,400); answer=`Reference range: <strong>${round(low,1)}–${round(high,1)} mg per dose</strong>${conc?` ≈ ${round(low*5/conc,2)}–${round(high*5/conc,2)} mL at ${conc} mg/5 mL`:""} every 6–8 hours.`;
     note="FUKKM: 5–10 mg/kg/dose; not recommended for children <7 kg. Use the lowest effective dose for the shortest duration.";
-    caution="Avoid/seek advice in dehydration, renal impairment, GI bleeding risk, NSAID-sensitive asthma or suspected dengue. FUKKM does not indicate ibuprofen for fever due to infection.";
+    caution="Avoid/seek advice in dehydration, renal impairment, GI bleeding risk, NSAID-sensitive asthma or suspected dengue. FUKKM does not indicate ibuprofen for fever due to infection. Calculator caps at 400 mg/dose.";
+    }
   } else if(tool==="oseltamivir"){
-    const months=age===null?null:age*12; let mg;
+    if(age===null){ els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">Enter age as well — infants &lt;1 year use mg/kg dosing, not weight bands.</p>`;els.dose.classList.remove("hidden");return; }
+    const months=age*12; let mg;
     if(months!==null && months<9) mg=weight*3; else if(months!==null && months<12) mg=weight*3.5; else if(weight<=15) mg=30; else if(weight<=23) mg=45; else if(weight<=40) mg=60; else mg=75;
     answer=`Treatment dose: <strong>${round(mg,1)} mg PO twice daily for 5 days</strong>${liquidText(mg,conc)}.`;
     note="Malaysia NAG: <9 months 3 mg/kg BD; 9–11 months 3.5 mg/kg BD; age 1–12 years uses weight bands; >40 kg 75 mg BD.";
@@ -163,7 +190,7 @@ function doseTool(){
     }
     const predLow=predCap===null?weight:Math.min(weight,predCap), predHigh=predCap===null?weight*2:Math.min(weight*2,predCap);
     const hydLow=Math.min(weight*4,100), hydHigh=Math.min(weight*5,100);
-    const mgso4=weight*50, mgso4ml=weight*0.1;
+    const mgso4=Math.min(weight*50,2000), mgso4ml=mgso4/500;
     answer=`<strong>AEBA quick-dose bundle</strong>
       <ul>
         <li><strong>Salbutamol MDI + spacer:</strong> ${mdi}; may repeat q20 min ×3 in the first hour.</li>
@@ -171,7 +198,7 @@ function doseTool(){
         <li><strong>Ipratropium neb (severe):</strong> ${iprat}; q20 min ×3 in first hour.</li>
         <li><strong>Prednisolone PO:</strong> ${round(predLow,1)}–${round(predHigh,1)} mg/day (1–2 mg/kg/day; ${predCapText}).</li>
         <li><strong>Hydrocortisone IV:</strong> ${round(hydLow,1)}–${round(hydHigh,1)} mg/dose q6h (4–5 mg/kg/dose; max 100 mg).</li>
-        <li><strong>MgSO₄ 50% IV:</strong> ${round(mgso4,0)} mg = ${round(mgso4ml,2)} mL over 20 min (50 mg/kg).</li>
+        <li><strong>MgSO₄ 50% IV:</strong> ${round(mgso4,0)} mg = ${round(mgso4ml,2)} mL over 20 min (50 mg/kg, max 2 g).</li>
         <li><strong>Budesonide neb adjunct:</strong> 0.5 mg/dose ×3 within first hour in severe/life-threatening AEBA; max 2 mg/day.</li>
       </ul>`;
     note="MOH/MPA Paediatric Protocols 5th ed. Use pMDI + spacer preferentially in mild–moderate AEBA; oxygen-driven nebulisation + ipratropium is used in severe/life-threatening AEBA. Give systemic corticosteroid early.";
@@ -187,10 +214,10 @@ function doseTool(){
     note="Frequent ipratropium with SABA may continue for up to the second hour in severe attacks, then should be spaced to q4–6h or discontinued according to response.";
     caution="Ipratropium is an add-on to SABA in severe/life-threatening AEBA, not a substitute for salbutamol.";
   } else if(tool==="magnesium-iv-asthma"){
-    const mg=weight*50, ml=weight*0.1;
-    answer=`Magnesium sulphate 50%: <strong>${round(mg,0)} mg = ${round(ml,2)} mL IV over 20 minutes</strong> (50 mg/kg).`;
+    const mg=Math.min(weight*50,2000), ml=mg/500;
+    answer=`Magnesium sulphate 50%: <strong>${round(mg,0)} mg = ${round(ml,2)} mL IV over 20 minutes</strong> (50 mg/kg, max 2 g).`;
     note="MOH/MPA Paediatric Protocols 5th ed.: IV MgSO₄ is an adjunct/second-line option for severe or life-threatening AEBA not responding adequately to first-line inhaled therapy.";
-    caution="Monitor blood pressure and cardiorespiratory status; verify local unit maximum/policy in larger adolescents.";
+    caution="Monitor blood pressure and cardiorespiratory status; calculator caps at 2 g single dose; verify local unit policy.";
   } else if(tool==="budesonide-neb-asthma"){
     answer="<strong>Budesonide nebulised 0.5 mg/dose ×3 doses within the first hour</strong>; maximum total daily dose 2 mg.";
     note="MOH/MPA Paediatric Protocols 5th ed.: may be mixed with SABA/SAMA and considered in severe/life-threatening AEBA.";
@@ -242,10 +269,17 @@ function doseTool(){
       caution="Shock requires immediate resuscitation first. Hypernatraemia, DKA, meningitis and other special states need slower/specific correction; replace ongoing losses separately.";
     }
   }
-  els.dose.innerHTML=`<h3>Dose result</h3><p class="dose-answer">${answer}</p><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
+  const label=els.doseSelect.options[els.doseSelect.selectedIndex].text;
+  els.dose.innerHTML=`<h3>Dose result — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<p class="dose-answer">${answer}</p><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
 els.search.addEventListener("input",render);
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});
 [els.age,els.weight,els.concentration,els.dehydration].forEach(el=>el.addEventListener("input",doseTool));
-els.doseSelect.addEventListener("change",doseTool);
+els.doseSelect.addEventListener("change",()=>{els.concentration.value="";doseTool();});
+els.results.addEventListener("click",e=>{
+  const b=e.target.closest(".tool-link"); if(!b) return;
+  els.doseSelect.value=b.dataset.tool; els.concentration.value=""; doseTool();
+  document.getElementById("doseTools").scrollIntoView({behavior:"smooth",block:"start"});
+  if(!els.weight.value) setTimeout(()=>els.weight.focus({preventScroll:true}),400);
+});
 renderCategories();renderQuick();render();doseTool();

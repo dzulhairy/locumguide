@@ -1,6 +1,14 @@
-# Locum Quick Guide MY — v2.4
+# Locum Quick Guide MY — v2.5
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
+
+## Version 2.5 changes (23 Nov 2026)
+- Search results now appear directly under the search box (mobile-friendly).
+- Case cards link straight to the relevant dose calculator.
+- Liquid-strength field is cleared when switching calculators (prevents a stale mg/5 mL being applied to a different drug).
+- Weight sanity warnings (e.g. 80 kg entered for an infant).
+- Ibuprofen: blocked <7 kg, capped at 400 mg/dose. Oseltamivir: age required (infant mg/kg dosing). IV MgSO₄: capped at 2 g.
+- Service worker: same-origin GET only, ACD Scabies module cached for offline use; app icon added.
 
 ## Version 2.4 features
 - Search by diagnosis, symptom, Malay/English synonym or medicine.
@@ -96,6 +104,6 @@ Unit populations should be mutually exclusive, and contacts should be deduplicat
 Original functionality: interactive ACD checklist, IACS 2020 criteria, and a copyable aggregate situation report. It is a static client-side resource with no cloud database or synchronization. **Never enter patient-identifiable information or upload line lists containing personal data to the public GitHub repository.** It supports but does not replace MOH Malaysia guidance, local PKD/JKN protocols or clinical judgement.
 
 
-### CDC-owned Google Form (pending)
+### CDC-owned Google Form
 
-The previous external Google Form link was disabled because the form is owned by another account. The CDC-owned replacement has not yet been created. The current Google Sheets template is not itself a Form. Do not direct CDC staff to submit identifiable data to an unverified form.
+The ACD Scabies module links to the CDC PKD Besut-owned screening Google Form. The form collects data outside this static app, so confirm that its content and access rules follow PKD/JKN data-protection policy.
