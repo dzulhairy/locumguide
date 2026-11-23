@@ -479,7 +479,7 @@ scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); i
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.9 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v2.10 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
   normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");

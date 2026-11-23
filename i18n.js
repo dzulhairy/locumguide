@@ -67,6 +67,7 @@ const D = {
   checkLabel:{ms:"Semak label botol sebelum beri. Butang 📋 salin teks preskripsi.",en:"Check the bottle label before giving. 📋 copies the prescription text."},
   counsel:{ms:"💬 Kaunseling pesakit / cara guna ubat",en:"💬 Patient counselling / how to use"},
   copyCounsel:{ms:"Salin untuk pesakit",en:"Copy for patient"},
+  logout:{ms:"Log keluar",en:"Sign out"},
   copy:{ms:"Salin",en:"Copy"},
   copyRx:{ms:"Salin preskripsi",en:"Copy prescription"},
   copied:{ms:"Disalin",en:"Copied"},

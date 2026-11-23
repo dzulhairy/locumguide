@@ -2,6 +2,12 @@
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
+## Version 2.10 changes (23 Nov 2026) — login gate
+- Login screen (login ID + password) before the app; "remember me on this device" and a sign-out button.
+- Only a SHA-256 hash of `loginid:password` is stored, in `auth.js`; the password itself is not in the repository.
+- **Limitation:** this is a client-side gate on a static GitHub Pages site. It keeps casual visitors out, but the JS/data files can still be fetched directly by anyone who knows their URLs, and a short password hash can be brute-forced. For real access control, host behind an authenticating service (e.g. Cloudflare Access).
+- To change the password, replace `HASH` in `auth.js` with the SHA-256 of `loginid:newpassword` (login ID in lowercase).
+
 ## Version 2.9 changes (23 Nov 2026) — patient counselling
 - New **💬 Patient counselling / how to use** section on 39 cards, in BM and EN, with a 📋 "Copy for patient" button. It covers:
   - scabicides (permethrin step-by-step, benzyl benzoate, sulphur, crotamiton)
