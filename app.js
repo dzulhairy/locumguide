@@ -17,8 +17,8 @@ const caseTools = {
   "cellulitis":[["cloxacillin-ssti","Cloxacillin (child)"],["cephalexin","Cephalexin (child)"]],
   "dengue-paeds":[["paracetamol-dengue","Paracetamol (dengue 10 mg/kg)"],["maintenance-fluid","Maintenance fluid"]],
   "hfmd":[["paracetamol","Paracetamol"]],
-  "croup":[["dexamethasone-croup","Dexamethasone (croup)"]],
-  "febrile-seizure":[["paracetamol","Paracetamol"]],
+  "croup":[["dexamethasone-croup","Croup (PP5)"]],
+  "febrile-seizure":[["seizure-benzo","Seizure >5 min (benzodiazepine)"],["paracetamol","Paracetamol"]],
   "preseptal-cellulitis":[["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
   "uti-paeds":[["nitrofurantoin-uti","Nitrofurantoin"],["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
   "skin-abscess":[["cephalexin","Cephalexin (child)"],["cloxacillin-ssti","Cloxacillin (child)"]],
@@ -186,10 +186,41 @@ function doseTool(){
     note="MaHTAS CPG Dengue in Children (2nd ed.): paracetamol 10 mg/kg/dose, max 3–4 doses/24 h — dose reduced because of the theoretical risk of liver injury. Tepid sponge if still febrile.";
     caution="Do NOT give aspirin, ibuprofen/other NSAIDs or IM injections in suspected dengue.";
   } else if(tool==="dexamethasone-croup"){
-    const mild=weight*0.15, severe=Math.min(weight*0.6,12), pred=weight*1;
-    answer=`Mild–moderate: <strong>dexamethasone ${round(mild,2)} mg PO</strong> single dose (0.15 mg/kg)${liquidText(mild,conc)} OR prednisolone ${round(pred,1)} mg PO (1 mg/kg).<br>Severe: <strong>dexamethasone ${round(severe,1)} mg</strong> PO/IM/IV (0.6 mg/kg, max 12 mg) + nebulised adrenaline.`;
-    note="RCH Melbourne croup guideline. Barking cough without stridor does not need steroid. Observe ≥3 h after nebulised adrenaline. Check against the MOH Paediatric Protocol used in your unit.";
-    caution="Drooling, toxic appearance or soft stridor in a deteriorating child: airway emergency — do not distress the child; senior/anaesthetic help.";
+    const mild=weight*0.15, modLo=weight*0.3, modHi=weight*0.6, predLo=weight*1, predHi=weight*2, adrMl=Math.min(weight*0.5,5);
+    answer=`<strong>Mild (Westley ≤2):</strong> dexamethasone <strong>${round(mild,2)} mg</strong> PO/parenteral single dose (0.15 mg/kg; may repeat at 12 and 24 h)${liquidText(mild,conc)}; OR prednisolone ${round(predLo,1)}–${round(predHi,1)} mg PO single dose (1–2 mg/kg); OR nebulised budesonide 2 mg (if vomiting).<br>
+      <strong>Moderate (3–7):</strong> dexamethasone <strong>${round(modLo,1)}–${round(modHi,1)} mg</strong> single dose (0.3–0.6 mg/kg) and/or nebulised budesonide 2 mg stat then 1 mg 12-hourly.<br>
+      <strong>Severe (8–11) / not improving:</strong> nebulised adrenaline 1:1000 <strong>${round(adrMl,1)} mL</strong> (0.5 mL/kg, max 5 mL) + dexamethasone <strong>${round(modHi,1)} mg</strong> parenteral (0.6 mg/kg) + budesonide + oxygen.`;
+    note=`MOH Paediatric Protocols 5th ed. (2025), Ch. 33 Viral Croup algorithm. The croup algorithm gives no maximum dexamethasone dose${modHi>12?"; other guidelines (e.g. RCH) cap at 12 mg — check unit policy":""}. Admit moderate/severe croup, age <6 months, poor intake or toxic appearance.`;
+    caution="Drooling, toxic appearance or soft stridor in a deteriorating child: airway emergency — keep the child calm; senior/anaesthetic/ENT help.";
+  } else if(tool==="seizure-benzo"){
+    const mid=Math.min(weight*0.2,10), diazMax=(age!==null&&age<1)?5:10, diazLo=Math.min(weight*0.15,diazMax), diazHi=Math.min(weight*0.2,diazMax);
+    let prKg=null, prTxt;
+    if(age===null){prTxt="Enter age for the rectal diazepam age band.";}
+    else if(age<5){prKg=[0.5,0.5];prTxt="<5 years: 0.5 mg/kg";}
+    else if(age<6){prKg=[0.3,0.5];prTxt="age 5: PP5 bands are <5 y 0.5 mg/kg and 6–11 y 0.3 mg/kg";}
+    else if(age<12){prKg=[0.3,0.3];prTxt="6–11 years: 0.3 mg/kg";}
+    else {prKg=[0.2,0.2];prTxt="≥12 years: 0.2 mg/kg";}
+    const pr=prKg?[Math.min(weight*prKg[0],10),Math.min(weight*prKg[1],10)]:null;
+    const buc=[Math.min(weight*0.2,10),Math.min(weight*0.5,10)];
+    const im=weight>40?10:weight>=13?5:Math.min(weight*0.2,10);
+    answer=`<strong>1st line (5–10 min of seizure) — max 2 benzodiazepine doses including pre-hospital:</strong>
+      <ul>
+        <li><strong>IV midazolam:</strong> ${round(mid,1)} mg (0.2 mg/kg, max 10 mg) at 2 mg/min</li>
+        <li><strong>IV diazepam:</strong> ${round(diazLo,1)}–${round(diazHi,1)} mg (0.15–0.2 mg/kg; max ${diazMax} mg)</li>
+        <li><strong>Rectal diazepam:</strong> ${pr?`${round(pr[0],1)}${pr[1]!==pr[0]?`–${round(pr[1],1)}`:""} mg`:"—"} (${prTxt}; max 10 mg)</li>
+        <li><strong>Buccal midazolam:</strong> ${round(buc[0],1)}–${round(buc[1],1)} mg (0.2–0.5 mg/kg, max 10 mg)</li>
+        <li><strong>Intranasal midazolam:</strong> ${round(Math.min(weight*0.2,10),1)} mg (0.2 mg/kg, max 10 mg)</li>
+        <li><strong>IM midazolam:</strong> ${round(im,1)} mg (${weight>40?">40 kg: 10 mg":weight>=13?"13–40 kg: 5 mg":"0.2 mg/kg"})</li>
+      </ul>
+      <strong>2nd line (still seizing 5 min after 2nd benzodiazepine) — choose ONE:</strong>
+      <ul>
+        <li>IV phenytoin <strong>${round(Math.min(weight*20,1250),0)} mg</strong> (20 mg/kg, max 1.25 g) over 20–30 min with cardiac monitoring</li>
+        <li>IV levetiracetam <strong>${round(weight*40,0)} mg</strong> (40 mg/kg) over 5–10 min</li>
+        <li>IV phenobarbitone <strong>${round(Math.min(weight*20,1000),0)} mg</strong> (20 mg/kg, max 1 g) over 20–30 min</li>
+        <li>IV sodium valproate <strong>${round(Math.min(weight*20,1250),0)} mg</strong> (20 mg/kg, max 1.25 g) over 5–10 min</li>
+      </ul>`;
+    note="MOH Paediatric Protocols 5th ed. (2025), Ch. 48 Convulsive Status Epilepticus algorithm and Table 1. An individual emergency plan takes precedence; pre-hospital benzodiazepine doses count. Check glucose and electrolytes.";
+    caution="Avoid valproate if inborn error of metabolism or liver dysfunction is suspected; avoid phenytoin in Dravet syndrome; do not give phenytoin too fast (bradycardia/asystole). Refractory (30–60 min): PICU, midazolam infusion, intubation.";
   } else if(tool==="ibuprofen"){
     if(weight<7){ answer="<strong>Not recommended below 7 kg</strong> (FUKKM). Use paracetamol instead."; note="FUKKM: ibuprofen 5–10 mg/kg/dose; not recommended for children <7 kg."; caution="Avoid in suspected dengue, dehydration or renal impairment."; }
     else {
@@ -207,8 +238,8 @@ function doseTool(){
     note="Malaysia NAG: <9 months 3 mg/kg BD; 9–11 months 3.5 mg/kg BD; age 1–12 years uses weight bands; >40 kg 75 mg BD.";
     caution="Renal dose adjustment may be required. Verify exact formulation/concentration.";
   } else if(tool==="adrenaline"){
-    const mg=Math.min(weight*0.01,0.5); answer=`IM adrenaline 1 mg/mL: <strong>${round(mg,2)} mg = ${round(mg,2)} mL</strong> into the outer mid-thigh.`;
-    note="0.01 mg/kg per dose, maximum 0.5 mg. Repeat after 5 minutes if life-threatening features persist while arranging emergency transfer.";
+    const mg=Math.min(weight*0.01,0.5); answer=`IM adrenaline 1 mg/mL (1:1000): <strong>${round(mg,2)} mg = ${round(mg,2)} mL</strong> into the outer mid-thigh.${age!==null?`<br>PP5 pre-hospital age-band dose: <strong>${age<6?"150 mcg (0.15 mL)":age<=12?"300 mcg (0.3 mL)":"500 mcg (0.5 mL)"}</strong>.`:""}`;
+    note="PP5 Ch. 116: in hospital 10 mcg/kg (0.01 mL/kg of 1:1000), repeat after 5 min if no improvement; pre-hospital <6 y 150 mcg, 6–12 y 300 mcg, >12 y 500 mcg. Maximum 0.5 mg per dose.";
     caution="For suspected anaphylaxis only. Do not delay adrenaline for antihistamines or IV access.";
   } else if(tool==="amoxicillin-high"){
     const mg=Math.min(weight*45,1000); answer=`BID high-dose reference: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
@@ -424,15 +455,23 @@ function setScoreOpen(open){
   if(open){ if(window.renderScores) renderScores(scoreWrap); scoreWrap.scrollIntoView({behavior:"smooth",block:"start"}); }
 }
 scoreToggle.addEventListener("click",()=>setScoreOpen(scoreWrap.classList.contains("hidden")));
+const normToggle=document.getElementById("normToggle"), normWrap=document.getElementById("normTools");
+function setNormOpen(open){
+  normWrap.classList.toggle("hidden",!open); normToggle.setAttribute("aria-expanded",String(open));
+  normToggle.textContent=t(open?"normBtnClose":"normBtn");
+  if(open){ if(window.renderNormals) renderNormals(normWrap); normWrap.scrollIntoView({behavior:"smooth",block:"start"}); }
+}
+normToggle.addEventListener("click",()=>setNormOpen(normWrap.classList.contains("hidden")));
 scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); if(!b) return; setDoseOpen(true,false); els.doseSelect.value=b.dataset.tool; els.concentration.value=""; doseTool(); dosePanelWrap.scrollIntoView({behavior:"smooth",block:"start"});});
 // language
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.7 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v2.8 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
+  normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");
 }
 langBtn.addEventListener("click",()=>setLang(getLang()==="ms"?"en":"ms"));
-document.addEventListener("langchange",()=>{syncLangUi();renderCategories();render();doseTool();if(!scoreWrap.classList.contains("hidden")&&window.renderScores) renderScores(scoreWrap);});
+document.addEventListener("langchange",()=>{syncLangUi();renderCategories();render();doseTool();if(!scoreWrap.classList.contains("hidden")&&window.renderScores) renderScores(scoreWrap);if(!normWrap.classList.contains("hidden")&&window.renderNormals) renderNormals(normWrap);});
 syncLangUi();renderCategories();renderQuick();renderPersonal();render();doseTool();

@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
-  <link rel="stylesheet" href="styles.css?v=2.7" />
+  <link rel="stylesheet" href="styles.css?v=2.8" />
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +20,10 @@
     <div class="topbar-side">
       <div class="badge-row"><span class="review-badge" id="versionBadge">v2.7 · NAG-checked 23 Nov 2026</span><button id="langToggle" class="lang-toggle" type="button" data-i18n-aria="langLabel">EN</button></div>
       <button id="doseToggle" class="dose-toggle" type="button" aria-expanded="false" aria-controls="doseTools">🧮 Dose calculator</button>
-      <button id="scoreToggle" class="dose-toggle secondary" type="button" aria-expanded="false" aria-controls="scoreTools">📊 Scores &amp; CrCl</button>
+      <div class="side-pair">
+        <button id="normToggle" class="dose-toggle secondary" type="button" aria-expanded="false" aria-controls="normTools">🩺 Normal values</button>
+        <button id="scoreToggle" class="dose-toggle secondary" type="button" aria-expanded="false" aria-controls="scoreTools">📊 Scores &amp; CrCl</button>
+      </div>
     </div>
   </header>
 
@@ -55,7 +58,8 @@
             <option value="nitrofurantoin-uti">Nitrofurantoin — paediatric lower UTI</option>
             <option value="cloxacillin-ssti">Cloxacillin — mild paediatric SSTI</option>
             <option value="acyclovir-varicella">Acyclovir — paediatric varicella</option>
-            <option value="dexamethasone-croup">Dexamethasone — croup</option>
+            <option value="dexamethasone-croup">Croup — dexamethasone / budesonide / adrenaline (PP5)</option>
+            <option value="seizure-benzo">Seizure &gt;5 min — benzodiazepine &amp; 2nd line (PP5)</option>
             <option value="aeba-bundle">AEBA paediatric — full emergency dose bundle</option>
             <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
             <option value="hydrocortisone-iv-asthma">Hydrocortisone IV — severe AEBA</option>
@@ -89,6 +93,7 @@
       <p class="small tool-note" data-i18n="toolNote"></p>
     </section>
 
+    <section id="normTools" class="tool-card hidden" aria-label="Paediatric normal values"></section>
     <section id="scoreTools" class="tool-card hidden" aria-label="Scores and renal function"></section>
 
     <section class="warning">
@@ -171,21 +176,23 @@
     <p data-i18n="footer">Locum Quick Guide MY · static clinician reference · Malaysia-first sources · no patient-identifiable information.</p>
   </footer>
 
-  <script src="i18n.js?v=2.7"></script>
+  <script src="i18n.js?v=2.8"></script>
   <script>window.LOCUM_CASES = [];</script>
-  <script src="cases-respiratory.js?v=2.7"></script>
-  <script src="cases-paeds-asthma.js?v=2.7"></script>
-  <script src="cases-ent.js?v=2.7"></script>
-  <script src="cases-acute.js?v=2.7"></script>
-  <script src="cases-derm1.js?v=2.7"></script>
-  <script src="cases-derm2.js?v=2.7"></script>
-  <script src="cases-msk.js?v=2.7"></script>
-  <script src="cases-locum2.js?v=2.7"></script>
-  <script src="cases-locum3.js?v=2.7"></script>
-  <script src="cases-review2026.js?v=2.7"></script>
-  <script src="scores.js?v=2.7"></script>
-  <script src="app.js?v=2.7"></script>
-  <script src="derm-guide.js?v=2.7"></script>
+  <script src="cases-respiratory.js?v=2.8"></script>
+  <script src="cases-paeds-asthma.js?v=2.8"></script>
+  <script src="cases-ent.js?v=2.8"></script>
+  <script src="cases-acute.js?v=2.8"></script>
+  <script src="cases-derm1.js?v=2.8"></script>
+  <script src="cases-derm2.js?v=2.8"></script>
+  <script src="cases-msk.js?v=2.8"></script>
+  <script src="cases-locum2.js?v=2.8"></script>
+  <script src="cases-locum3.js?v=2.8"></script>
+  <script src="cases-review2026.js?v=2.8"></script>
+  <script src="cases-pp5.js?v=2.8"></script>
+  <script src="scores.js?v=2.8"></script>
+  <script src="normals.js?v=2.8"></script>
+  <script src="app.js?v=2.8"></script>
+  <script src="derm-guide.js?v=2.8"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));

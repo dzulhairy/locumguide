@@ -5,6 +5,8 @@ const D = {
   subtitle:{ms:"Cari kes, semak red flag, sahkan rawatan, kira dos dan buka garis panduan sumber.",en:"Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline."},
   doseBtn:{ms:"🧮 Kalkulator dos",en:"🧮 Dose calculator"},
   doseBtnClose:{ms:"✕ Tutup kalkulator dos",en:"✕ Close dose calculator"},
+  normBtn:{ms:"🩺 Nilai normal",en:"🩺 Normal values"},
+  normBtnClose:{ms:"✕ Tutup nilai normal",en:"✕ Close normal values"},
   toolsBtn:{ms:"📊 Skor & CrCl",en:"📊 Scores & CrCl"},
   toolsBtnClose:{ms:"✕ Tutup skor",en:"✕ Close scores"},
   doseKicker:{ms:"Kalkulator dos",en:"Dose tools"},

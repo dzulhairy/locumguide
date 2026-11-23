@@ -59,11 +59,11 @@ const DH=[
   {k:"eyes",g:"SM",ms:"Mata cengkung",en:"Sunken eyes"},
   {k:"nodr",g:"S",ms:"Tidak boleh minum / minum sedikit",en:"Not able to drink or drinking poorly"},
   {k:"thir",g:"M",ms:"Minum dengan rakus / dahaga",en:"Drinks eagerly, thirsty"},
-  {k:"vslo",g:"S",ms:"Cubitan kulit kembali SANGAT perlahan (≥2 s)",en:"Skin pinch goes back VERY slowly (≥2 s)"},
+  {k:"vslo",g:"S",ms:"Cubitan kulit kembali SANGAT perlahan (>2 s)",en:"Skin pinch goes back VERY slowly (>2 s)"},
   {k:"slow",g:"M",ms:"Cubitan kulit kembali perlahan (<2 s)",en:"Skin pinch goes back slowly (<2 s)"}
 ];
 function dehydHtml(){
-  return `<div class="score-box"><h3>${L("Dehidrasi kanak-kanak (WHO IMCI)","Child dehydration (WHO IMCI)")}</h3>
+  return `<div class="score-box"><h3>${L("Dehidrasi kanak-kanak (PP5 / WHO)","Child dehydration (PP5 / WHO)")}</h3>
     <div class="checks">${DH.map(d=>`<label class="check"><input type="checkbox" data-dh="${d.k}"> ${L(d.ms,d.en)}</label>`).join("")}</div>
     <div id="dhOut" class="dose-panel" aria-live="polite"></div></div>`;
 }
@@ -71,9 +71,9 @@ function dehydCalc(){
   const on=DH.filter(d=>document.querySelector(`[data-dh="${d.k}"]`).checked);
   const s=on.filter(d=>d.g.includes("S")).length, m=on.filter(d=>d.g.includes("M")).length;
   let cls, plan;
-  if(s>=2){cls=L("<strong>DEHIDRASI TERUK</strong>","<strong>SEVERE DEHYDRATION</strong>"); plan=L("Plan C: cecair IV segera / rujuk kecemasan. Jangan guna kalkulator defisit sahaja untuk renjatan.","Plan C: urgent IV fluids / emergency referral. Do not rely on a deficit calculator in shock.");}
-  else if(m>=2){cls=L("<strong>DEHIDRASI SEDERHANA (some)</strong>","<strong>SOME DEHYDRATION</strong>"); plan=L(`Plan B: ORS 75 mL/kg dalam 4 jam, kemudian nilai semula. <button type="button" class="chip tool-link" data-tool="ors-plan-b">Kira ORS Plan B →</button>`,`Plan B: ORS 75 mL/kg over 4 h, then reassess. <button type="button" class="chip tool-link" data-tool="ors-plan-b">Calculate ORS Plan B →</button>`);}
-  else {cls=L("<strong>TIADA DEHIDRASI KETARA</strong>","<strong>NO DEHYDRATION</strong>"); plan=L("Plan A: cecair tambahan dan ORS di rumah, teruskan makan; beri nasihat bila perlu kembali.","Plan A: extra fluids and ORS at home, continue feeding; advise when to return.");}
+  if(s>=2){cls=L("<strong>DEHIDRASI TERUK</strong> (>10%)","<strong>SEVERE DEHYDRATION</strong> (>10%)"); plan=L("Plan C: cecair IV segera / rujuk kecemasan. Jangan guna kalkulator defisit sahaja untuk renjatan.","Plan C: urgent IV fluids / emergency referral. Do not rely on a deficit calculator in shock.");}
+  else if(m>=2){cls=L("<strong>DEHIDRASI SEDERHANA</strong> (5–10%, IMCI 'some')","<strong>MODERATE / SOME DEHYDRATION</strong> (5–10%)"); plan=L(`Plan B: ORS 75 mL/kg dalam 4 jam, kemudian nilai semula. <button type="button" class="chip tool-link" data-tool="ors-plan-b">Kira ORS Plan B →</button>`,`Plan B: ORS 75 mL/kg over 4 h, then reassess. <button type="button" class="chip tool-link" data-tool="ors-plan-b">Calculate ORS Plan B →</button>`);}
+  else {cls=L("<strong>DEHIDRASI RINGAN / TIADA TANDA</strong> (<5%)","<strong>MILD / NO SIGNS OF DEHYDRATION</strong> (<5%)"); plan=L("Plan A: cecair tambahan dan ORS di rumah, teruskan makan; beri nasihat bila perlu kembali.","Plan A: extra fluids and ORS at home, continue feeding; advise when to return.");}
   document.getElementById("dhOut").innerHTML=`<p class="dose-answer">${cls}</p><p>${plan}</p><p class="small">${L("Klasifikasi perlukan ≥2 tanda dalam kumpulan. Bayi &lt;2 bulan dan malnutrisi teruk perlu pendekatan berbeza.","Classification needs ≥2 signs in a group. Infants <2 months and severe malnutrition need a different approach.")}</p>`;
 }
 
@@ -87,6 +87,7 @@ window.renderScores = function(root){
       <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2102953" target="_blank" rel="noopener noreferrer">Inker et al. NEJM 2021 — CKD-EPI 2021 creatinine equation</a>
       <a href="https://sites.google.com/moh.gov.my/nag/contents/section-a-adult/a11-respiratory-infections" target="_blank" rel="noopener noreferrer">MOH NAG 2024 — A11: CURB-65 interpretation</a>
       <a href="https://thorax.bmj.com/content/58/5/377" target="_blank" rel="noopener noreferrer">Lim et al. Thorax 2003 — CURB-65</a>
+      <a href="https://mpaeds.my/wp-content/uploads/2026/03/Paediatric-Protocols-for-Malaysia-Hospital-1.pdf" target="_blank" rel="noopener noreferrer">MOH Paediatric Protocols 5th ed. (2025) — Ch. 10 dehydration chart & Plan B</a>
       <a href="https://www.who.int/publications/m/item/integrated-management-of-childhood-illness---chart-booklet-(march-2014)" target="_blank" rel="noopener noreferrer">WHO IMCI Chart Booklet 2014 — dehydration classification</a>
     </div>`;
   ["rAge","rWt","rSex","rCr"].forEach(id=>document.getElementById(id).addEventListener("input",renalCalc));
