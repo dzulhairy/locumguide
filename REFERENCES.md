@@ -97,6 +97,43 @@ MOH *Paediatric Protocols for Malaysian Hospitals*, 5th ed. (Kementerian Kesihat
 
 Patient-counselling text follows the doses and cautions on each card. Device technique (inhaler + spacer, nasal spray, eye and ear drops, pessary) is standard pharmacy counselling.
 
+## 7. Added in v2.12 — measles topic and clinical photos
+
+- **Measles card:** WHO fact sheet on measles (https://www.who.int/news-room/fact-sheets/detail/measles) for clinical features, complications, infectivity and vitamin A; Paediatric Protocols 5th ed. for vitamin A doses by age, health-office notification and post-exposure immunoglobulin.
+- **Clinical photos:** 29 images from Wikimedia Commons, each public domain or freely licensed (CC BY-SA / GFDL). They were resized to ≤640 px for the app. The author and licence are shown under each photo and listed below.
+
+| File | Author | Licence | Source page |
+|---|---|---|---|
+| `images/derm/zoster-2.jpg` | Fisle | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Herpes_zoster_chest.png |
+| `images/derm/zoster-1.jpg` | Milorad Dimic MD | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Herpes_zoster_ophthalmicus.2.jpg |
+| `images/derm/varicella-2.jpg` | Moheen Reeyad | CC BY-SA 4.0, resized | https://commons.wikimedia.org/wiki/File:A_child_with_chickenpox_%2801%29.jpg |
+| `images/derm/varicella-1.jpg` | Zeimusu | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Chickenpox_blister-%28closeup%29.jpg |
+| `images/derm/measles-2.jpg` | CDC Global, Jim Goodson, M.P.H. | Public domain | https://commons.wikimedia.org/wiki/File:Measles_child_Philippines.jpg |
+| `images/derm/measles-1.jpg` | CDC | Public domain | https://commons.wikimedia.org/wiki/File:Koplik_spots%2C_measles_6111_lores.jpg |
+| `images/derm/genital-ulcer-1.jpg` | SOA-AIDS Amsterdam | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:SOA-Herpes-genitalis-female.jpg |
+| `images/derm/genital-ulcer-2.jpg` | CDC/M. Rein, VD | Public domain | https://commons.wikimedia.org/wiki/File:Chancres_on_the_penile_shaft_due_to_a_primary_syphilitic_infection_caused_by_Treponema_pallidum_6803_lores.jpg |
+| `images/derm/genital-ulcer-3.jpg` | CDC/ Robert Sumpter | Public domain | https://commons.wikimedia.org/wiki/File:Secondary_Syphilis_on_palms_CDC_6809_lores.rsh.jpg |
+| `images/derm/hfmd-1.jpg` | James Heilman, MD | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Characteristic_rash_of_hand%2C_foot%2C_and_mouth_disease%2C_on_human_hands.jpg |
+| `images/derm/hfmd-2.jpg` | Ngufra | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Hand_foot_and_mouth_disease_on_child_feet.jpg |
+| `images/derm/impetigo-1.jpg` | Åsa Thörn | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Impetigo-infected.jpg |
+| `images/derm/impetigo-2.jpg` | Littlekidsdoc | CC BY-SA 4.0, resized | https://commons.wikimedia.org/wiki/File:Bullous_impetigo1.jpg |
+| `images/derm/scabies-1.jpg` | Michael Geary | Public domain | https://commons.wikimedia.org/wiki/File:Scabies-burrow.jpg |
+| `images/derm/scabies-3.jpg` | Sven Teschke | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Acarodermatitis_Hand.jpg |
+| `images/derm/scabies-2.jpg` | Ukster1 at English Wikipedia (Original text: Andrew G) | Public domain | https://commons.wikimedia.org/wiki/File:Norwegian_Scabies_in_Homeless_AIDS_Patient.jpg |
+| `images/derm/tinea-1.jpg` | Dermanonymous | CC BY-SA 4.0, resized | https://commons.wikimedia.org/wiki/File:Tinea_Corporis_Right_buttock_wide.jpg |
+| `images/derm/tinea-versicolor-1.jpg` | Sarahrosenau on Flickr.com | CC BY-SA 2.0, resized | https://commons.wikimedia.org/wiki/File:Tinea_versicolor1.jpg |
+| `images/derm/tinea-versicolor-2.jpg` | Grook Da Oger | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Pityriasis_versicolor_frontal_retouche.jpg |
+| `images/derm/cutaneous-candida-1.jpg` | National Institute for Occupational Safety and Health | Public domain | https://commons.wikimedia.org/wiki/File:Axillary_intertrigo.png |
+| `images/derm/cellulitis-1.jpg` | Pshawnoah | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Cellulitis_Of_The_Leg.jpg |
+| `images/derm/cellulitis-2.jpg` | CDC/Dr. Thomas F. Sellers/Emory University | Public domain | https://commons.wikimedia.org/wiki/File:Facial_erysipelas.jpg |
+| `images/derm/urticaria-1.jpg` | James Heilman, MD | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Hives2010.JPG |
+| `images/derm/urticaria-2.jpg` | James Heilman, MD | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Angioedema2013.JPG |
+| `images/derm/conjunctivitis-1.jpg` | Joyhill09 | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:An_eye_with_viral_conjunctivitis.jpg |
+| `images/derm/stye-blepharitis-1.jpg` | Imrankabirhossain | CC BY-SA 4.0, resized | https://commons.wikimedia.org/wiki/File:External_hordeolum.jpg |
+| `images/derm/preseptal-cellulitis-1.jpg` | Afrodriguezg | CC BY-SA 3.0, resized | https://commons.wikimedia.org/wiki/File:Celulitis_Periorbitaria_%28Preseptal%29.JPG |
+| `images/derm/dengue-1.jpg` | United States Military | Public domain | https://commons.wikimedia.org/wiki/File:Denguerash.JPG |
+| `images/derm/rash-triage-1.jpg` | Глей А.І., Шкурба А.В. | Public domain | https://commons.wikimedia.org/wiki/File:%D0%A2%D0%B8%D0%BF%D0%BE%D0%B2%D0%B8%D0%B9_%D0%B2%D0%B8%D1%81%D0%B8%D0%BF_%D0%BD%D0%B0_%D0%BA%D0%B8%D1%81%D1%82%D1%96_%D0%BF%D1%80%D0%B8_%D0%BC%D0%B5%D0%BD%D1%96%D0%BD%D0%B3%D0%BE%D0%BA%D0%BE%D0%BA%D1%86%D0%B5%D0%BC%D1%96%D1%97.jpg |
+
 ## 5. Known limitations
 
 - The **2019 STEMI CPG** could not be downloaded (moh.gov.my blocks automated access). The Paediatric Protocols 5th ed. was obtained from the Malaysian Paediatric Association copy in v2.8.

@@ -2,6 +2,13 @@
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
+## Version 2.12 changes (23 Nov 2026) — clinical photos and measles
+- **📷 Clinical photos:** 29 photos on 18 cards (zoster, varicella, measles, genital ulcer, HFMD, impetigo, scabies, tinea, pityriasis versicolor, intertrigo/candida, cellulitis/erysipelas, urticaria/angioedema, conjunctivitis, stye, preseptal cellulitis, dengue rash, and rash triage incl. a non-blanching purpura red flag).
+  - Each photo has a BM/EN caption, a tap-to-enlarge view, and the author and licence.
+  - Photos come from Wikimedia Commons; each is public domain or CC BY-SA. They were resized and stored in `images/derm/`; full credits are in REFERENCES.md.
+  - The genital-ulcer gallery is closed by default.
+- **New topic: Measles (campak)** — WHO fact sheet + PP5 vitamin A doses, notification and post-exposure measures.
+
 ## Version 2.11 changes (23 Nov 2026) — list view
 - **Case finder is now a list:**
   - "Semua/All" shows every topic A–Z.
