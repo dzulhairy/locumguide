@@ -87,6 +87,17 @@ function renderQuick(){
   els.chips.innerHTML="";
   quickIds.forEach(id=>{const c=cases.find(x=>x.id===id);if(!c)return;const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=c.title;b.onclick=()=>{activeCategory="All";renderCategories();els.search.value=c.synonyms[0]||c.title;render();document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});};els.chips.appendChild(b);});
 }
+const PCM_SYRUPS=[120,250]; // mg per 5 mL stocked at the clinic
+function pcmSyrupTable(mg,timesText,maxDoses){
+  const rows=PCM_SYRUPS.map(st=>{
+    const ml=mg*5/st; let measure=Math.round(ml*2)/2; if(measure*st/5>1000) measure=Math.floor(ml*2)/2;
+    return `<tr><td><strong>${st} mg/5 mL</strong></td><td><strong class="ml-big">${round(ml,1)} mL</strong></td><td>${measure>0&&measure!==round(ml,1)?`sukat <strong>${measure} mL</strong> (${round(measure*st/5,0)} mg)`:"—"}</td></tr>`;
+  }).join("");
+  return `<div class="table-scroll syrup-table"><table class="clinical-table" style="min-width:0"><thead><tr><th>Sirap</th><th>Setiap dos</th><th>Sukatan praktikal*</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="freq-line">⏱ <strong>${timesText}</strong> · maksimum <strong>${maxDoses} dos dalam 24 jam</strong></p>
+  ${(mg>=225&&Math.abs(Math.round(mg/250)*250-mg)/mg<=0.1)?`<p class="freq-line">💊 Atau tablet 500 mg: <strong>${Math.round(mg/250)/2} biji</strong> (${Math.round(mg/250)*250} mg) setiap dos</p>`:""}
+  <p class="small">*Dibundarkan kepada 0.5 mL terdekat (tidak melebihi 1 g sedos). Semak label botol sebelum beri.</p>`;
+}
 function liquidText(mg,conc){if(!conc||conc<=0)return ""; return ` ≈ <strong>${round(mg*5/conc,2)} mL</strong> at ${conc} mg/5 mL`;}
 function doseTool(){
   const tool=els.doseSelect.value, ageVal=parseFloat(els.age.value), weight=parseFloat(els.weight.value), conc=parseFloat(els.concentration.value), dehydrationVal=parseFloat(els.dehydration.value);
@@ -99,11 +110,13 @@ function doseTool(){
   else if(age!==null && age<1 && weight>15) weightWarn="Weight looks high for an infant — check age (years) and weight (kg).";
   else if(age!==null && age<12 && weight>90) weightWarn="Weight looks high for this age — check entry.";
   if(tool==="paracetamol"){
-    const mg=Math.min(weight*15,1000); answer=`Reference single dose: <strong>${round(mg,1)} mg</strong>${liquidText(mg,conc)} every 4–6 hours when needed.`;
+    const mg=Math.min(weight*15,1000);
+    answer=`Dos sekali ambil: <strong>${round(mg,1)} mg</strong> (15 mg/kg${weight*15>1000?", had 1 g":""})${pcmSyrupTable(mg,"Setiap 4–6 jam jika perlu (demam/sakit)","4")}${conc&&!PCM_SYRUPS.includes(conc)?`<p class="small">Kekuatan lain: ${liquidText(mg,conc)}</p>`:""}`;
     note="Common paediatric reference: 15 mg/kg/dose; do not exceed 4 doses in 24 hours. Confirm age-specific/product instructions.";
     caution="Check duplicate paracetamol-containing products and liver disease/overdose risk.";
   } else if(tool==="paracetamol-dengue"){
-    const mg=Math.min(weight*10,1000); answer=`Dengue child: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)}, not more than 3–4 times in 24 hours.`;
+    const mg=Math.min(weight*10,1000);
+    answer=`Denggi — dos sekali ambil: <strong>${round(mg,1)} mg</strong> (10 mg/kg)${pcmSyrupTable(mg,"Setiap 6–8 jam jika perlu (demam)","3–4")}${conc&&!PCM_SYRUPS.includes(conc)?`<p class="small">Kekuatan lain: ${liquidText(mg,conc)}</p>`:""}`;
     note="MaHTAS CPG Dengue in Children (2nd ed.): paracetamol 10 mg/kg/dose, max 3–4 doses/24 h — dose reduced because of the theoretical risk of liver injury. Tepid sponge if still febrile.";
     caution="Do NOT give aspirin, ibuprofen/other NSAIDs or IM injections in suspected dengue.";
   } else if(tool==="dexamethasone-croup"){
@@ -293,7 +306,7 @@ function doseTool(){
     }
   }
   const label=els.doseSelect.options[els.doseSelect.selectedIndex].text;
-  els.dose.innerHTML=`<h3>Dose result — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<p class="dose-answer">${answer}</p><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
+  els.dose.innerHTML=`<h3>Dose result — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}</div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
 els.search.addEventListener("input",render);
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});

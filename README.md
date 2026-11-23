@@ -8,6 +8,7 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
 - New categories: Eye, Dental, O&G, Sexual health, Endocrine, Infection.
 - New dose tools: dexamethasone for croup; paracetamol 10 mg/kg for dengue in children.
 - Multi-word Malay/English searches now require all words to match.
+- Paracetamol calculators show mL per dose for 120 mg/5 mL and 250 mg/5 mL syrup automatically, with frequency, 24-h maximum and a 500 mg tablet option.
 - Dose calculators are hidden behind a "Dose calculator" button at the top; tapping it (or a dose-tool link on a case card) opens them.
 - Full reference list: [REFERENCES.md](REFERENCES.md).
 - CDC PKD Besut ACD Scabies module and its Google Form link removed (the clinical Scabies topic remains).
