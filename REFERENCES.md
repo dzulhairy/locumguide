@@ -88,6 +88,15 @@ MOH *Paediatric Protocols for Malaysian Hospitals*, 5th ed. (Kementerian Kesihat
 | Ch. 91 Dengue | Outpatient criteria (consistent with CPG Dengue in Children) |
 | Ch. 116 Anaphylaxis | IM adrenaline in-hospital and pre-hospital doses |
 
+## 6. Added in v2.9
+
+| Source | Used for | Link |
+|---|---|---|
+| MOH Guideline for Management of Scabies in Adults and Children (Feb 2015) | Scabies regimens by age, crusted scabies, application instructions, fomite care | https://www.moh.gov.my/images/04-penerbitan/penerbitan-klinikal/pengurusan-kesihatan-dan-kawalan-penyakit/Guideline_For_Management_Of_Scabies_In_Adults_And_Children.pdf |
+| HCTM/PPUKM Pharmacy Bulletin 2016 (reproduces the MOH 2015 scabies table) | Copy of the regimen table and application advice actually checked | https://hctm.ukm.my/farmasi/wp-content/uploads/2020/09/2.2016.-scabies.pdf |
+
+Patient-counselling text follows the doses and cautions on each card. Device technique (inhaler + spacer, nasal spray, eye and ear drops, pessary) is standard pharmacy counselling.
+
 ## 5. Known limitations
 
 - The **2019 STEMI CPG** could not be downloaded (moh.gov.my blocks automated access). The Paediatric Protocols 5th ed. was obtained from the Malaysian Paediatric Association copy in v2.8.
