@@ -162,3 +162,19 @@ html.locked body>header,html.locked body>main,html.locked body>footer{display:no
 .age-pill{display:inline-block;border-radius:999px;padding:1px 7px;font-weight:700}
 .age-A{background:#eef2ff;color:#3346a3}.age-C{background:#fff1e6;color:#a1520b}.age-B{background:#eef7f2;color:#0c6b45}
 .back-btn{background:#fff;border:1px solid var(--line);padding:10px 14px;font-weight:800;color:var(--brand);justify-self:start}
+/* clinical photo gallery */
+details.gallery{padding:8px 0}
+.gal-row{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 4px;scroll-snap-type:x mandatory}
+.gal-item{margin:0;flex:0 0 78%;max-width:300px;scroll-snap-align:start}
+.gal-open{padding:0;border:0;background:none;display:block;width:100%;border-radius:10px;overflow:hidden}
+.gal-item img{display:block;width:100%;height:180px;object-fit:cover;border-radius:10px;background:#eef3f5}
+.gal-item figcaption{font-size:.8rem;color:var(--ink);margin-top:5px;line-height:1.35}
+.credit{display:block;font-size:.7rem;color:var(--muted);margin-top:2px}
+.credit a{color:var(--muted)}
+.lightbox{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:16px}
+.lightbox.show{display:flex}
+.lightbox figure{margin:0;max-width:100%;max-height:100%;position:relative;text-align:center}
+.lightbox img{max-width:100%;max-height:75vh;border-radius:8px}
+.lightbox figcaption{color:#fff;font-size:.9rem;margin-top:8px}
+.lightbox .credit,.lightbox .credit a{color:#ccc}
+.lb-close{position:absolute;top:-6px;right:-6px;background:#fff;color:#000;border-radius:999px;width:36px;height:36px;padding:0;font-size:1rem}

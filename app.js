@@ -17,6 +17,7 @@ const caseTools = {
   "cellulitis":[["cloxacillin-ssti","Cloxacillin (child)"],["cephalexin","Cephalexin (child)"]],
   "dengue-paeds":[["paracetamol-dengue","Paracetamol (dengue 10 mg/kg)"],["maintenance-fluid","Maintenance fluid"]],
   "hfmd":[["paracetamol","Paracetamol"]],
+  "measles":[["paracetamol","Paracetamol"],["ors-plan-b","ORS Plan B"]],
   "croup":[["dexamethasone-croup","Croup (PP5)"]],
   "febrile-seizure":[["seizure-benzo","Seizure >5 min (benzodiazepine)"],["paracetamol","Paracetamol"]],
   "preseptal-cellulitis":[["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
@@ -74,6 +75,22 @@ function renderPersonal(){
     r.classList.toggle("hidden",!list.length);
   });
 }
+function openLightbox(im){
+  let lb=document.getElementById("lightbox");
+  if(!lb){lb=document.createElement("div");lb.id="lightbox";lb.className="lightbox";lb.setAttribute("role","dialog");lb.setAttribute("aria-modal","true");document.body.appendChild(lb);
+    lb.addEventListener("click",e=>{if(e.target===lb||e.target.closest(".lb-close")) lb.classList.remove("show");});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape") lb.classList.remove("show");});}
+  const lg=getLang();
+  lb.innerHTML=`<figure><button type="button" class="lb-close" aria-label="Close">✕</button><img src="${im.src}" alt="${im.cap[lg]}"><figcaption>${im.cap[lg]}<br><span class="credit">${t("photoBy")}: <a href="${im.page}" target="_blank" rel="noopener noreferrer">${im.author}</a>, ${im.license}</span></figcaption></figure>`;
+  lb.classList.add("show");
+}
+function gallery(c){
+  const imgs=(window.CASE_IMAGES||{})[c.id]; if(!imgs||!imgs.length) return "";
+  const lg=getLang(), sensitive=c.id==="genital-ulcer";
+  return `<details class="block fold gallery"${sensitive?"":" open"}><summary>📷 ${t("photos")} (${imgs.length})${sensitive?` — ${t("sensitive")}`:""}</summary>
+    <div class="gal-row">${imgs.map((im,i)=>`<figure class="gal-item"><button type="button" class="gal-open" data-id="${c.id}" data-i="${i}" aria-label="${t("enlarge")}"><img src="${im.src}" alt="${im.cap[lg]||im.cap.ms}" loading="lazy" width="${im.w}" height="${im.h}"></button><figcaption>${im.cap[lg]||im.cap.ms}<span class="credit">${t("photoBy")}: <a href="${im.page}" target="_blank" rel="noopener noreferrer">${im.author}</a>, ${im.license}</span></figcaption></figure>`).join("")}</div>
+  </details>`;
+}
 function counselBlock(c){
   if(!c.counsel) return "";
   const items=c.counsel[getLang()]||c.counsel.ms;
@@ -89,6 +106,7 @@ function card(c){
     <div class="case-head"><div><h2>${c.title}</h2><div class="category">${[c.category,...(c.tags||[])].join(" · ")}</div></div>
       <div class="head-side"><button type="button" class="star${on?" on":""}" data-id="${c.id}" aria-pressed="${on}" aria-label="${t(on?"unstar":"star")}">${on?"★":"☆"}</button><span class="evidence">${c.evidence}</span></div></div>
     ${section(t("redFlags"),c.redFlags,"redflags")}
+    ${gallery(c)}
     ${toolButtons(c)}
     <div class="case-body">
       ${section(t("treatment"),c.treatment)}
@@ -107,7 +125,7 @@ const AGE={
   "uti-pregnancy":"A","vaginal-discharge":"A","urethral-discharge":"A","genital-ulcer":"A","pid":"A","mastitis":"A",
   "h-pylori-dyspepsia":"A","gout":"A","hypoglycaemia":"A","acs":"A","migraine":"A","renal-colic":"A","dysmenorrhoea":"A",
   "hyperglycaemic-crisis":"A","copd-exacerbation":"A","herpes-simplex-skin":"A","dental-abscess":"A",
-  "aeba-paediatric":"C","dengue-paeds":"C","hfmd":"C","croup":"C","bronchiolitis":"C","febrile-seizure":"C","uti-paeds":"C","otorrhoea-child":"C"
+  "aeba-paediatric":"C","measles":"B","dengue-paeds":"C","hfmd":"C","croup":"C","bronchiolitis":"C","febrile-seizure":"C","uti-paeds":"C","otorrhoea-child":"C"
 };
 const ageOf=c=>AGE[c.id]||"B";
 let openId=null;
@@ -495,6 +513,7 @@ els.results.addEventListener("click",e=>{
 // card interactions: favourite star + record as recently viewed
 els.results.addEventListener("click",e=>{
   const rw=e.target.closest(".case-row"); if(rw){openCase(rw.dataset.open);return;}
+  const go=e.target.closest(".gal-open"); if(go){const im=(window.CASE_IMAGES[go.dataset.id]||[])[+go.dataset.i]; if(im) openLightbox(im); return;}
   if(e.target.closest("#backToList")){const id=openId; openId=null; render(); const el=els.results.querySelector(`[data-open="${id}"]`); if(el) el.scrollIntoView({block:"center"}); else document.getElementById("results").scrollIntoView({block:"start"}); return;}
   const st=e.target.closest(".star"); if(st){toggleFav(st.dataset.id);return;}
   const cc=e.target.closest(".counsel-copy"); if(cc){const c=cases.find(x=>x.id===cc.dataset.id); if(c){copyText(counselText(c)).then(ok=>{const old=cc.innerHTML;cc.innerHTML=ok?`✓ ${t("copied")}`:t("copyFail");cc.classList.add("done");setTimeout(()=>{cc.innerHTML=old;cc.classList.remove("done");},1600);});} return;}
@@ -520,7 +539,7 @@ scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); i
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.11 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v2.12 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
   normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");

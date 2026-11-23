@@ -65,6 +65,28 @@ patch("febrile-seizure", c => {
   c.sources = [pp5("Ch. 49 Febrile Seizures; Ch. 48 Status Epilepticus"), ...c.sources];
 });
 
+// Measles (campak) — new topic, WHO fact sheet + PP5 (vitamin A dosing, notification, post-exposure IG).
+window.LOCUM_CASES.push({
+  id:"measles", title:"Measles (campak)", category:"Infection", tags:["Paediatrics","Dermatology"],
+  synonyms:["measles","campak","rubeola","koplik","morbilli","maculopapular rash fever","ruam demam"],
+  evidence:"WHO + MOH Paeds Protocol 5th ed.",
+  reviewed: STAMP,
+  redFlags:["Breathing difficulty/pneumonia, seizures, drowsiness or confusion (encephalitis), severe diarrhoea with dehydration, eye pain/corneal clouding.",
+    "Highest risk: infants and children <5 years, adults >30, pregnancy, malnutrition (especially vitamin A deficiency), immunocompromise (including HIV, leukaemia in remission).",
+    "Measles is notifiable — notify the district health office (Pejabat Kesihatan)."],
+  assessment:["Prodrome 4–7 days: high fever, runny nose, cough, red watery eyes (conjunctivitis), <strong>Koplik spots</strong> (small white spots inside the cheeks).",
+    "Rash appears 3–5 days after the first symptoms, starting on the face and upper neck, spreading downwards over about 3 days to trunk and limbs; lasts 4–8 days.",
+    "Infectious from 4 days before to 4 days after rash onset (airborne; virus stays in the air up to 2 hours). Check vaccination status (MMR at 9 and 12 months in the national schedule)."],
+  treatment:["No specific antiviral treatment: fluids, nutrition, antipyretic, and treatment of complications (antibiotics for pneumonia, ear or eye infection).",
+    "Isolate: keep away from school/taska and from infants, pregnant women and immunocompromised people during the infectious period.",
+    "Admit complicated measles; an uncomplicated inpatient can be discharged (PP5)."],
+  meds:["<strong>Vitamin A</strong> (WHO: 2 doses for all suspected measles in children <5 years — on diagnosis and again the next day; 3rd dose 4–6 weeks later if eye signs of vitamin A deficiency). <strong>PP5 doses:</strong> <6 months 50,000 IU; 6–12 months 100,000 IU; >12 months 200,000 IU (repeat on day 2 and day 14 in complicated measles or vitamin A deficiency signs).",
+    "Paracetamol for fever (Dose Tool). ORS for diarrhoea.",
+    "<strong>Post-exposure (PP5):</strong> unimmunised contacts — measles-containing vaccine within 72 h (aborts clinical measles in ~75%) or immunoglobulin; immunocompromised contacts — immunoglobulin (NHIG 0.25–0.5 mL/kg) / specialist advice."],
+  prevention:["Two doses of measles-containing vaccine (MMR). Check and catch up household contacts."],
+  referral:["Admit/refer for any complication, infants, pregnancy, malnutrition or immunocompromise."],
+  sources:[["WHO Fact sheet — Measles","https://www.who.int/news-room/fact-sheets/detail/measles"], pp5("Ch. 2 Immunisation (measles exposure); SAM chapter (vitamin A doses)")]
+});
 patch("aeba-paediatric", c => {
   fixOldPP(c);
   c.evidence = "MOH Paeds Protocol 5th ed.";
