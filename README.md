@@ -2,6 +2,25 @@
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
+## Version 2.8 changes (23 Nov 2026) — Paediatric Protocols 5th ed.
+- **🩺 Normal values panel**, based on MOH *Paediatric Protocols for Malaysian Hospitals*, 5th ed. (KKM 2025):
+  - Enter age (months/years), sex and height with any measured values: RR, HR, BP, Hb, PCV, TWBC, Na⁺, K⁺, glucose.
+  - Each value is flagged normal/low/high/danger against the age-specific PP5 range:
+    - RR/HR 5th–95th centile
+    - BP 5th centile (danger sign) and Ch. 71 hypertension staging using the age/sex/height BP centile tables
+    - haematology by age
+    - Na/K
+    - neonatal and child glucose
+    - WHO tachypnoea
+  - Also shows an estimated weight. The PP5 reference tables are included.
+- **Croup:** card and calculator follow the PP5 Westley algorithm (dexamethasone 0.15 / 0.3–0.6 mg/kg, budesonide, nebulised adrenaline 0.5 mL/kg max 5 mL).
+- **Bronchiolitis:** card follows PP5 — admission table, SpO₂ target 94–98%, what not to give.
+- **Febrile seizure:** card follows PP5 (6 months–5 years, LP indications, rectal diazepam 0.5 mg/kg, recurrence risks).
+- **New seizure calculator (PP5 Ch. 48):** first-line benzodiazepines by route (IV/rectal/buccal/intranasal/IM) and second-line agents.
+- **Adrenaline calculator:** adds PP5 pre-hospital age-band doses.
+- **Dehydration panel:** adds PP5 % dehydration bands.
+- AEBA calculators re-checked against the PP5 acute asthma dosage table (unchanged).
+
 ## Version 2.7 changes (23 Nov 2026)
 - **Re-check against NAG:** 15 older infection topics re-checked against the current NAG pathways (Aug 2024 – Jan 2026); see `cases-review2026.js`. Main changes:
   - AOM: observe 48–72 h when the eardrum is intact and the illness is not severe.

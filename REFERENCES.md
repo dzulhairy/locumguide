@@ -1,4 +1,4 @@
-# References — Locum Quick Guide MY v2.7
+# References — Locum Quick Guide MY v2.8
 
 Checked **23 November 2026**. All antimicrobial regimens added in v2.6 were transcribed directly from the text of the MOH **National Antimicrobial Guideline (NAG) 4th edition 2024** web edition (site banner: "Latest updates Jan '26"). Primary-care pathway PDFs carry their own version dates, listed below.
 
@@ -67,9 +67,31 @@ Home: https://sites.google.com/moh.gov.my/nag
 | Lim et al., Thorax 2003 | CURB-65 | https://thorax.bmj.com/content/58/5/377 |
 | WHO IMCI Chart Booklet 2014 | Child dehydration classification, Plans A/B/C | https://www.who.int/publications/m/item/integrated-management-of-childhood-illness---chart-booklet-(march-2014) |
 
+## 5. Added in v2.8 — Paediatric Protocols 5th ed.
+
+MOH *Paediatric Protocols for Malaysian Hospitals*, 5th ed. (Kementerian Kesihatan Malaysia, 2025), Malaysian Paediatric Association copy: https://mpaeds.my/wp-content/uploads/2026/03/Paediatric-Protocols-for-Malaysia-Hospital-1.pdf
+
+| Chapter | Used for |
+|---|---|
+| Ch. 1 Normal Values in Children | RR/HR 5th–95th centile, BP 5th centile, BP centile tables by age/sex/height, anthropometry and weight estimate, haematological parameters |
+| Ch. 9 Fluid & Electrolytes | Na⁺ and K⁺ normal ranges and definitions; Holliday–Segar |
+| Ch. 10 Acute Gastroenteritis | Dehydration chart (% bands), Plan B ORS |
+| Neonatal hypoglycaemia chapter | Neonatal glucose targets |
+| Ch. 31 Asthma | Acute asthma drug dosage table (AEBA calculators re-checked) |
+| Ch. 32 Acute Bronchiolitis | Admission criteria, SpO₂ 94–98%, pharmacotherapy |
+| Ch. 33 Viral Croup | Westley score, admission criteria, treatment algorithm |
+| Ch. 34 Pneumonia | Tachypnoea thresholds |
+| Ch. 48 Status Epilepticus | Benzodiazepine and second-line doses |
+| Ch. 49 Febrile Seizures | Definition, LP indications, rectal diazepam, recurrence risk |
+| Ch. 61 DKA | Paediatric DKA criteria and severity |
+| Ch. 71 Hypertension | BP category/stage definitions, diagnosis on 3 visits |
+| Ch. 91 Dengue | Outpatient criteria (consistent with CPG Dengue in Children) |
+| Ch. 116 Anaphylaxis | IM adrenaline in-hospital and pre-hospital doses |
+
 ## 5. Known limitations
 
-- **MOH Paediatric Protocols 5th ed.** (moh.gov.my) and the **2019 STEMI CPG** could not be downloaded for this check. The site blocks automated access. Croup and febrile-seizure doses therefore cite RCH and should be checked against the local protocol.
+- The **2019 STEMI CPG** could not be downloaded (moh.gov.my blocks automated access). The Paediatric Protocols 5th ed. was obtained from the Malaysian Paediatric Association copy in v2.8.
+- HFMD has no chapter in the Paediatric Protocols 5th ed.; it still cites the WHO WPRO guide.
 - Eight non-infection topics from v2.4 are outside NAG scope and were not re-checked against a guideline in v2.7: adult asthma, paediatric AEBA, anaphylaxis, severe hypertension, adult dengue, knee OA, low back pain and rash triage. The relevant MOH CPGs are on moh.gov.my, which blocks automated access.
 - The Malaysian COPD CPG is from 2009; check for a newer edition locally.
 - The tetanus table follows RCH (Australia); check against the Malaysian immunisation schedule.

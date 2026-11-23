@@ -110,3 +110,25 @@ details.fold[open]>summary::before{content:"▾ "}
 .score-notes{margin:6px 0}
 @media (max-width:780px){.score-grid{grid-template-columns:1fr 1fr}.badge-row{width:100%}}
 @media (max-width:520px){.score-grid{grid-template-columns:1fr}.case-head{display:flex}.head-side{flex-direction:column}}
+/* normal values */
+.side-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.side-pair .dose-toggle{padding:11px 8px;font-size:.92rem;white-space:normal}
+.normals-grid{grid-template-columns:repeat(4,1fr)}
+.age-row{display:flex;gap:6px;margin-top:5px}.age-row input{margin-top:0}.age-row select{width:auto;margin-top:0}
+.normals-table{min-width:0}
+.normals-table td{font-size:.85rem}
+.flag{display:inline-block;border-radius:999px;padding:3px 8px;font-size:.78rem;font-weight:800;white-space:nowrap}
+.flag.ok{background:var(--okbg);color:var(--ok)}
+.flag.lo{background:#eaf2ff;color:#1d4f9a}
+.flag.hi{background:var(--amberbg);color:var(--amber)}
+.flag.danger{background:var(--dangerbg);color:var(--danger)}
+@media (max-width:780px){.normals-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:420px){.normals-table td,.normals-table th{padding:7px 5px;font-size:.8rem}.flag{white-space:normal}}
+.nlist{display:grid;gap:8px;margin:8px 0}
+.nrow{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff}
+.nrow.nrow-empty{background:#f8fafb;opacity:.8}
+.nhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.nparam{font-weight:800;font-size:.92rem;margin-right:auto}
+.nval{font-size:1.1rem;color:var(--brand)}
+.nrange{font-size:.82rem;color:var(--muted);margin-top:3px}
+.nrange .small{display:block}
