@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#0b4f6c" />
   <title>Locum Quick Guide MY</title>
   <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -15,16 +17,10 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.4 · Paediatric AEBA added 7 Oct 2026</span>
+    <span class="review-badge">v2.6 · 50 topics · NAG-checked 23 Nov 2026</span>
   </header>
 
   <main class="shell">
-  <section aria-label="Public health ACD toolkit" style="margin:0 0 20px;padding:17px 20px;background:#e9f7f4;border:1px solid #b5ded5;border-radius:14px;">
-    <strong style="display:block;color:#0b625b;font-size:17px;">Modul ACD Scabies v2.0 — CDC, PKD Besut</strong>
-    <p style="margin:5px 0 9px;color:#305957;">Kit operasi untuk semua anggota CDC: checklist, bantuan IACS, tracker agregat kes/kontak, epidemic curve, susulan dan laporan situasi.</p>
-    <a href="scabies-acd/" style="font-weight:800;color:#096a64;">Buka modul ACD Scabies →</a>
-    <span style="display:block;font-size:13px;margin-top:7px;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSezXK5iYwu5oSj3VqE3wKO-gfeWn0nbmvKpbSLWfPT29tNXYw/viewform?usp=header" target="_blank" rel="noopener noreferrer" style="color:#096a64">Isi Google Form ACD Scabies — CDC PKD Besut ↗</a></span>
-  </section>
 
     <section class="warning">
       <strong>Clinician decision-support only.</strong>
@@ -42,7 +38,7 @@
 
       <div class="search-row">
         <input id="searchInput" type="search" autocomplete="off"
-          placeholder="e.g. tonsillitis, AOM, asthma, denggi, UTI, kayap..." />
+          placeholder="e.g. sakit gigi, HFMD, gout, kencing nanah, denggi, UTI..." />
         <button id="clearBtn" type="button">Clear</button>
       </div>
 
@@ -51,7 +47,9 @@
       <p class="privacy-note">Everything runs in the browser. No patient data is sent to a server.</p>
     </section>
 
-    <section class="tool-card">
+    <section id="results" class="results results-top" aria-live="polite"></section>
+
+    <section id="doseTools" class="tool-card">
       <div class="section-title-row">
         <div>
           <p class="section-kicker">Dose tools</p>
@@ -66,6 +64,7 @@
           <select id="doseToolSelect">
             <option value="">Choose a calculator</option>
             <option value="paracetamol">Paracetamol — child</option>
+            <option value="paracetamol-dengue">Paracetamol — child with dengue (10 mg/kg)</option>
             <option value="ibuprofen">Ibuprofen — child</option>
             <option value="oseltamivir">Oseltamivir treatment</option>
             <option value="adrenaline">IM adrenaline — anaphylaxis</option>
@@ -80,6 +79,7 @@
             <option value="nitrofurantoin-uti">Nitrofurantoin — paediatric lower UTI</option>
             <option value="cloxacillin-ssti">Cloxacillin — mild paediatric SSTI</option>
             <option value="acyclovir-varicella">Acyclovir — paediatric varicella</option>
+            <option value="dexamethasone-croup">Dexamethasone — croup</option>
             <option value="aeba-bundle">AEBA paediatric — full emergency dose bundle</option>
             <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
             <option value="hydrocortisone-iv-asthma">Hydrocortisone IV — severe AEBA</option>
@@ -157,7 +157,6 @@
       </div>
     </section>
 
-    <section id="results" class="results" aria-live="polite"></section>
   </main>
 
   <footer>
@@ -172,6 +171,7 @@
   <script src="cases-derm1.js"></script>
   <script src="cases-derm2.js"></script>
   <script src="cases-msk.js"></script>
+  <script src="cases-locum2.js"></script>
   <script src="app.js"></script>
   <script src="derm-guide.js"></script>
   <script>
