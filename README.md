@@ -2,6 +2,14 @@
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
 
+## Version 2.11 changes (23 Nov 2026) — list view
+- **Case finder is now a list:**
+  - "Semua/All" shows every topic A–Z.
+  - Tapping a system (Respiratory, ENT, Dermatology…) shows two lists, 🧑 **Dewasa** and 👶 **Kanak-kanak**. Topics for both ages appear in both, with an age badge.
+  - Tapping a topic opens the full card, with "← Kembali ke senarai".
+- A search with exactly one match, a common-case chip, a favourite or a recent topic opens the card directly. Searching always looks across all categories.
+- Child topics gain system tags (e.g. febrile seizure → Neurology, dengue/HFMD → Infection) so they appear under their system.
+
 ## Version 2.10 changes (23 Nov 2026) — login gate
 - Login screen (login ID + password) before the app; "remember me on this device" and a sign-out button.
 - Only a SHA-256 hash of `loginid:password` is stored, in `auth.js`; the password itself is not in the repository.
