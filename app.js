@@ -299,8 +299,17 @@ els.search.addEventListener("input",render);
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";renderCategories();render();els.search.focus();});
 [els.age,els.weight,els.concentration,els.dehydration].forEach(el=>el.addEventListener("input",doseTool));
 els.doseSelect.addEventListener("change",()=>{els.concentration.value="";doseTool();});
+const doseToggle=document.getElementById("doseToggle"), dosePanelWrap=document.getElementById("doseTools");
+function setDoseOpen(open,scroll=true){
+  dosePanelWrap.classList.toggle("hidden",!open);
+  doseToggle.setAttribute("aria-expanded",String(open));
+  doseToggle.textContent=open?"✕ Tutup dose calculator":"🧮 Dose calculator";
+  if(open&&scroll){dosePanelWrap.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>els.doseSelect.focus({preventScroll:true}),350);}
+}
+doseToggle.addEventListener("click",()=>setDoseOpen(dosePanelWrap.classList.contains("hidden")));
 els.results.addEventListener("click",e=>{
   const b=e.target.closest(".tool-link"); if(!b) return;
+  setDoseOpen(true,false);
   els.doseSelect.value=b.dataset.tool; els.concentration.value=""; doseTool();
   document.getElementById("doseTools").scrollIntoView({behavior:"smooth",block:"start"});
   if(!els.weight.value) setTimeout(()=>els.weight.focus({preventScroll:true}),400);

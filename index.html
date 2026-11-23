@@ -17,39 +17,14 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.6 · 50 topics · NAG-checked 23 Nov 2026</span>
+    <div class="topbar-side">
+      <span class="review-badge">v2.6 · 50 topics · NAG-checked 23 Nov 2026</span>
+      <button id="doseToggle" class="dose-toggle" type="button" aria-expanded="false" aria-controls="doseTools">🧮 Dose calculator</button>
+    </div>
   </header>
 
   <main class="shell">
-
-    <section class="warning">
-      <strong>Clinician decision-support only.</strong>
-      Verify diagnosis, allergy, pregnancy, renal/hepatic function, interactions, contraindications, product strength, local formulary and current MOH/facility policy before prescribing. Do not enter patient-identifiable data.
-    </section>
-
-    <section class="search-card">
-      <div class="section-title-row">
-        <div>
-          <p class="section-kicker">Case finder</p>
-          <h2>What are you treating?</h2>
-        </div>
-        <span id="topicCount" class="count-badge"></span>
-      </div>
-
-      <div class="search-row">
-        <input id="searchInput" type="search" autocomplete="off"
-          placeholder="e.g. sakit gigi, HFMD, gout, kencing nanah, denggi, UTI..." />
-        <button id="clearBtn" type="button">Clear</button>
-      </div>
-
-      <div id="categoryFilters" class="chips category-chips" aria-label="Clinical categories"></div>
-      <div id="quickChips" class="chips" aria-label="Common cases"></div>
-      <p class="privacy-note">Everything runs in the browser. No patient data is sent to a server.</p>
-    </section>
-
-    <section id="results" class="results results-top" aria-live="polite"></section>
-
-    <section id="doseTools" class="tool-card">
+    <section id="doseTools" class="tool-card hidden" aria-label="Dose calculators">
       <div class="section-title-row">
         <div>
           <p class="section-kicker">Dose tools</p>
@@ -112,6 +87,34 @@
       <div id="dosePanel" class="dose-panel hidden" aria-live="polite"></div>
       <p class="small tool-note">Liquid conversion is shown only when you enter the exact active-drug strength. For generic co-amoxiclav, enter the amoxicillin component. The Augmentin 228 calculator has its strength preset internally as 200 mg amoxicillin + 28.5 mg clavulanate per 5 mL. Always re-check the bottle label.</p>
     </section>
+
+    <section class="warning">
+      <strong>Clinician decision-support only.</strong>
+      Verify diagnosis, allergy, pregnancy, renal/hepatic function, interactions, contraindications, product strength, local formulary and current MOH/facility policy before prescribing. Do not enter patient-identifiable data.
+    </section>
+
+    <section class="search-card">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Case finder</p>
+          <h2>What are you treating?</h2>
+        </div>
+        <span id="topicCount" class="count-badge"></span>
+      </div>
+
+      <div class="search-row">
+        <input id="searchInput" type="search" autocomplete="off"
+          placeholder="e.g. sakit gigi, HFMD, gout, kencing nanah, denggi, UTI..." />
+        <button id="clearBtn" type="button">Clear</button>
+      </div>
+
+      <div id="categoryFilters" class="chips category-chips" aria-label="Clinical categories"></div>
+      <div id="quickChips" class="chips" aria-label="Common cases"></div>
+      <p class="privacy-note">Everything runs in the browser. No patient data is sent to a server.</p>
+    </section>
+
+    <section id="results" class="results results-top" aria-live="polite"></section>
+
 
     <section class="tool-card">
       <div class="section-title-row">
