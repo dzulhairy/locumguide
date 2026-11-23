@@ -19,6 +19,7 @@ Mobile-first clinician quick-reference for common primary-care / locum presentat
 - **New seizure calculator (PP5 Ch. 48):** first-line benzodiazepines by route (IV/rectal/buccal/intranasal/IM) and second-line agents.
 - **Adrenaline calculator:** adds PP5 pre-hospital age-band doses.
 - **Dehydration panel:** adds PP5 % dehydration bands.
+- **New topic: ear discharge (otorrhoea) in children/infants** — differential diagnosis, red flags, NAG C2/B9 treatment. Paediatric otitis externa drops (NAG B9) added to the otitis externa card.
 - AEBA calculators re-checked against the PP5 acute asthma dosage table (unchanged).
 
 ## Version 2.7 changes (23 Nov 2026)

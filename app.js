@@ -22,7 +22,8 @@ const caseTools = {
   "preseptal-cellulitis":[["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
   "uti-paeds":[["nitrofurantoin-uti","Nitrofurantoin"],["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
   "skin-abscess":[["cephalexin","Cephalexin (child)"],["cloxacillin-ssti","Cloxacillin (child)"]],
-  "bronchiolitis":[["maintenance-fluid","Maintenance fluid"]]
+  "bronchiolitis":[["maintenance-fluid","Maintenance fluid"]],
+  "otorrhoea-child":[["amoxicillin-high","High-dose amoxicillin"],["coamox14","Co-amoxiclav 14:1"],["cefuroxime","Cefuroxime"],["paracetamol","Paracetamol"]]
 };
 const quickIds = ["aeba-paediatric","influenza","aom","pharyngitis","gastroenteritis","uti","dengue","dengue-paeds","hfmd","croup","conjunctivitis","gout","migraine","acs","anaphylaxis"];
 const els = {

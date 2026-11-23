@@ -165,6 +165,48 @@ const add = [
   sources:[S.tet, S.a16]
 }
 ];
+add.push({
+  id:"otorrhoea-child", title:"Ear discharge (otorrhoea) — child / infant", category:"ENT", tags:["Paediatrics"],
+  synonyms:["ear discharge","otorrhoea","otorrhea","telinga berair","telinga bernanah","nanah telinga","discharging ear","pus from ear","infant ear discharge","bayi telinga berair"],
+  evidence:"MOH NAG 2024 + PP5",
+  redFlags:["Postauricular swelling/redness/tenderness or pinna pushed forward: mastoiditis — urgent ENT/hospital.",
+    "Facial weakness, vertigo, severe headache, neck stiffness, drowsiness or poor feeding: intracranial or facial-nerve complication — emergency.",
+    "Young infant who is febrile, lethargic or toxic: treat as a sick young infant (septic work-up) rather than a simple ear infection.",
+    "Discharge persisting >2 weeks, recurrent, blood-stained or foul-smelling with granulation tissue: CSOM/cholesteatoma — ENT referral."],
+  assessment:["<strong>Look first:</strong> clean (dry-mop) the canal and examine the tympanic membrane (TM) and canal skin; check behind the ear and facial movement.",
+    "<strong>Differential diagnosis:</strong>",
+    "• <strong>AOM with TM perforation</strong> — most common: preceding URTI/irritability, purulent (often pulsatile) discharge, perforation seen after cleaning.",
+    "• <strong>Acute otitis externa</strong> — canal oedema/erythema, pain on moving the tragus/pinna, TM intact; water/soap exposure.",
+    "• <strong>Milk, feeds or vomit tracking into the ear</strong> (infants feeding supine or with reflux) or softened wax — TM normal, child well.",
+    "• <strong>Infected preauricular sinus / first branchial cleft anomaly</strong> — discharge from a pit in front of the ear rather than the canal.",
+    "• <strong>Infected seborrhoeic/atopic eczema</strong> of the ear — crusting around the ear/scalp.",
+    "• <strong>Otomycosis</strong> — fluffy white/black debris, usually after previous drops.",
+    "• <strong>Foreign body</strong> (older children) — unilateral, often foul-smelling.",
+    "• If persistent >2 weeks or recurrent: <strong>CSOM, cholesteatoma</strong>; rarely TB otitis or Langerhans cell histiocytosis."],
+  treatment:["<strong>AOM with perforation/otorrhoea (NAG C2):</strong> start oral antibiotics — do not observe. Age <6 months is also an indication on its own. Review in 48–72 h.",
+    "<strong>Otitis externa:</strong> aural toilet + topical drops (see Medication); response expected in 48–72 h (full response up to 6 days).",
+    "Dry-mop the discharge (no deep cotton buds); keep the ear dry; send a swab for C&S if available, especially in young infants or recurrent cases.",
+    "Feeding-related discharge with a normal TM: advise upright feeding and keep the ear clean; review."],
+  meds:["<strong>AOM with otorrhoea (child):</strong> amoxicillin 80–90 mg/kg/day PO q8–12h (max 1 g/dose, 3 g/day); <2 years 7–10 days, ≥2 years 5–7 days — Dose Tool 'High-dose amoxicillin'. Amoxicillin in the last 30 days or treatment failure: co-amoxiclav 14:1 80–90 mg/kg/day q12h. Non-severe allergy: cefuroxime 30 mg/kg/day q12h (max 1 g/day).",
+    "<strong>Acute otitis externa (NAG B9):</strong> topical antibiotic ± steroid for 7 days — gentamicin 0.3% 3–4 drops TDS; OR polymyxin B/neomycin/hydrocortisone 4 drops TDS–QID; OR ofloxacin 0.3% 5 drops once daily (<strong>licensed age 1–12 years</strong>).",
+    "<strong>Do NOT use ototoxic drops (gentamicin, neomycin) if the TM is perforated or grommets are present.</strong> For an infant <1 year or a perforated TM, discuss drop choice with ENT.",
+    "Paracetamol for pain/irritability (Dose Tool)."],
+  prevention:["Pneumococcal vaccination per the national schedule; avoid smoke exposure; upright feeding in infants."],
+  referral:["Same-day ENT/paediatrics for any red flag.",
+    "ENT if no improvement after 48–72 h of treatment, discharge persists or recurs, or the TM cannot be seen. Consider discussing any infant <3 months with the paediatric team."],
+  sources:[
+    ["MOH NAG 2024 — C2 Pathway: acute otitis media (v. 16 Oct 2025)","https://sites.google.com/moh.gov.my/nag/contents/section-c-clinical-pathways-in-primary-care/c2-acute-otitis-media"],
+    ["MOH NAG 2024 — B9 Otorhinolaryngology infections (paediatric): AOM, acute otitis externa","https://sites.google.com/moh.gov.my/nag/contents/section-b-paediatrics/b9-otorhinolaryngology-infections"],
+    ["MOH NAG 2024 — A10 Otorhinolaryngology infections (CSOM, otomycosis)","https://sites.google.com/moh.gov.my/nag/contents/section-a-adult/a10-otorhinolaryngology-infections"],
+    ["MOH Paediatric Protocols 5th ed. (2025)","https://mpaeds.my/wp-content/uploads/2026/03/Paediatric-Protocols-for-Malaysia-Hospital-1.pdf"]]
+});
 add.forEach(c => c.reviewed = "23 November 2026");
 window.LOCUM_CASES = [...(window.LOCUM_CASES || []), ...add];
+// Paediatric otitis externa regimen (NAG B9) added to the existing otitis externa card.
+(function(){ const oe = window.LOCUM_CASES.find(c => c.id === "otitis-externa"); if (!oe) return;
+  oe.tags = [...new Set([...(oe.tags||[]), "Paediatrics"])];
+  oe.meds.push("<strong>Child (NAG B9), 7 days:</strong> gentamicin 0.3% 3–4 drops TDS, OR polymyxin B/neomycin/hydrocortisone 4 drops TDS–QID, OR ofloxacin 0.3% 5 drops once daily (age 1–12 years). Avoid gentamicin/neomycin with a perforated TM or grommets. Consult ORL; non-response in 48–72 h → check for obstruction, foreign body or another diagnosis.");
+  oe.sources.push(["MOH NAG 2024 — B9 Otorhinolaryngology infections (paediatric)","https://sites.google.com/moh.gov.my/nag/contents/section-b-paediatrics/b9-otorhinolaryngology-infections"]);
+})();
+
 })();
