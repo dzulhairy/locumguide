@@ -1,6 +1,14 @@
-# Locum Quick Guide MY — v2.5
+# Locum Quick Guide MY — v2.6
 
 Mobile-first clinician quick-reference for common primary-care / locum presentations in Malaysia.
+
+## Version 2.6 changes (23 Nov 2026)
+- 27 new topics (50 total), NAG-checked: conjunctivitis, stye/blepharitis, preseptal cellulitis, otitis externa, dental abscess, bites, leptospirosis, paediatric dengue, HFMD, croup, bronchiolitis, febrile seizure, paediatric UTI, UTI in pregnancy, vaginal discharge, urethral discharge/STI, genital ulcer, PID, mastitis, H. pylori/dyspepsia, boils/abscess, tinea versicolor, cutaneous candidiasis, HSV skin, gout, hypoglycaemia, chest pain/ACS.
+- Concrete NAG regimens added to pharyngitis (Strep score), cellulitis, varicella, zoster and adult gastroenteritis.
+- New categories: Eye, Dental, O&G, Sexual health, Endocrine, Infection.
+- New dose tools: dexamethasone for croup; paracetamol 10 mg/kg for dengue in children.
+- Multi-word Malay/English searches now require all words to match.
+- Full reference list: [REFERENCES.md](REFERENCES.md).
 
 ## Version 2.5 changes (23 Nov 2026)
 - Search results now appear directly under the search box (mobile-friendly).

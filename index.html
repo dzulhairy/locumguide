@@ -17,7 +17,7 @@
       <h1>Locum Quick Guide MY</h1>
       <p class="subtitle">Search a case, scan red flags, confirm treatment, calculate selected doses, and open the source guideline.</p>
     </div>
-    <span class="review-badge">v2.5 · Safety fixes 23 Nov 2026</span>
+    <span class="review-badge">v2.6 · 50 topics · NAG-checked 23 Nov 2026</span>
   </header>
 
   <main class="shell">
@@ -38,7 +38,7 @@
 
       <div class="search-row">
         <input id="searchInput" type="search" autocomplete="off"
-          placeholder="e.g. tonsillitis, AOM, asthma, denggi, UTI, kayap..." />
+          placeholder="e.g. sakit gigi, HFMD, gout, kencing nanah, denggi, UTI..." />
         <button id="clearBtn" type="button">Clear</button>
       </div>
 
@@ -64,6 +64,7 @@
           <select id="doseToolSelect">
             <option value="">Choose a calculator</option>
             <option value="paracetamol">Paracetamol — child</option>
+            <option value="paracetamol-dengue">Paracetamol — child with dengue (10 mg/kg)</option>
             <option value="ibuprofen">Ibuprofen — child</option>
             <option value="oseltamivir">Oseltamivir treatment</option>
             <option value="adrenaline">IM adrenaline — anaphylaxis</option>
@@ -78,6 +79,7 @@
             <option value="nitrofurantoin-uti">Nitrofurantoin — paediatric lower UTI</option>
             <option value="cloxacillin-ssti">Cloxacillin — mild paediatric SSTI</option>
             <option value="acyclovir-varicella">Acyclovir — paediatric varicella</option>
+            <option value="dexamethasone-croup">Dexamethasone — croup</option>
             <option value="aeba-bundle">AEBA paediatric — full emergency dose bundle</option>
             <option value="prednisolone-asthma">Prednisolone — acute paediatric asthma</option>
             <option value="hydrocortisone-iv-asthma">Hydrocortisone IV — severe AEBA</option>
@@ -175,6 +177,7 @@
   <script src="cases-derm1.js"></script>
   <script src="cases-derm2.js"></script>
   <script src="cases-msk.js"></script>
+  <script src="cases-locum2.js"></script>
   <script src="app.js"></script>
   <script src="derm-guide.js"></script>
   <script>

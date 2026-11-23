@@ -1,5 +1,5 @@
 const reviewed = "5 October 2026";
-const categories = ["All","Respiratory","ENT","Dermatology","Paediatrics","GI","GU","MSK","Emergency"];
+const categories = ["All","Respiratory","ENT","Eye","Dental","Dermatology","Paediatrics","GI","GU","O&G","Sexual health","MSK","Endocrine","Infection","Emergency"];
 let activeCategory = "All";
 const cases = window.LOCUM_CASES || [];
 const caseTools = {
@@ -14,9 +14,17 @@ const caseTools = {
   "anaphylaxis":[["adrenaline","IM adrenaline"]],
   "varicella":[["acyclovir-varicella","Acyclovir"],["paracetamol","Paracetamol"]],
   "impetigo":[["cloxacillin-ssti","Cloxacillin (child)"]],
-  "cellulitis":[["cloxacillin-ssti","Cloxacillin (child)"],["cephalexin","Cephalexin (child)"]]
+  "cellulitis":[["cloxacillin-ssti","Cloxacillin (child)"],["cephalexin","Cephalexin (child)"]],
+  "dengue-paeds":[["paracetamol-dengue","Paracetamol (dengue 10 mg/kg)"],["maintenance-fluid","Maintenance fluid"]],
+  "hfmd":[["paracetamol","Paracetamol"]],
+  "croup":[["dexamethasone-croup","Dexamethasone (croup)"]],
+  "febrile-seizure":[["paracetamol","Paracetamol"]],
+  "preseptal-cellulitis":[["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
+  "uti-paeds":[["nitrofurantoin-uti","Nitrofurantoin"],["coamox14","Co-amoxiclav 14:1"],["coamox7","Co-amoxiclav 7:1"],["cephalexin","Cephalexin"]],
+  "skin-abscess":[["cephalexin","Cephalexin (child)"],["cloxacillin-ssti","Cloxacillin (child)"]],
+  "bronchiolitis":[["maintenance-fluid","Maintenance fluid"]]
 };
-const quickIds = ["aeba-paediatric","influenza","aom","asthma-exacerbation","gastroenteritis","uti","dengue","anaphylaxis","rash-triage"];
+const quickIds = ["aeba-paediatric","influenza","aom","pharyngitis","gastroenteritis","uti","dengue","dengue-paeds","hfmd","croup","conjunctivitis","gout","acs","anaphylaxis"];
 const els = {
   search: document.getElementById("searchInput"), clear: document.getElementById("clearBtn"), results: document.getElementById("results"),
   chips: document.getElementById("quickChips"), categories: document.getElementById("categoryFilters"), count: document.getElementById("topicCount"),
@@ -32,8 +40,11 @@ function scoreCase(c,q){
   if(norm(c.title)===q) return 100;
   if(c.synonyms.some(s=>norm(s)===q)) return 90;
   if(hay.includes(q)) return 50;
-  return q.split(/\s+/).filter(Boolean).reduce((n,t)=>n+(hay.includes(t)?5:0),0);
+  const toks=q.split(/\s+/).filter(Boolean), hits=toks.filter(t=>hay.includes(t)).length;
+  if(toks.length>1 && hits===toks.length) return 30;
+  return looseSearch ? hits*5 : 0;
 }
+let looseSearch=false;
 function section(title,items,cls="block"){
   if(!items?.length) return "";
   return `<section class="${cls}"><h3>${title}</h3><ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul></section>`;
@@ -53,17 +64,20 @@ function card(c){
       <section class="block"><h3>Medication</h3>${c.meds.map(x=>`<div class="med">${x}</div>`).join("")}</section>
       ${section("Prevention / counselling",c.prevention)}
       ${section("Referral / escalation",c.referral)}
-      <section class="block source-list"><h3>Primary sources</h3>${c.sources.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`).join("")}<p class="small">Content reviewed ${reviewed}. Recommendations can change; use the linked source for confirmation.</p></section>
+      <section class="block source-list"><h3>Primary sources</h3>${c.sources.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`).join("")}<p class="small">Content reviewed ${c.reviewed||reviewed}. Recommendations can change; use the linked source for confirmation.</p></section>
     </div>
   </article>`;
 }
 function render(){
   const q=norm(els.search.value);
-  const ranked=cases.filter(inCategory).map(c=>[c,scoreCase(c,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  const rank=()=>cases.filter(inCategory).map(c=>[c,scoreCase(c,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+  looseSearch=false; let ranked=rank();
+  let partial=false;
+  if(!ranked.length && q){looseSearch=true; ranked=rank(); looseSearch=false; partial=ranked.length>0;}
   els.count.textContent=`${ranked.length} topic${ranked.length===1?"":"s"}`;
   if(!ranked.length){els.results.innerHTML=`<div class="empty"><strong>No topic found.</strong><br>Try another diagnosis, synonym or category. This app will not invent treatment for an unlisted condition.</div>`;return;}
   const shown=(q || activeCategory!=="All") ? ranked : ranked.slice(0,8);
-  els.results.innerHTML=shown.map(card).join("");
+  els.results.innerHTML=(partial?`<div class="empty"><strong>No topic matches all words.</strong> Showing partial matches — this condition may not be covered yet.</div>`:"")+shown.map(card).join("");
 }
 function renderCategories(){
   els.categories.innerHTML="";
@@ -88,6 +102,15 @@ function doseTool(){
     const mg=Math.min(weight*15,1000); answer=`Reference single dose: <strong>${round(mg,1)} mg</strong>${liquidText(mg,conc)} every 4–6 hours when needed.`;
     note="Common paediatric reference: 15 mg/kg/dose; do not exceed 4 doses in 24 hours. Confirm age-specific/product instructions.";
     caution="Check duplicate paracetamol-containing products and liver disease/overdose risk.";
+  } else if(tool==="paracetamol-dengue"){
+    const mg=Math.min(weight*10,1000); answer=`Dengue child: <strong>${round(mg,1)} mg per dose</strong>${liquidText(mg,conc)}, not more than 3–4 times in 24 hours.`;
+    note="MaHTAS CPG Dengue in Children (2nd ed.): paracetamol 10 mg/kg/dose, max 3–4 doses/24 h — dose reduced because of the theoretical risk of liver injury. Tepid sponge if still febrile.";
+    caution="Do NOT give aspirin, ibuprofen/other NSAIDs or IM injections in suspected dengue.";
+  } else if(tool==="dexamethasone-croup"){
+    const mild=weight*0.15, severe=Math.min(weight*0.6,12), pred=weight*1;
+    answer=`Mild–moderate: <strong>dexamethasone ${round(mild,2)} mg PO</strong> single dose (0.15 mg/kg)${liquidText(mild,conc)} OR prednisolone ${round(pred,1)} mg PO (1 mg/kg).<br>Severe: <strong>dexamethasone ${round(severe,1)} mg</strong> PO/IM/IV (0.6 mg/kg, max 12 mg) + nebulised adrenaline.`;
+    note="RCH Melbourne croup guideline. Barking cough without stridor does not need steroid. Observe ≥3 h after nebulised adrenaline. Check against the MOH Paediatric Protocol used in your unit.";
+    caution="Drooling, toxic appearance or soft stridor in a deteriorating child: airway emergency — do not distress the child; senior/anaesthetic help.";
   } else if(tool==="ibuprofen"){
     if(weight<7){ answer="<strong>Not recommended below 7 kg</strong> (FUKKM). Use paracetamol instead."; note="FUKKM: ibuprofen 5–10 mg/kg/dose; not recommended for children <7 kg."; caution="Avoid in suspected dengue, dehydration or renal impairment."; }
     else {
@@ -113,7 +136,7 @@ function doseTool(){
   } else if(tool==="coamox14"){
     const daily=Math.min(weight*90,3000), mg=daily/2;
     answer=`14:1 formulation: <strong>${round(mg,1)} mg amoxicillin component per dose</strong>${liquidText(mg,conc)} every 12 hours.`;
-    note="Malaysia NAG: 80–90 mg/kg/day of the amoxicillin component in 2 divided doses for selected paediatric pathways such as AOM failure/recent amoxicillin; this calculator uses 90 mg/kg/day.";
+    note="Malaysia NAG: 80–90 mg/kg/day of the amoxicillin component in 2 divided doses; this calculator uses 90 mg/kg/day with the AOM cap of 3 g/day (NAG C2). For paediatric UTI and preseptal cellulitis NAG caps at 2 g/day (1 g/dose BD).";
     caution="Enter the AMOXICILLIN COMPONENT in mg/5 mL, not the combined amoxicillin+clavulanate total. Confirm the exact formulation and indication-specific maximum.";
   } else if(tool==="azithro5"){
     const d1=Math.min(weight*10,500), d25=Math.min(weight*5,250);
