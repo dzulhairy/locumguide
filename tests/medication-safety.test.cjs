@@ -1,0 +1,10 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const src=fs.readFileSync('app.js','utf8');
+const register=require('../clinical-validation-register.json');
+test('all calculator branches are inventoried',()=>assert.deepEqual([...new Set([...src.matchAll(/tool==="([^"]+)"/g)].map(x=>x[1]))].sort(),register.calculators.map(x=>x.id).sort()));
+test('no unreviewed tool marked clinically validated',()=>{for(const x of register.calculators)assert.equal(x.status,'pending_validation')});
+test('all suspended calculators remain blocked',()=>{const m=src.match(/const blocked = (\[[^\n]+\]);/);assert.ok(m);const blocked=JSON.parse(m[1]);for(const x of register.calculators.filter(x=>x.availability==='suspended'))assert.ok(blocked.includes(x.id));});
+test('actual safety guard rejects invalid inputs and suspended tools',()=>{const guard=src.slice(src.indexOf('  const blocked ='),src.indexOf('  let answer="",note=""'));assert.ok(guard.includes('safetyError'));const run=(age,weight,conc,tool)=>{const el=(value)=>({value,validity:{}});const dose={innerHTML:'',classList:{remove(){}}};const result=vm.runInNewContext('(function(){'+guard+';return "allowed";})()', {age,weight,conc,tool,els:{age:el(age),weight:el(weight),concentration:el(conc),dehydration:el(''),dose}});return result;};assert.equal(run(null,15,'','paracetamol'),undefined);assert.equal(run(4,151,'','paracetamol'),undefined);assert.equal(run(4,15,0,'paracetamol'),undefined);for(const x of register.calculators.filter(x=>x.availability==='suspended'))assert.equal(run(4,15,'',x.id),undefined);assert.equal(run(4,15,'','paracetamol'),'allowed');});
