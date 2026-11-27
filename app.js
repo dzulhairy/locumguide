@@ -211,7 +211,7 @@ function syrupBlock(o){
       else {let m=roundStep(lo); if(o.maxMg&&m*v.s/5>o.maxMg) m=roundStep(lo,"down"); prac=Math.abs(m-lo)>0.05?`${m} mL (${round(m*v.s/5,0)} mg)`:"—"; rxMl=`${m}ml`;}
       const rxText=`Syr ${st.rx} ${v.rxs||v.s+"mg/5ml"} ${rxMl}${r.rxCode?" "+r.rxCode:rxTail}`;
       rxAll.push(rxText);
-      rows+=`<tr><td>${o.rows.length>1?`<strong>${r.name}</strong><br>`:""}${v.name||v.s+" mg/5 mL"}</td><td><strong class="ml-big">${range?mlFmt(lo)+"–"+mlFmt(hi):mlFmt(lo)} mL</strong><br><span class="prac">${prac==="—"?"":t("measure")+" "+prac}</span></td><td>${copyBtn(rxText)}</td></tr>`;
+      rows+=`<tr><td>${o.rows.length>1?`<strong>${r.name}</strong><br>`:""}${v.name||v.s+" mg/5 mL"}</td><td><strong class="ml-big">${range?mlFmt(lo)+"–"+mlFmt(hi):mlFmt(lo)} mL</strong><br><span class="prac">${prac==="—"?"":t("measure")+" "+prac}</span></td><td>${""}</td></tr>`;
     });
   });
   let tabs="";
@@ -219,7 +219,7 @@ function syrupBlock(o){
     const mg=r.high!=null?r.high:r.low;
     const opts=st.tab.map(x=>{const n=st.cap?Math.round(mg/x):Math.round(mg/x*2)/2; return {t:x,n,d:n*x};}).filter(x=>x.n>0&&Math.abs(x.d-mg)/mg<=0.1&&(r.high==null||x.d>=r.low-0.01));
     if(opts.length){const x=opts[0], form=st.cap?"Cap":"Tab", rxText=`${form} ${st.rx} ${x.t}mg ${x.n} ${st.cap?"cap":"tab"}${r.rxCode?" "+r.rxCode:rxTail}`;
-      tabs+=`<p class="freq-line">💊 ${o.rows.length>1?r.name+": ":""}${st.cap?t("capsule"):t("tablet")} ${x.t} mg: <strong>${x.n} ${t("pcs")}</strong> (${round(x.d,1)} mg) ${copyBtn(rxText)}</p>`;}
+      tabs+=`<p class="freq-line">💊 ${o.rows.length>1?r.name+": ":""}${st.cap?t("capsule"):t("tablet")} ${x.t} mg: <strong>${x.n} ${t("pcs")}</strong> (${round(x.d,1)} mg) ${""}</p>`;}
   });
   return `${rows?`<div class="table-scroll syrup-table"><table class="clinical-table" style="min-width:0"><thead><tr><th>${t("syrup")}</th><th>${t("perDose")}</th><th>Rx</th></tr></thead><tbody>${rows}</tbody></table></div>`:""}
   ${tabs}${o.freq?`<p class="freq-line">⏱ <strong>${o.freq}</strong></p>`:""}
@@ -236,6 +236,15 @@ function doseTool(){
   const age=Number.isFinite(ageVal)?ageVal:null, dehydration=Number.isFinite(dehydrationVal)?dehydrationVal:null;
   if(!tool){els.dose.classList.add("hidden");return;}
   if(!Number.isFinite(weight)||weight<=0){els.dose.innerHTML=`<h3>${t("doseResult")}</h3><p class="dose-answer">${t("enterWeight")}</p>`;els.dose.classList.remove("hidden");return;}
+  // Safety audit: fail closed for invalid inputs and unresolved high-risk pathways.
+  const blocked = ["coamox14","augmentin228","cloxacillin-ssti","seizure-benzo","dexamethasone-croup","magnesium-iv-asthma","aeba-bundle","maintenance-deficit"];
+  let safetyError = "";
+  if ([els.age,els.weight,els.concentration,els.dehydration].some(el=>el.validity.badInput || el.validity.rangeUnderflow || el.validity.rangeOverflow)) safetyError="Invalid input. Check age, weight, concentration and dehydration.";
+  else if (age===null || age<0) safetyError="Enter a valid age in years before calculating.";
+  else if (weight>150 || (age<1 && weight>15) || (age<12 && weight>90)) safetyError="Age/weight combination requires manual verification.";
+  else if (els.concentration.value!=="" && (!Number.isFinite(conc)||conc<=0)) safetyError="Enter a positive concentration or leave blank.";
+  else if (blocked.includes(tool)) safetyError="Calculator temporarily suspended pending indication-specific clinical validation. Use the current source guideline and local protocol.";
+  if(safetyError){els.dose.innerHTML='<h3>Safety stop</h3><p class="dose-caution" role="alert">'+safetyError+'</p>';els.dose.classList.remove("hidden");return;}
   let answer="",note="",caution="",syr=null;
   let weightWarn="";
   if(weight>150) weightWarn="Weight above 150 kg — check for a typing error.";
@@ -483,7 +492,7 @@ function doseTool(){
     }
   }
   const label=els.doseSelect.options[els.doseSelect.selectedIndex].text;
-  els.dose.innerHTML=`<h3>${t("doseResult")} — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}${syr?syrupBlock(syr):""}</div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
+  els.dose.innerHTML=`<h3>${t("doseResult")} — ${label}</h3>${weightWarn?`<p class="dose-warn">⚠️ ${weightWarn}</p>`:""}<div class="dose-answer">${answer}${syr?syrupBlock(syr):""}<p class="small">Reference only — verify exact dose, formulation, indication and patient factors. Prescription copying disabled pending validation.</p></div><p class="small">${note}</p><p class="dose-caution">${caution}</p>`; els.dose.classList.remove("hidden");
 }
 els.search.addEventListener("input",()=>{openId=null; if(els.search.value.trim() && activeCategory!=="All"){activeCategory="All";renderCategories();} render();});
 els.clear.addEventListener("click",()=>{els.search.value="";activeCategory="All";openId=null;renderCategories();render();els.search.focus();});
@@ -539,7 +548,7 @@ scoreWrap.addEventListener("click",e=>{const b=e.target.closest(".tool-link"); i
 const langBtn=document.getElementById("langToggle");
 function syncLangUi(){
   applyI18n(); langBtn.textContent=t("langBtn");
-  document.getElementById("versionBadge").textContent=`v2.12 · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
+  document.getElementById("versionBadge").textContent=`v3.0 safety review · ${cases.length} ${t("topics")} · NAG 23 Nov 2026`;
   doseToggle.textContent=t(dosePanelWrap.classList.contains("hidden")?"doseBtn":"doseBtnClose");
   scoreToggle.textContent=t(scoreWrap.classList.contains("hidden")?"toolsBtn":"toolsBtnClose");
   normToggle.textContent=t(normWrap.classList.contains("hidden")?"normBtn":"normBtnClose");
