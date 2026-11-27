@@ -94,7 +94,10 @@ patch("aeba-paediatric", c => {
 });
 patch("dengue-paeds", c => { c.sources = [...c.sources, pp5("Ch. 91 Dengue Viral Infections")]; });
 patch("cap", c => { c.sources = [...c.sources, pp5("Ch. 34 Pneumonia (tachypnoea thresholds)")]; });
-patch("gastroenteritis", c => { c.sources = [...c.sources, pp5("Ch. 10 Acute Gastroenteritis (WHO dehydration chart, Plan B)")]; });
+patch("gastroenteritis", c => {
+  c.meds = [...c.meds, "<strong>Paediatric Smecta (diosmectite 3 g/sachet, oral powder):</strong> optional adjunct to ORS for acute diarrhoea. Avoid below 2 years. Malaysian registered product leaflet: age ≥2 years, 4 sachets/day for 3 days, then 2 sachets/day for 4 days. PP5 specifies age >2 years; at exactly 2 years confirm suitability before prescribing. Distribute the daily dose throughout the day. Mix each sachet with 50 mL water or suitable semi-liquid food. Avoid simultaneous administration with other oral medicines. Stop if constipation occurs; avoid in hypersensitivity and check product-specific excipient contraindications. ORS and continued feeding remain first-line; reassess promptly for dehydration or other red flags."];
+  c.sources = [...c.sources, pp5("Ch. 10 Acute Gastroenteritis (WHO dehydration chart, Plan B; antidiarrhoeal adjuncts)"), ["NPRA RiMUP — Smecta Orange-Vanilla 3 g (2025)", "https://quest3plus.bpfk.gov.my/front-end/attachment/791/pharma/234512/V_112255_20251031_163203_D4.pdf"], ["NPRA safety alert — diosmectite age restriction", "https://npra.gov.my/index.php/en/component/content/article/471-english/safety-alerts-main/dhpc/1527023-smecta-dioctahedral-smectite-not-recommended-for-use-in-children-aged-below-2-years-and-pregnant-or-breastfeeding-women.html?Itemid=1391"]];
+});
 patch("anaphylaxis", c => {
   c.meds = [...c.meds, "<strong>PP5 child IM adrenaline 1:1000:</strong> in hospital 10 mcg/kg (0.01 mL/kg), repeat after 5 min if no improvement. Pre-hospital: <6 months and 6 months–6 years 150 mcg (0.15 mL); 6–12 years 300 mcg (0.3 mL); >12 years 500 mcg (0.5 mL)."];
   c.sources = [...c.sources, pp5("Ch. 116 Anaphylaxis")];
