@@ -44,6 +44,36 @@
   </header>
 
   <main class="shell">
+<section class="tool-card" id="clinicalDashboard" aria-label="Clinical dashboard">
+<style>
+#clinicalDashboard{border-top:4px solid #0b4f6c;margin-bottom:16px}
+#clinicalDashboard .dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#clinicalDashboard button{min-height:48px;text-align:left;padding:12px;border:1px solid #9cb8c5;border-radius:12px;background:#eef6fa;color:#123c50;font:inherit;font-weight:600;cursor:pointer}
+#clinicalDashboard button:focus-visible{outline:3px solid #0077a8}
+#clinicalDashboard details{margin-top:12px}
+#clinicalDashboard a{display:block;padding:8px 0}
+</style>
+<p class="section-kicker">MyClinicalGuide.MY · Dashboard 3.0</p>
+<h2>Clinical quick access / Akses pantas</h2>
+<div class="dash-grid">
+<button type="button" data-target="searchInput">🔎 Case finder</button>
+<button type="button" data-target="doseToggle" data-panel="doseTools">🧮 Dose tools</button>
+<button type="button" data-target="normToggle" data-panel="normTools">🩺 Paediatric values</button>
+<button type="button" data-target="scoreToggle" data-panel="scoreTools">📊 Scores &amp; renal</button>
+</div>
+<details><summary>Emergency references / Rujukan kecemasan</summary>
+<p class="small">Use existing clinical cards; do not delay emergency assessment or escalation.</p>
+<div class="dash-grid">
+<button type="button" data-query="anaphylaxis">Anaphylaxis</button>
+<button type="button" data-query="chest pain">Chest pain</button>
+<button type="button" data-query="seizure">Seizure</button>
+<button type="button" data-query="asthma">Acute asthma</button>
+</div></details>
+<details><summary>Evidence centre / Sumber rujukan</summary>
+<a href="https://github.com/dzulhairy/locumguide/blob/main/REFERENCES.md" target="_blank" rel="noopener noreferrer">Clinical references and guideline sources</a>
+<p class="small">Dashboard update only. Clinical content and dose algorithms unchanged; verify current guidance before prescribing.</p>
+</details>
+</section>
     <section id="doseTools" class="tool-card hidden" aria-label="Dose calculators">
       <div class="section-title-row">
         <div>
@@ -216,5 +246,14 @@
       window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
     }
   </script>
+<script>
+document.getElementById("clinicalDashboard").addEventListener("click",function(e){
+ const b=e.target.closest("button"); if(!b)return;
+ if(b.dataset.query){const q=document.getElementById("searchInput");q.value=b.dataset.query;q.dispatchEvent(new Event("input",{bubbles:true}));q.scrollIntoView({block:"center"});return;}
+ const t=document.getElementById(b.dataset.target);if(!t)return;
+ if(b.dataset.panel){const p=document.getElementById(b.dataset.panel);if(p.classList.contains("hidden"))t.click();p.scrollIntoView({block:"start"});}
+ else{t.scrollIntoView({block:"center"});t.focus();}
+});
+</script>
 </body>
 </html>
