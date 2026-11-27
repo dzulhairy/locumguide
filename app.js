@@ -237,13 +237,13 @@ function doseTool(){
   if(!tool){els.dose.classList.add("hidden");return;}
   if(!Number.isFinite(weight)||weight<=0){els.dose.innerHTML=`<h3>${t("doseResult")}</h3><p class="dose-answer">${t("enterWeight")}</p>`;els.dose.classList.remove("hidden");return;}
   // Safety audit: fail closed for invalid inputs and unresolved high-risk pathways.
-  const blocked = ["coamox14","augmentin228","cloxacillin-ssti","seizure-benzo","dexamethasone-croup","magnesium-iv-asthma","aeba-bundle","maintenance-deficit"];
+  const blocked = ["coamox14","augmentin228","cloxacillin-ssti","seizure-benzo","dexamethasone-croup","magnesium-iv-asthma","aeba-bundle","maintenance-deficit","oseltamivir"];
   let safetyError = "";
   if ([els.age,els.weight,els.concentration,els.dehydration].some(el=>el.validity.badInput || el.validity.rangeUnderflow || el.validity.rangeOverflow)) safetyError="Invalid input. Check age, weight, concentration and dehydration.";
   else if (age===null || age<0) safetyError="Enter a valid age in years before calculating.";
   else if (weight>150 || (age<1 && weight>15) || (age<12 && weight>90)) safetyError="Age/weight combination requires manual verification.";
   else if (els.concentration.value!=="" && (!Number.isFinite(conc)||conc<=0)) safetyError="Enter a positive concentration or leave blank.";
-  else if (blocked.includes(tool)) safetyError="Calculator temporarily suspended pending indication-specific clinical validation. Use the current source guideline and local protocol.";
+  else if (blocked.includes(tool)) safetyError="Calculator temporarily suspended pending clinical validation of dose, indication or formulation. Use the current source guideline and local protocol.";
   if(safetyError){els.dose.innerHTML='<h3>Safety stop</h3><p class="dose-caution" role="alert">'+safetyError+'</p>';els.dose.classList.remove("hidden");return;}
   let answer="",note="",caution="",syr=null;
   let weightWarn="";
