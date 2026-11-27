@@ -50,10 +50,11 @@
     {
       "id": "oseltamivir",
       "status": "pending_validation",
-      "availability": "reference_only",
+      "availability": "suspended",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B10; MOH influenza guideline 2023; FUKKM oseltamivir",
+      "finding": "Infant regimen differs across guidance; listed FUKKM suspension concentration differs from current stock preset. Confirm actual product and current infant guidance."
     },
     {
       "id": "adrenaline",
@@ -69,7 +70,8 @@
       "availability": "reference_only",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B9 and/or B10",
+      "finding": "Initial source comparison only; indication, formulation, treatment duration and boundary tests pending."
     },
     {
       "id": "coamox14",
@@ -77,7 +79,8 @@
       "availability": "suspended",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B9 and/or B10",
+      "finding": "Initial source comparison only; indication, formulation, treatment duration and boundary tests pending."
     },
     {
       "id": "azithro5",
@@ -85,7 +88,8 @@
       "availability": "reference_only",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B9 and/or B10",
+      "finding": "Initial source comparison only; indication, formulation, treatment duration and boundary tests pending."
     },
     {
       "id": "cefuroxime",
@@ -93,7 +97,8 @@
       "availability": "reference_only",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B9 and/or B10",
+      "finding": "Initial source comparison only; indication, formulation, treatment duration and boundary tests pending."
     },
     {
       "id": "cephalexin",
@@ -117,7 +122,8 @@
       "availability": "reference_only",
       "source": "NAG",
       "reviewer": null,
-      "sourceLocator": null
+      "sourceLocator": "NAG B9 and/or B10",
+      "finding": "Initial source comparison only; indication, formulation, treatment duration and boundary tests pending."
     },
     {
       "id": "amox-gas",
