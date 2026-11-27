@@ -1,0 +1,235 @@
+{
+  "date": "2026-11-27",
+  "clinicalApproval": false,
+  "sources": {
+    "NAG": "https://pharmacy.moh.gov.my/nag",
+    "PP5": "https://www.moh.gov.my/images/04-penerbitan/penerbitan-klinikal/perkhidmatan-OG-dan-pediatrik/pediatrik/FA_-_Paediatric_Protocols_5th_Edition_MOH_PDF_1-compressed.pdf",
+    "FUKKM": "https://pharmacy.moh.gov.my/en/apps/fukkm"
+  },
+  "calculators": [
+    {
+      "id": "paracetamol",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "FUKKM",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "paracetamol-dengue",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "dexamethasone-croup",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "seizure-benzo",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "ibuprofen",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "FUKKM",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "oseltamivir",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "adrenaline",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "amoxicillin-high",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "coamox14",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "azithro5",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "cefuroxime",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "cephalexin",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "augmentin228",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "NPRA product PI",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "coamox7",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "amox-gas",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "nitrofurantoin-uti",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "cloxacillin-ssti",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "NAG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "acyclovir-varicella",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "NPRA product PI",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "aeba-bundle",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "hydrocortisone-iv-asthma",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "ipratropium-neb-asthma",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "magnesium-iv-asthma",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "budesonide-neb-asthma",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "prednisolone-asthma",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "salbutamol-neb",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "ors-plan-b",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "maintenance-fluid",
+      "status": "pending_validation",
+      "availability": "reference_only",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    },
+    {
+      "id": "maintenance-deficit",
+      "status": "pending_validation",
+      "availability": "suspended",
+      "source": "PP5 / relevant CPG",
+      "reviewer": null,
+      "sourceLocator": null
+    }
+  ]
+}
